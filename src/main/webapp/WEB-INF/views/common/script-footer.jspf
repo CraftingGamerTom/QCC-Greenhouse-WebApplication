@@ -1,0 +1,58 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!-- Mainly scripts -->
+<script href="<c:url value="/resources/js/jquery-3.1.1.min.js"/>"></script>
+<script href="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+
+<!-- jQuery and Bootstrap -->
+<script href="<c:url value="/resources/js/jquery/jquery-3.1.1.min.js"/>"></script>
+<script href="<c:url value="/resources/js/plugins/jquery-ui/jquery-ui.min.js"/>"></script>
+<script href="<c:url value="/resources/js/bootstrap/bootstrap.min.js"/>"></script>
+
+<!-- MetsiMenu -->
+<script href="<c:url value="/resources/js/plugins/metisMenu/jquery.metisMenu.js"/>"></script>
+
+<!-- SlimScroll -->
+<script href="<c:url value="/resources/js/plugins/slimscroll/jquery.slimscroll.min.js"/>"></script>
+
+<!-- Peace JS -->
+<script href="<c:url value="/resources/js/plugins/pace/pace.min.js"/>"></script>
+
+<!-- Custom and plugin javascript -->
+<script href="<c:url value="/resources/js/inspinia.js"/>"></script>
+
+<!-- Main Angular scripts-->
+<script href="<c:url value="/resources/js/angular/angular.min.js"/>"></script>
+<script href="<c:url value="/resources/js/angular/angular-sanitize.js"/>"></script>
+<script href="<c:url value="/resources/js/plugins/oclazyload/dist/ocLazyLoad.min.js"/>"></script>
+<script href="<c:url value="/resources/js/angular-translate/angular-translate.min.js"/>"></script>
+<script href="<c:url value="/resources/js/ui-router/angular-ui-router.min.js"/>"></script>
+<script href="<c:url value="/resources/js/bootstrap/ui-bootstrap-tpls-1.1.2.min.js"/>"></script>
+<script href="<c:url value="/resources/js/plugins/angular-idle/angular-idle.js"/>"></script>
+
+<!--
+ You need to include this script on any page that has a Google Map.
+ When using Google Maps on your own site you MUST signup for your own API key at:
+ https://developers.google.com/maps/documentation/javascript/tutorial#api_key
+ After your sign up replace the key in the URL below..
+-->
+<script type="text/javascript" href="<c:url value="/https://maps.googleapis.com/maps/api/js?key=AIzaSyDQTpXj82d8UpCi97wzo_nKXL7nYrd4G70"/>"></script>
+<!-- Anglar App Script -->
+<script href="<c:url value="/resources/js/app.js"/>"></script>
+<script href="<c:url value="/resources/js/config.js"/>"></script>
+<script href="<c:url value="/resources/js/translations.js"/>"></script>
+<script href="<c:url value="/resources/js/directives.js"/>"></script>
+<script href="<c:url value="/resources/js/controllers.js"/>"></script>
+
+<!-- Flot -->
+<script href="<c:url value="/resources/js/plugins/flot/jquery.flot.js"/>"></script>
+<script href="<c:url value="/resources/js/plugins/flot/jquery.flot.tooltip.min.js"/>"></script>
+<script href="<c:url value="/resources/js/plugins/flot/jquery.flot.resize.js"/>"></script>
+
+<!-- ChartJS-->
+<script href="<c:url value="/resources/js/plugins/chartJs/Chart.min.js"/>"></script>
+
+<!-- Peity -->
+<script href="<c:url value="/resources/js/plugins/peity/jquery.peity.min.js"/>"></script>
+<!-- Peity demo -->
+<script href="<c:url value="/resources/js/demo/peity-demo.js"/>"></script>

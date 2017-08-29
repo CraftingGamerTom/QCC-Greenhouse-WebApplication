@@ -1,0 +1,104 @@
+<!-- 
+To Keep things more organized I will be listing the variable names and purposes here for the view-data-graph
+REQUEST
+{c-sensor} - the chosen sensor
+{c-timing} - the chosen timing
+{start-date} - the chosen date
+RESPONSE
+{start-date} - The date chosen on the "Choose Start date" form -> Used for showing the proper graph data
+{end-date} - This is calculated by the web application response -> Used for showing the proper graph data
+{location} - Calculated by web app response based on the sensorID -> Displays 'Indoor' or 'Outdoor' or whatever else we configure similar
+{type} - Calculated by web app response based on the sensorID -> Displays 'Temperature' or 'Humidity' etc
+{timing} - The timing chosen in the "choose-timing" -> For changing the x axis and gathering the proper information
+{sensor-id} - The sensor chosen by "choose-sensor" -> For showing what is on the graph
+{current-time} - The time at the moment of instantiation of a response -> Shown for graph reference for data
+ 
+ -->
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+	<div class="row">
+	<div class="col-lg-8">
+	    <div class="ibox float-e-margins">
+	        <div class="ibox-content">
+	            <div>
+	                    <span class="pull-right text-right">
+	                    <small>Currently showing the data for the <strong><%=request.getAttribute("location")%> <%=request.getAttribute("type")%></strong>. (<%=request.getAttribute("sensor-id")%>)</small>
+	                        <br/>
+	                        Time Frame: <%=request.getAttribute("start-date")%> - <%=request.getAttribute("end-date")%>
+	                    </span>
+	                <h3 class="font-bold no-margins">
+	                    QCC Greenhouse - View Data
+	                </h3>
+	                <small>Timing: <%=request.getAttribute("timing")%>.</small>
+	            </div>
+	
+	            <div class="m-t-lg">
+	                <div class="row">
+	                    <div class="col-Lg-2">
+	                        <div>
+	                        	<canvas id="lineChart" height="114"></canvas>
+	                        </div>
+	                    </div>
+			            <div class="m-t-md">
+			                <small class="pull-right">
+			                    <i class="fa fa-clock-o"> </i>
+			                    Updated on <%=request.getAttribute("current-time")%>
+			                </small>
+			                <small>
+			                    <strong>Look Mom!</strong> We are paving the way of the future!
+			                </small>
+			            </div>
+	              	</div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+<div class="col-lg-4">
+	    <div class="ibox float-e-margins">
+	        <div class="ibox-content">
+	            <div class="m-t-sm">
+            	     	<div class="col-Lg-3">
+	                    	<div class="ibox float-e-margins">
+	                    		<form>
+			                    	<div class="ibox-title">
+			                            <h5>Database Query <small>Choose what you want us to show you.</small></h5>
+			                        </div>
+					                <div class="ibox-content">
+		                                <div class="form-group"><label class="font-normal"><strong>Choose Sensor</strong><br/><small class="text-navy">Choose a sensor ID</small></label>
+		                                    <select class="form-control m-b" name="c-sensor" id="sensorForm">
+		                                        <option value="indoor-temperature">Indoor Temperature</option>
+		                                        <option value="indoor-humidity">Indoor Humidity</option>
+		                                        <option value="outdoor-temperature">Outdoor Temperature</option>
+		                                        <option value="outdoor-humidity">Outdoor Humidity</option>
+		                                    </select>
+		                                </div>
+					                </div> 
+					                <div class="ibox-content">
+		                                <div class="form-group"><label class="font-normal"><strong>Choose Timing</strong><br/><small class="text-navy">Changes the detail of the graph</small></label>
+		                                    <select class="form-control m-b" name="c-timing" id="timingForm">
+		                                        <option value="h">Hourly</option>
+		                                        <option value="d">Daily</option>
+		                                        <option value="w">Weekly</option>
+		                                        <option value="m">Monthly</option>
+		                                        <option value="y">Yearly</option>
+		                                    </select>
+		                                </div>
+					                </div>        
+			                        <div class="ibox-content">			
+			                            <div class="form-group" id="data_1">
+			                                <label class="font-normal"><strong>Choose Start Date</strong><br/><small class="text-navy">We will do the math</small></label>
+			                                <div class="input-group date">
+			                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="start-date" id="calander" type="text" class="form-control" value="">
+			                                </div>
+			                            </div>
+			                        </div>
+			                        <input class="btn btn-sm btn-primary pull-right" type="submit" value="Submit">
+								</form>						                        
+		                    </div>
+                        </div>
+	            </div>
+	       </div>
+	 	</div>
+	</div>
+</div>

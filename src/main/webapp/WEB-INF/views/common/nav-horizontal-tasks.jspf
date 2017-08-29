@@ -1,0 +1,6 @@
+<!-- If used, include this after the logout button on horizontal navigation (default location) -->
+<li>
+	<a class="right-sidebar-toggle">
+		<i class="fa fa-tasks"></i>  <span class="label label-warning">N/A</span>
+	</a>
+</li>

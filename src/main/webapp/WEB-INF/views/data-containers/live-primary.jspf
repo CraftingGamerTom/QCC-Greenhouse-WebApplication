@@ -1,0 +1,85 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<div class="wrapper wrapper-content">
+          <div class="container ">
+           <div class="row">
+               <div class="col-md-3">
+                   <div class="ibox float-e-margins">
+                       <div class="ibox-title">
+                           <span class="label label-primary pull-right">[TIME]</span>
+                           <h5>Temperature</h5>
+                       </div>
+                       <div class="ibox-content">
+                           <h1 class="no-margins">77 &#x2109;</h1>
+                           <div class="stat-percent font-bold text-success">Indoor <i class="fa fa-thermometer"></i></div>
+                           <small>25 &#x2103;</small>
+                       </div>
+                       <div class="ibox-content">
+                           <h1 class="no-margins">77 &#x2109;</h1>
+                           <div class="stat-percent font-bold text-info">Outdoor <i class="fa fa-thermometer"></i></div>
+                           <small>25 &#x2103;</small>
+                       </div>
+                   </div>
+               </div>
+               <div class="col-md-3">
+                   <div class="ibox float-e-margins">
+                       <div class="ibox-title">
+                           <span class="label label-primary pull-right">[TIME]</span>
+                           <h5>Humidity</h5>
+                       </div>
+                       <div class="ibox-content">
+                                   <h1 class="no-margins">87%</h1>
+                                   <div class="stat-percent font-bold text-success">Indoor <i class="fa fa-eyedropper"></i></div>
+                                   <small>Feels like [HEAT INDEX]</small>
+                       </div>
+                       <div class="ibox-content">
+                                   <h1 class="no-margins">35%</h1>
+                                   <div class="stat-percent font-bold text-info">Outdoor <i class="fa fa-eyedropper"></i></div>
+                                   <small>Feels like [HEAT INDEX]</small>
+                       </div>
+                   </div>
+               </div>
+
+               <div class="col-md-3">
+                   <div class="ibox float-e-margins">
+                       <div class="ibox-title">
+                           <span class="label label-primary pull-right">[TIME]</span>
+                           <h5>Water</h5>
+                       </div>
+                          <div class="ibox-content">
+                                  <h1 class="no-margins">0%</h1>
+                                  <div class="stat-percent font-bold text-success">null <i class="fa fa-shower"></i></div>
+                                  <small>Not Implemented</small>
+                      	</div>
+                      	<div class="ibox-content">
+                                  <h1 class="no-margins">0%</h1>
+                                  <div class="stat-percent font-bold text-info">null <i class="fa fa-shower"></i></div>
+                                  <small>Not Implemented</small>
+                      	</div>
+                   </div>
+               </div>
+               <div class="col-md-3">
+                   <div class="ibox float-e-margins">
+                       <div class="ibox-title">
+                           <h5>Ph Levels</h5>
+                           <div class="ibox-tools">
+                               <span class="label label-primary pull-right">[TIME]</span>
+                           </div>
+                       </div>
+                       <div class="ibox-content no-padding">
+                      	<div class="ibox-content">
+                                  <h1 class="no-margins">0</h1>
+                                  <div class="stat-percent font-bold text-success">null <i class="fa fa-flask"></i></div>
+                                  <small>Not Implemented</small>
+                      	</div>
+                      	<div class="ibox-content">
+                                  <h1 class="no-margins">0</h1>
+                                  <div class="stat-percent font-bold text-info">null <i class="fa fa-flask"></i></div>
+                                  <small>Not Implemented</small>
+                      	</div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+      </div>	
