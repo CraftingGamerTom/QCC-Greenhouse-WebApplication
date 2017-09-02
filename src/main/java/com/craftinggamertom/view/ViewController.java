@@ -1,5 +1,8 @@
 package com.craftinggamertom.view;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,9 +41,17 @@ public class ViewController {
               @RequestParam(value = "c-sensor", defaultValue="indoor-temperature") String cSensor,
               @RequestParam(value = "c-timing", defaultValue="h") String cTiming,
               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-              @RequestParam(value = "start-date", defaultValue="2017-08-25") String cDate,
+              @RequestParam(value = "start-date", defaultValue="default") String cDate,
               Model model) {
 
+		/**
+		 * handle the default value so that the current day is what is shown
+		 */
+		if(cDate.equals("default")) {
+			ZonedDateTime now = ZonedDateTime.now();
+			cDate = now.toString().substring(0, 10); //Dont use full ZonedDateTime because it can't be parsed
+		}
+		
 		model.addAttribute("c-sensor", "\"" + cSensor + "\""); // Must use these quote insertions for the UI to understand
 		model.addAttribute("c-timing", "\"" + cTiming + "\""); // Must use these quote insertions
 		model.addAttribute("c-date", "\"" + cDate + "\""); // Must use these quote insertions
