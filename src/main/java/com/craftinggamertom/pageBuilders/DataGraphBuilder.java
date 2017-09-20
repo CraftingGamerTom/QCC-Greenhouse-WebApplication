@@ -2,27 +2,29 @@ package com.craftinggamertom.pageBuilders;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
+import com.craftinggamertom.database.ConfigurationReader;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 
 /**
- * This class can be tough to look at with the large blocks of code.
- * Here is a few tips to understanding the contents.
+ * This class can be tough to look at with the large blocks of code. Here is a
+ * few tips to understanding the contents.
  * 
  * To create the graph we want to view we must first format the start time
- * correctly since our UI does not do that for us currently.
- * [THIS CAN BE FIXED BY MAKING THE DATE CHOOSER CHANGE BASED ON TIMING OPTION]
- * then we must take the start time and calculate the end time. (setActualEndTime method)
+ * correctly since our UI does not do that for us currently. [THIS CAN BE FIXED
+ * BY MAKING THE DATE CHOOSER CHANGE BASED ON TIMING OPTION] then we must take
+ * the start time and calculate the end time. (setActualEndTime method)
  * 
- * Then we connect to a database based on the timing preference since our data is
- * maintained according the the timing options
- * 
- * Then we can collect the data and put it into an array list to be shown on a graph
- * [CURRENTLY THE SEARCHING IS DONE ON THE APP - THIS IS VERY INEFFICIENT]
+ * Then we connect to a database based on the timing preference since our data
+ * is maintained according the the timing options
  * 
  * Then we must create the xAxis based on the timing
  * 
@@ -44,7 +46,6 @@ public class DataGraphBuilder extends PageBuilder {
 	private String timing;
 	private String sensorID;
 
-	private List<Document> documents;
 	private String cTiming;
 	private Model model;
 
@@ -54,8 +55,9 @@ public class DataGraphBuilder extends PageBuilder {
 	}
 
 	/**
-	 * Handles everything that is required to return all the needed
-	 * components of the view data graph
+	 * Handles everything that is required to return all the needed components of
+	 * the view data graph
+	 * 
 	 * @param cSensor
 	 * @param cTiming
 	 * @param date
@@ -73,12 +75,12 @@ public class DataGraphBuilder extends PageBuilder {
 		this.location = convertSensor(cSensor).get(1);
 		this.type = convertSensor(cSensor).get(2);
 
-		setActualStartDate(); // MUST BE FIRST - Critical errors otherwise
-		connectToDocument();
+		setStartDate(); // MUST BE FIRST - Critical errors otherwise
+		setEndDate(); // MUST BE AFTER START DATE - Critical errors otherwise
 		addDataGraphData();
 		setXAxis();
 
-		setTestGraph();
+		// setTestGraph();
 
 		return addPageAttributes();
 
@@ -89,44 +91,50 @@ public class DataGraphBuilder extends PageBuilder {
 	 * collected and put into the ArrayList containing all the points on the graph
 	 */
 	private void addDataGraphData() {
-		boolean workable = false;
-		if (cTiming.equals("h")) {
-			timing = "Hourly";
-			endDate = startDate.plusHours(23); // Sets the proper hour range
-			endDate = endDate.plusMinutes(59); // Sets the proper minute range
-			workable = true;
-		}
-		if (cTiming.equals("d")) {
-			timing = "Daily";
-			endDate = startDate.plusDays(7);
-			workable = true;
-		} else if (cTiming.equals("w")) {
-			timing = "Weekly";
-			endDate = startDate.plusMonths(1);
-			workable = true;
-		} else if (cTiming.equals("m")) {
-			timing = "Monthly";
-			endDate = startDate.plusYears(1);
-			workable = true;
-		} else if (cTiming.equals("y")) {
-			timing = "Yearly";
-			endDate = startDate.plusYears(10);
-			workable = true;
-		}
-		if (workable) {
-			for (Document document : documents) {
-				String dbDate = document.getString("date");
-				ZonedDateTime dbZDT = ZonedDateTime.parse(dbDate);
-				if (dbZDT.isAfter(startDate) && dbZDT.isBefore(endDate)) {
-					if (document.containsValue(sensorID)) {
-						highValue.add(document.getDouble("highValue"));
-						lowValue.add(document.getDouble("lowValue"));
+		System.out.println("ADD DATA GRAPH ENTRY");
 
-					}
-				}
+		/*
+		 * This is the section that can be stripped down and removed and replaced with
+		 * the method of accessing documents as used in the new and improved data
+		 * colelction service. We should not be handing the data in java as that is very
+		 * slow
+		 */
+
+		/*
+		 * Should be as simple as havinf a BSON filter that looks between start date and
+		 * end date after connecting to the right table. from there just put the data
+		 * into the array list.
+		 */
+		// Filter Types
+		// Sensor ID
+		Bson sensorFilter = Filters.eq("sensorId", sensorID);
+		// After Date
+		Bson afterFilter = Filters.gte("date", startDate.toString());
+		// Before Date
+		Bson beforeFilter = Filters.lte("date", endDate.toString());
+
+		MongoCollection<Document> collection = null;
+		FindIterable<Document> searchResult = null;
+
+		try {
+			// Iterates through the list of persistent collections
+			collection = database.getCollection(getCollectionName());
+
+			searchResult = collection.find(Filters.and(sensorFilter, beforeFilter, afterFilter));
+
+			Iterator<Document> iter = searchResult.iterator();
+
+			while (iter.hasNext()) {
+				Document d = (Document) iter.next();
+				System.out.println(d);
+
+				lowValue.add((Double) d.get("lowValue"));
+				highValue.add((Double) d.get("highValue"));
 			}
+		} catch (Exception e) {
+			System.out.println("Error while gathering data to display: ");
+			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -151,13 +159,6 @@ public class DataGraphBuilder extends PageBuilder {
 		model.addAttribute("low-value", lowValue.toString());
 
 		return model;
-	}
-
-	private void connectToDocument() {
-		MongoCollection<Document> collection = database.getCollection(cTiming);
-		// Collects all documents
-		documents = (List<Document>) collection.find().into(new ArrayList<Document>());
-
 	}
 
 	/**
@@ -194,11 +195,11 @@ public class DataGraphBuilder extends PageBuilder {
 
 				for (ZonedDateTime startOfWeek = startDate; startOfWeek
 						.isBefore(lastDay); startOfWeek = startOfWeek.plusWeeks(1)) {
-				// Finds the date range
+					// Finds the date range
 					int axisVal1 = startOfWeek.getDayOfMonth(); // Beginning of Date Range
 					ZonedDateTime endOfWeek = startOfWeek.plusDays(6);
 					int axisVal2 = endOfWeek.getDayOfMonth(); // End of Date Range
-				// Finds the month range and sets string
+					// Finds the month range and sets string
 					String axisMonthVal1 = startOfWeek.getMonth().toString();
 					axisMonthVal1 = axisMonthVal1.substring(0, 3); // Shortens the month
 					String axisMonthVal2 = endOfWeek.getMonth().toString();
@@ -233,7 +234,7 @@ public class DataGraphBuilder extends PageBuilder {
 	 * must also set the day of month to 1 but also the month to January Yearly but
 	 * do the same as Monthly
 	 */
-	private void setActualStartDate() {
+	private void setStartDate() {
 		ZonedDateTime firstDay = startDate;
 		if (cTiming.equals("w")) {
 			firstDay = startDate.minusDays((startDate.getDayOfMonth() - 1));
@@ -247,21 +248,53 @@ public class DataGraphBuilder extends PageBuilder {
 		startDate = firstDay;
 	}
 
-	private void setTestGraph() {
-		for (double i = 0; i < xAxis.size(); i++) {
-			if (i > 12) {
-				this.highValue.add(-(i * i));
-			} else {
-				this.highValue.add(i * i);
-			}
+	/**
+	 * Based on the desired time and the startDate frame the endDate is set. It is
+	 * very important the the startDate is formatted before the endDate or this will
+	 * get messed up.
+	 */
+	private void setEndDate() {
+		if (cTiming.equals("h")) {
+			timing = "Hourly";
+			endDate = startDate.plusHours(23); // Sets the proper hour range
+			endDate = endDate.plusMinutes(59); // Sets the proper minute range
+		} else if (cTiming.equals("d")) {
+			timing = "Daily";
+			endDate = startDate.plusDays(7);
+		} else if (cTiming.equals("w")) {
+			timing = "Weekly";
+			endDate = startDate.plusMonths(1);
+		} else if (cTiming.equals("m")) {
+			timing = "Monthly";
+			endDate = startDate.plusYears(1);
+		} else if (cTiming.equals("y")) {
+			timing = "Yearly";
+			endDate = startDate.plusYears(10);
+		} else {
+			System.out.println("Couldnt set end date when getting data. \nProbably going to throw an error soon.");
+		}
+	}
 
+	/**
+	 * Gets the appropriate collection name based on the desired time frame.
+	 * 
+	 * @return the collection name
+	 */
+	private String getCollectionName() {
+		if (cTiming.equals("h")) {
+			return ConfigurationReader.hourlyDataCollection;
+		} else if (cTiming.equals("d")) {
+			return ConfigurationReader.dailyDataCollection;
+		} else if (cTiming.equals("w")) {
+			return ConfigurationReader.weeklyDataCollection;
+		} else if (cTiming.equals("m")) {
+			return ConfigurationReader.monthlyDataCollection;
+		} else if (cTiming.equals("y")) {
+			return ConfigurationReader.yearlyDataCollection;
+		} else {
+			System.out.println("Error when deciding on what collection to look in (DataGraphBuilder)");
+			return null;
 		}
-		for (double i = 0; i < xAxis.size(); i++) {
-			if (i > 12) {
-				this.lowValue.add((-(i * i)) / 2);
-			} else {
-				this.lowValue.add((i * i) / 2);
-			}
-		}
+
 	}
 }
