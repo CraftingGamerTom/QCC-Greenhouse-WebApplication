@@ -10,6 +10,7 @@ import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
 import com.craftinggamertom.database.ConfigurationReader;
+import com.craftinggamertom.database.SensorInfo;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
@@ -39,8 +40,7 @@ public class DataGraphBuilder extends PageBuilder {
 	private ArrayList<Double> lowValue = new ArrayList<Double>();
 	private ArrayList<String> xAxis = new ArrayList<String>();
 	// The Y-Axis not included because it's handled by the UI on the client side.
-	private String location = "";
-	private String type = "";
+	private String friendlyName = "";
 	private ZonedDateTime startDate;
 	private ZonedDateTime endDate;
 	private String timing;
@@ -71,9 +71,8 @@ public class DataGraphBuilder extends PageBuilder {
 		this.startDate = ZonedDateTime.parse(date);
 		this.cTiming = cTiming;
 		this.model = model;
-		this.sensorID = convertSensor(cSensor).get(0);
-		this.location = convertSensor(cSensor).get(1);
-		this.type = convertSensor(cSensor).get(2);
+		this.sensorID = convertSensor(cSensor).getSensorId();
+		this.friendlyName = convertSensor(cSensor).getFriendlyName();
 
 		setStartDate(); // MUST BE FIRST - Critical errors otherwise
 		setEndDate(); // MUST BE AFTER START DATE - Critical errors otherwise
@@ -91,20 +90,6 @@ public class DataGraphBuilder extends PageBuilder {
 	 * collected and put into the ArrayList containing all the points on the graph
 	 */
 	private void addDataGraphData() {
-		System.out.println("ADD DATA GRAPH ENTRY");
-
-		/*
-		 * This is the section that can be stripped down and removed and replaced with
-		 * the method of accessing documents as used in the new and improved data
-		 * colelction service. We should not be handing the data in java as that is very
-		 * slow
-		 */
-
-		/*
-		 * Should be as simple as havinf a BSON filter that looks between start date and
-		 * end date after connecting to the right table. from there just put the data
-		 * into the array list.
-		 */
 		// Filter Types
 		// Sensor ID
 		Bson sensorFilter = Filters.eq("sensorId", sensorID);
@@ -126,7 +111,7 @@ public class DataGraphBuilder extends PageBuilder {
 
 			while (iter.hasNext()) {
 				Document d = (Document) iter.next();
-				System.out.println(d);
+				// PRINTS EACH DOCUMENT RECIEVED System.out.println(d);
 
 				lowValue.add((Double) d.get("lowValue"));
 				highValue.add((Double) d.get("highValue"));
@@ -147,8 +132,14 @@ public class DataGraphBuilder extends PageBuilder {
 	private Model addPageAttributes() {
 		model.addAttribute("x-axis", xAxis);
 		// UI
-		model.addAttribute("location", location);
-		model.addAttribute("type", type);
+		/*
+		 * c-sensor decides the default value shown on the graph page
+		 * 
+		 * javascript on client side will set value based on this
+		 */
+		model.addAttribute("c-sensor", "\"" + sensorID + "\""); // Must use these quote insertions for the UI to
+																// understand
+		model.addAttribute("friendly-name", friendlyName);
 		model.addAttribute("start-date", startDate);
 		model.addAttribute("end-date", endDate);
 		model.addAttribute("sensor-id", sensorID);
@@ -157,8 +148,41 @@ public class DataGraphBuilder extends PageBuilder {
 		// data
 		model.addAttribute("high-value", highValue.toString());
 		model.addAttribute("low-value", lowValue.toString());
+		model.addAttribute("sensor-options", getSensorOptions());
 
 		return model;
+	}
+
+	/**
+	 * Makes a connection to mongo db and get teh name and friendly name of a all
+	 * visible sensors to display as an option.
+	 * 
+	 * @return A string of html to represent the options
+	 */
+	private String getSensorOptions() {
+		String message = "";
+		ArrayList<SensorInfo> allVisibleSensors = new ArrayList<SensorInfo>();
+		
+		Bson isVisibleFilter = Filters.eq("isVisible", true);
+		
+		MongoCollection<Document> collection = null;
+		collection = database.getCollection(ConfigurationReader.sensorNamesCollection);
+
+		FindIterable<Document> searchResult = collection.find(isVisibleFilter);
+		Iterator<Document> iter = searchResult.iterator();
+		while(iter.hasNext()) {
+			allVisibleSensors.add(new SensorInfo(iter.next()));
+		}
+		for(int i = 0; i < allVisibleSensors.size(); i++) {
+			message +="\n";
+			message += "<option value=\"";
+			message += allVisibleSensors.get(i).getSensorId();
+			message += "\">";
+			message += allVisibleSensors.get(i).getFriendlyName();
+			message += "</option>";
+		}
+		
+		return message;
 	}
 
 	/**
