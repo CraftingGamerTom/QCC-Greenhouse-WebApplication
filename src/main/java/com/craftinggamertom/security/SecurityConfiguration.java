@@ -29,11 +29,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/login").permitAll()
 				.antMatchers("/*todo*/**").access("hasRole('ADMIN')").and()
 				.formLogin();
-		http.authorizeRequests().antMatchers("/login").permitAll()
-				.antMatchers("/*admin*/**", "/*todo*/**").access("hasRole('ADMIN')").and()
-				.formLogin();
-		http.authorizeRequests().antMatchers("/login").permitAll()
-				.antMatchers("/*user*/**").access("hasRole('USER')").and()
-				.formLogin();
+		
+// FOR ADMIN AND USERS	
+//		http.authorizeRequests().antMatchers("/login").permitAll()
+//				.antMatchers("/*admin*/**", "/*todo*/**").access("hasRole('ADMIN')").and()
+//				.formLogin();
+//		http.authorizeRequests().antMatchers("/login").permitAll()
+//				.antMatchers("/*user*/**").access("hasRole('USER')").and()
+//				.formLogin();
+		
 	}
 }
