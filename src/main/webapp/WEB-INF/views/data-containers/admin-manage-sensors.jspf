@@ -1,0 +1,82 @@
+
+<div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Sensor Information</h5>
+                            <span>
+				                <div class="ibox-tools">
+					                <form role="form" class="form-inline" action="/admin/manage/sensors/friendly-names">
+		                                <div class="form-group"><label class="font-normal"><strong>Choose Type</strong><br/><small class="text-navy">Search by sensor type</small></label>
+		                                    <select class="form-control s-b" name="chosen-type" id="typeChooser">	
+		                                        <%=request.getAttribute("type-options")%>
+		                                    </select>
+		                                </div>
+		                                <input id="submit" class="btn btn-xs btn-primary" type="submit" value="Query">
+		                            </form>
+				                </div>
+			                </span>
+                        </div>
+                        <h5>Showing <%=request.getAttribute("shown-type")%> sensors</h5>
+                        <div class="ibox-content">
+
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Sensor Id</th>
+                                    <th>Type</th>
+                                    <th>Date Added</th>
+                                    <th>Description</th>
+                                    <th>Friendly Name</th>
+                                    <th>Visible</th>
+                                    <th>Default</th>
+                                    <th>Update</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <%=request.getAttribute("displayed-sensors")%>
+								
+								<!-- FOR TESTING -->
+								<!-- 
+								<form role="form" class="form-inline" action="/admin/manage/sensors/friendly-names">
+	                                <tr>
+	                                    <td>2</td>
+	                                    <td><input name="sensor-id" id="sensor-id" type="hidden" class="form-control" value="rp3-test">rp3-test</td>
+	                                    <td>Humidity</td>
+	                                    <td>2017-09-20T00:00:00-4:00</td>
+	                                    <td><input name="description" id="description" type="text" class="form-control" value="A Test Sensor"></td>
+	                                    <td><input name="friendly-name" id="friendly-name" type="text" class="form-control" value="Test Name"></td>
+	                                    <td>
+	                                    	<div class="form-group">
+			                                    <select class="form-control sm-b" name="is-visible" id="is-visible">
+			                                        <option value="t">Enabled</option>
+			                                        <option value="f">Disabled</option>
+			                                    </select>
+			                                </div>
+	                                    </td>
+	                                    <td>
+ 											<tr>
+	                                    		<td>
+			                                        <input type="checkbox" id="status_1" name="status_1" value="1" />
+			                                    </td>
+			                                </tr>
+	                                    </td>
+	                                		<div class="i-checks"><input type="hidden" name="is-default" value="0" /></div> 
+											<div class="i-checks"><input type="checkbox" id="is-default" name="is-default" value="1"></div>
+											
+											<input type="hidden" name="status_3" value="2" >
+											<input type="checkbox" id="status_3" name="status_3" value="1" />
+	                                    <td><input id="submit-button" class="btn btn-xs btn-primary" type="submit" value="Save"></td>
+	                                </tr>
+	                            </form>
+								 --> 
+								
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
