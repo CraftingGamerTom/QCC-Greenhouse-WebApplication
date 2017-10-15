@@ -7,8 +7,7 @@ REQUEST
 RESPONSE
 {start-date} - The date chosen on the "Choose Start date" form -> Used for showing the proper graph data
 {end-date} - This is calculated by the web application response -> Used for showing the proper graph data
-{location} - Calculated by web app response based on the sensorID -> Displays 'Indoor' or 'Outdoor' or whatever else we configure similar
-{type} - Calculated by web app response based on the sensorID -> Displays 'Temperature' or 'Humidity' etc
+{friendly-name} - Friendly name as labeled by admin user
 {timing} - The timing chosen in the "choose-timing" -> For changing the x axis and gathering the proper information
 {sensor-id} - The sensor chosen by "choose-sensor" -> For showing what is on the graph
 {current-time} - The time at the moment of instantiation of a response -> Shown for graph reference for data
@@ -23,7 +22,7 @@ RESPONSE
 	        <div class="ibox-content">
 	            <div>
 	                    <span class="pull-right text-right">
-	                    <small>Currently showing the data for the <strong><%=request.getAttribute("location")%> <%=request.getAttribute("type")%></strong>. (<%=request.getAttribute("sensor-id")%>)</small>
+	                    <small>Currently showing the data for the <strong><%=request.getAttribute("friendly-name")%></strong>. (<%=request.getAttribute("sensor-id")%>)</small>
 	                        <br/>
 	                        Time Frame: <%=request.getAttribute("start-date")%> - <%=request.getAttribute("end-date")%>
 	                    </span>
@@ -67,10 +66,7 @@ RESPONSE
 					                <div class="ibox-content">
 		                                <div class="form-group"><label class="font-normal"><strong>Choose Sensor</strong><br/><small class="text-navy">Choose a sensor ID</small></label>
 		                                    <select class="form-control m-b" name="c-sensor" id="sensorForm">
-		                                        <option value="indoor-temperature">Indoor Temperature</option>
-		                                        <option value="indoor-humidity">Indoor Humidity</option>
-		                                        <option value="outdoor-temperature">Outdoor Temperature</option>
-		                                        <option value="outdoor-humidity">Outdoor Humidity</option>
+		                                        <%=request.getAttribute("sensor-options")%>
 		                                    </select>
 		                                </div>
 					                </div> 
