@@ -1,4 +1,4 @@
-package com.craftinggamertom.view;
+package com.craftinggamertom.controllers;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -38,7 +38,7 @@ public class ViewController {
 	 */
 	@RequestMapping(value = "sensor-data")
     public ModelAndView handleSensorDataRequest (
-              @RequestParam(value = "c-sensor", defaultValue="indoor-temperature") String cSensor,
+              @RequestParam(value = "c-sensor", defaultValue="default") String cSensor,
               @RequestParam(value = "c-timing", defaultValue="h") String cTiming,
               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
               @RequestParam(value = "start-date", defaultValue="default") String cDate,
@@ -52,7 +52,6 @@ public class ViewController {
 			cDate = now.toString().substring(0, 10); //Dont use full ZonedDateTime because it can't be parsed
 		}
 		
-		model.addAttribute("c-sensor", "\"" + cSensor + "\""); // Must use these quote insertions for the UI to understand
 		model.addAttribute("c-timing", "\"" + cTiming + "\""); // Must use these quote insertions
 		model.addAttribute("c-date", "\"" + cDate + "\""); // Must use these quote insertions
 		

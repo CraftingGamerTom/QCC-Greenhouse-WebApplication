@@ -1,4 +1,4 @@
-package com.craftinggamertom.pageHandlers;
+package com.craftinggamertom.controllers;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
