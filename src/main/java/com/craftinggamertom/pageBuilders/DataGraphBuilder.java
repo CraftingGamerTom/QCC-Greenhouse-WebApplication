@@ -162,26 +162,26 @@ public class DataGraphBuilder extends PageBuilder {
 	private String getSensorOptions() {
 		String message = "";
 		ArrayList<SensorInfo> allVisibleSensors = new ArrayList<SensorInfo>();
-		
+
 		Bson isVisibleFilter = Filters.eq("isVisible", true);
-		
+
 		MongoCollection<Document> collection = null;
 		collection = database.getCollection(ConfigurationReader.sensorNamesCollection);
 
 		FindIterable<Document> searchResult = collection.find(isVisibleFilter);
 		Iterator<Document> iter = searchResult.iterator();
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			allVisibleSensors.add(new SensorInfo(iter.next()));
 		}
-		for(int i = 0; i < allVisibleSensors.size(); i++) {
-			message +="\n";
+		for (int i = 0; i < allVisibleSensors.size(); i++) {
+			message += "\n";
 			message += "<option value=\"";
 			message += allVisibleSensors.get(i).getSensorId();
 			message += "\">";
 			message += allVisibleSensors.get(i).getFriendlyName();
 			message += "</option>";
 		}
-		
+
 		return message;
 	}
 
