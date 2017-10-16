@@ -7,17 +7,14 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import com.craftinggamertom.database.ConfigurationReader;
-import com.craftinggamertom.database.MongoClientConnection;
+import com.craftinggamertom.database.MongoDatabaseConnection;
 import com.craftinggamertom.database.SensorInfo;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 
 public class PageBuilder {
 
-	protected MongoClient client;
 	protected MongoDatabase database;
 	protected String currentTime = "";
 
@@ -28,8 +25,8 @@ public class PageBuilder {
 		LocalDateTime now = LocalDateTime.now();
 		currentTime = dtf.format(now); // 2016/11/16 12:08:43
 
-		client = MongoClientConnection.getInstance(); // Creates connection once (Singleton Object)
-		database = client.getDatabase(ConfigurationReader.databaseName);
+		database = MongoDatabaseConnection.getInstance(); //Singleton
+		
 	}
 
 	/**

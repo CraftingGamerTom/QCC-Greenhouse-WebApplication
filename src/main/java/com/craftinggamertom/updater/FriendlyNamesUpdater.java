@@ -1,13 +1,10 @@
 package com.craftinggamertom.updater;
 
-import java.util.ArrayList;
-
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import com.craftinggamertom.database.ConfigurationReader;
-import com.craftinggamertom.database.MongoClientConnection;
-import com.mongodb.MongoClient;
+import com.craftinggamertom.database.MongoDatabaseConnection;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -23,15 +20,13 @@ import com.mongodb.client.model.Updates;
  */
 public class FriendlyNamesUpdater {
 
-	protected MongoClient client;
 	protected MongoDatabase database;
 
 	/**
 	 * Default Constructor
 	 */
 	public FriendlyNamesUpdater() {
-		client = MongoClientConnection.getInstance(); // Creates connection once (Singleton Object)
-		database = client.getDatabase(ConfigurationReader.databaseName);
+		database = MongoDatabaseConnection.getInstance(); // Singleton
 	}
 
 	/**
