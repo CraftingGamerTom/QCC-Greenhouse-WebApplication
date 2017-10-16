@@ -6,8 +6,6 @@
 <!-- Head starts in header.jspf -->
 <%@ include file="../common/header.jspf"%>
     
-    <!-- FooTable -->
-    <link href="<c:url value="/resources/css/plugins/footable/footable.core.css"/>" rel="stylesheet">
 
 </head>
 
@@ -32,7 +30,7 @@
 		
 		
 		<!-- LIVE-PRIMARY CONTAINER -->
-		<%@ include file="../data-containers/live-data-chart.jspf"%>
+		<%@ include file="../data-containers/live-primary.jspf"%>
 		<!-- END LIVE-PRIMARY CONTAINER -->
 		
 		<!-- FOOTER -->
@@ -72,20 +70,7 @@
 
     <!-- Toastr -->
     <script src="<c:url value="/resources/js/plugins/toastr/toastr.min.js"/>"></script>
-    
-    <!-- FooTable -->
-    <script src="<c:url value="/resources/js/plugins/footable/footable.all.min.js"/>"></script>
 
-    <!-- Page-Level Scripts -->
-    <script>
-        $(document).ready(function() {
-
-            $('.footable').footable();
-            $('.footable2').footable();
-
-        });
-
-    </script>
 	
 
 </body>
