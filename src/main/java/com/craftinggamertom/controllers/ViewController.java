@@ -1,6 +1,5 @@
 package com.craftinggamertom.controllers;
 
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -80,11 +79,14 @@ public class ViewController {
 	 * @return the page containing loaded data
 	 */
 	@RequestMapping(value = "live-data")
-    public ModelAndView handleLiveDataRequest(Model model) {
+    public ModelAndView handleLiveDataRequest(
+    		@RequestParam(value = "chosen-type", defaultValue="default") String cType,
+            Model model) {
 			
 		try {
 			LiveDataBuilder response = new LiveDataBuilder();
-			model = response.buildPage();
+			model = response.buildPage(cType, model);
+			
 		}catch(MongoSocketOpenException e) {
 			System.out.println(" ***** ERROR CONNECTING TO MONGO DB ***** ");
 			e.printStackTrace();
@@ -97,6 +99,7 @@ public class ViewController {
 		
         return new ModelAndView("view/live-data");
     }
+
 	
 	/**
 	 * 
