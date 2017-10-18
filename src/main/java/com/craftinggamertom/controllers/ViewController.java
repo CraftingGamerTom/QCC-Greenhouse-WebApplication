@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.craftinggamertom.pageBuilders.DataGraphBuilder;
 import com.craftinggamertom.pageBuilders.LiveDataBuilder;
+import com.craftinggamertom.pageBuilders.RawDataBuilder;
 import com.mongodb.MongoSocketOpenException;
 
 @Controller
@@ -99,7 +100,36 @@ public class ViewController {
 		
         return new ModelAndView("view/live-data");
     }
-
+	
+	/**
+	 * Handles the request to view the sensor data graph UI
+	 * 
+	 * @param model for the variables
+	 * @return the page containing loaded data
+	 */
+	@RequestMapping(value = "raw-data")
+    public ModelAndView handleRawDataRequest(
+    		@RequestParam(value = "c-sensor", defaultValue="default") String cSensor,
+    		@RequestParam(value = "start-date", defaultValue="default") String cStart,
+    		@RequestParam(value = "end-date", defaultValue="default") String cEnd,
+            Model model) {
+			
+		try {
+			RawDataBuilder response = new RawDataBuilder();
+			model = response.buildPage(cSensor, cStart, cEnd, model);
+			
+		}catch(MongoSocketOpenException e) {
+			System.out.println(" ***** ERROR CONNECTING TO MONGO DB ***** ");
+			e.printStackTrace();
+			System.out.println("**************** END ERROR ***************");
+		}catch(Exception e){
+			System.out.println("Exception: ");
+			e.printStackTrace();
+		}
+		
+		
+        return new ModelAndView("view/raw-data");
+    }
 	
 	/**
 	 * 

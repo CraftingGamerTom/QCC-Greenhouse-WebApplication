@@ -1,0 +1,73 @@
+
+<!-- Shown sensor:  <%=request.getAttribute("shown-sensor")%> -->
+<!-- Friendly Name:  <%=request.getAttribute("friendly-name")%> -->
+<!-- Sensor Options: <%=request.getAttribute("sensor-options")%> -->
+<!-- Start Date: <%=request.getAttribute("start-date")%> -->
+<!-- End Date: <%=request.getAttribute("end-date")%> -->
+<!-- Displayed Sensor: <%=request.getAttribute("raw-data")%> -->
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Raw Data</h5>
+                            <br>
+                            <h4 class="text-navy">Showing: <%=request.getAttribute("friendly-name")%> data</h4>
+                            <small class="text-navy">Queried: <%=request.getAttribute("num-items")%> items</small>
+                            
+
+                        </div>
+                        <div class="ibox-content">
+                        	<form role="form" class="form-inline" action="/view/raw-data">
+	                            <span class="pull-left">
+		                            <div class="form-group" id="datepicker">
+		                                <label class="font-normal">Range select</label>
+		                                <div class="input-daterange input-group" id="datepicker">
+		                                    <input type="text" class="input-sm form-control" name="start-date" value="<%=request.getAttribute("start-date")%>"/>
+		                                    <span class="input-group-addon">to</span>
+		                                    <input type="text" class="input-sm form-control" name="end-date" value="<%=request.getAttribute("end-date")%>" />
+		                                </div>
+		                            </div>
+	                            </span>
+								<span class="pull-right text-right">
+	                                <div class="form-group"><label class="font-normal"><strong>Choose Sensor</strong><br/><small class="text-navy">Choose a sensor ID</small></label>
+	                                    <select class="form-control m-b" name="c-sensor" id="sensorForm">
+	                                        <%=request.getAttribute("sensor-options")%>
+	                                    </select>
+	                                </div>
+			                      	<input id="submit" class="btn btn-xs btn-primary" type="submit" value="Query">
+			              		</span>
+							</form>
+
+                            <table class="footable table table-stripped" data-page-size="15" data-filter=#filter>
+                                <thead>
+                                <tr>
+                                	<th>Sensor</th>
+                                    <th data-hide="phone,tablet">Description</th>
+                                    <th data-hide="phone,tablet">Type</th>
+                                    <th>Time</th>
+                                    <th>Value</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Test Sensor</td>
+                                    <td>A brief test description to show where a sensor is</td>
+                                    <td>Temperature</td>
+                                    <td class="center">2017-06-02T03:16:46-04:00</td>
+                                    <td class="center">74</td>
+                                </tr>
+                                <%=request.getAttribute("raw-data")%>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="5">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
