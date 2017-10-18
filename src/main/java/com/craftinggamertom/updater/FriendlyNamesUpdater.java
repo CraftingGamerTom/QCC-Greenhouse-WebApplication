@@ -1,5 +1,7 @@
 package com.craftinggamertom.updater;
 
+import java.util.Iterator;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -59,6 +61,23 @@ public class FriendlyNamesUpdater {
 			// Iterates through the list of persistent collections
 			collection = database.getCollection(ConfigurationReader.sensorNamesCollection);
 
+			// The if statement below stops a user from making removing default the default
+			if(makeBoolean(isDefaultSensor) == false) {
+				FindIterable<Document> results = collection.find(oldDefault); // Should only ever be one but MongoDB
+				Iterator<Document> allSensors = results.iterator();
+				while(allSensors.hasNext()) {
+					Document sensor = allSensors.next();
+					if(sensor.getBoolean("isDefault") == true && sensor.getString("sensorId").equals(sensorID)) {
+						updateIsDefault = Updates.set("isDefault", true);
+					}
+				}
+			}
+			
+			// Makes sure that a default sensor is visible - forces it to be if it wasnt set.
+			if(makeBoolean(isDefaultSensor) == true) {
+				updateIsVisible = Updates.set("isVisible", true);
+			}
+			
 			// If statement will remove the old default if a new one is set.
 			if (makeBoolean(isDefaultSensor) == true) {
 
@@ -66,7 +85,7 @@ public class FriendlyNamesUpdater {
 																				// doesnt make it easy.
 				if (results.first() != null) {
 					if (!(results.first().get("sensorId").equals(sensorID))) {
-						collection.findOneAndUpdate(oldDefault, updateOld);
+						collection.findOneAndUpdate(oldDefault, updateOld); // forces only one default
 					}
 				}
 			}
