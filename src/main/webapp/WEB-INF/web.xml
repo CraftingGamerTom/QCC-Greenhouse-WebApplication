@@ -44,7 +44,7 @@
    	</listener>
     
     <error-page>
-	    <location>/WEB-INF/views/error.jsp</location>
+	    <location>/errors</location>
 	</error-page>
 	
 </web-app>
