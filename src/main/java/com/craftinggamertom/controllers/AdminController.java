@@ -1,12 +1,8 @@
 package com.craftinggamertom.controllers;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.craftinggamertom.pageBuilders.ManageFriendlyNamesBuilder;
 import com.craftinggamertom.updater.FriendlyNamesUpdater;
-import com.mongodb.MongoSocketOpenException;
 
 @Controller
 @RequestMapping("admin")
@@ -51,16 +46,10 @@ public class AdminController {
 		try {
 			// make a ManageFriendlyNamesBuilder object and build page
 			ManageFriendlyNamesBuilder response = new ManageFriendlyNamesBuilder();
-			model = response.buildPage(sensorType, model);
+			model = response.buildPage(sensorType, model); // IF NO DATABASE PRESENT THERE WILL BE ERRORS
 
 			// EXAMPLE: DataGraphBuilder response = new DataGraphBuilder();
 			// EXAMPLE: model = response.buildPage(cSensor, cTiming, cDate, model);
-
-		} catch (MongoSocketOpenException e) {
-			// Currently not catching the exception when the mongoDB is unaccessible
-			System.out.println(" ***** ERROR CONNECTING TO MONGO DB ***** ");
-			e.printStackTrace();
-			System.out.println("**************** END ERROR ***************");
 		} catch (Exception e) {
 			System.out.println("Exception: ");
 			e.printStackTrace();
@@ -86,12 +75,12 @@ public class AdminController {
 	public String handleUpdateFriendlyNamesRequest(@RequestParam(value = "sensor-id", required = true) String sensorID,
 			@RequestParam(value = "description", required = true) String sensorDescription,
 			@RequestParam(value = "friendly-name", required = true) String friendlyName,
-			@RequestParam(value = "is-visible", defaultValue="0") String isVisible,
-			@RequestParam(value = "is-default", defaultValue="0") String isDefaultSensor, Model model) {
+			@RequestParam(value = "is-visible", defaultValue = "0") String isVisible,
+			@RequestParam(value = "is-default", defaultValue = "0") String isDefaultSensor, Model model) {
 
 		FriendlyNamesUpdater nameUpdater = new FriendlyNamesUpdater();
 		nameUpdater.updateWith(sensorID, sensorDescription, friendlyName, isVisible, isDefaultSensor);
-		
+
 		System.out.println("Using correct controller");
 		System.out.println(sensorID);
 		System.out.println(sensorDescription);
@@ -119,10 +108,6 @@ public class AdminController {
 			// EXAMPLE: DataGraphBuilder response = new DataGraphBuilder();
 			// EXAMPLE: model = response.buildPage(cSensor, cTiming, cDate, model);
 
-		} catch (MongoSocketOpenException e) {
-			System.out.println(" ***** ERROR CONNECTING TO MONGO DB ***** ");
-			e.printStackTrace();
-			System.out.println("**************** END ERROR ***************");
 		} catch (Exception e) {
 			System.out.println("Exception: ");
 			e.printStackTrace();
@@ -152,6 +137,5 @@ public class AdminController {
 				"sensor report test with ID, timing, and start-time : " + sensorID + ", " + timing + ", " + startDate);
 		return new ModelAndView("admin/test", "sensorID", sensorID);
 	}
-
 
 }

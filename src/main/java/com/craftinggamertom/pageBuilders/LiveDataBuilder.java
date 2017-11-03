@@ -17,7 +17,6 @@ import com.mongodb.client.model.Filters;
 public class LiveDataBuilder extends PageBuilder {
 
 	private String chosenType;
-	private Model model;
 	private String type = "BLANK";
 
 	public LiveDataBuilder() {
@@ -34,7 +33,9 @@ public class LiveDataBuilder extends PageBuilder {
 
 		this.chosenType = chosenType;
 		this.model = model;
-		
+
+		super.buildPage(model); // Adds the standard model attributes
+
 		return addPageAttributes();
 
 	}
@@ -137,7 +138,7 @@ public class LiveDataBuilder extends PageBuilder {
 		FindIterable<Document> valuesResult;
 		if (!chosenType.equals("default")) {
 			Bson typeFilter = Filters.eq("type", chosenType);
-			
+
 			Bson isVisibleFilter = Filters.eq("isVisible", true);
 			searchResult = namesCollection.find(Filters.and(isVisibleFilter, typeFilter));
 			valuesResult = liveDataCollection.find(typeFilter);

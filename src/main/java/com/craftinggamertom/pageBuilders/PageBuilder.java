@@ -2,13 +2,18 @@ package com.craftinggamertom.pageBuilders;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.springframework.ui.Model;
 
 import com.craftinggamertom.database.ConfigurationReader;
 import com.craftinggamertom.database.MongoDatabaseConnection;
 import com.craftinggamertom.database.SensorInfo;
+import com.craftinggamertom.security.authentication.UserInfo;
+import com.craftinggamertom.security.authorization.AppAuthorizer;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -18,6 +23,8 @@ public class PageBuilder {
 	protected MongoDatabase database;
 	protected String currentTime = "";
 
+	protected Model model;
+
 	public PageBuilder() {
 
 		// Collects and sets the current Time
@@ -25,8 +32,84 @@ public class PageBuilder {
 		LocalDateTime now = LocalDateTime.now();
 		currentTime = dtf.format(now); // 2016/11/16 12:08:43
 
-		database = MongoDatabaseConnection.getInstance(); //Singleton
+		try {
+		database = MongoDatabaseConnection.getInstance(); // Singleton
+		}catch(Exception e) {
+			System.out.println(" ***** ERROR CONNECTING TO MONGO DB ***** ");
+			System.out.println("ERROR WHEN GETTING DATABASE. (PageBuilder.java) STACKTRACE:");
+			e.printStackTrace();
+			System.out.println(" ***** END ERROR ***** ");
+		}
+
+	}
+
+	/**
+	 * The only part of the page built here is the nvaigation bar
+	 * 
+	 * It is typical for a child class to call this to insure the nvaigation bar
+	 * loads properly.
+	 * 
+	 * @return Model containing all the variables
+	 */
+	public Model buildPage(Model model) {
+		this.model = model;
+
+		this.model.addAllAttributes(getNavigationBarDetails());
+
+		return this.model;
+
+	}
+	
+
+	/**
+	 * Adds the attributes for the navigation. This is needed for every single page
+	 */
+	protected Map<String, String> getNavigationBarDetails() {
+		// Create Map
+		Map<String, String> map = new HashMap<String, String>();
+
+		// add domain name
+		ConfigurationReader configurationReader = new ConfigurationReader();
+		configurationReader.read();
+		System.out.println("Page Builder Hit"); // ****************************************ERROR - SHOULDNT BE CALLED SO MANY TIMES
+		map.put("domain-name", configurationReader.domainName);
+
+		// layout for signed in user or anonymousUser
+		String theHTML = "";
+		UserInfo userInfo;
 		
+		userInfo = AppAuthorizer.authorizeUser();
+
+		if (userInfo.getId().equals("anonymousUser_Id")) {
+			/*
+			String signIn = "<button class=\"btn btn-sm btn-primary\" type=\"submit\" href=\"/register\"><strong>Register</strong></button>\r\n";
+			String signUp = "<button class=\"btn btn-sm btn-white\" type=\"submit\" href=\"/login\">Log in</button>\r\n";
+			*/
+			String signIn = "<li><a href=\"/login\">Sign in</a></li>\r\n";
+			String signUp = "<li><a href=\"/register\">Register</a></li>\r\n";
+			
+			
+			theHTML = signIn + signUp;
+		} else {
+
+			String username = "	                <li>\r\n"
+					+ "	                    <span class=\"m-r-sm text-muted welcome-message\">" + userInfo.getName()
+					+ "</span>\r\n" + "	                </li>\r\n";
+			String messages = ""; // for messages html if implemented later
+			String notifications = ""; // for notifications html if implemented later
+
+			String buttons = "<li>\r\n" + "                        <a href=\"/logout\">\r\n"
+					+ "                            <i class=\"fa fa-sign-out\"></i> Log out\r\n"
+					+ "                        </a>\r\n" + "                    </li>";
+			buttons += "\n <logout/>";
+
+			theHTML = username + messages + notifications + buttons;
+		}
+
+		map.put("sign-in-section", theHTML);
+
+		return map;
+
 	}
 
 	/**

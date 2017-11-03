@@ -3,7 +3,6 @@ package com.craftinggamertom.pageBuilders;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -47,7 +46,6 @@ public class DataGraphBuilder extends PageBuilder {
 	private String sensorID;
 
 	private String cTiming;
-	private Model model;
 
 	public DataGraphBuilder() {
 		super();
@@ -70,7 +68,6 @@ public class DataGraphBuilder extends PageBuilder {
 		date = date + "T00:00:00-05:00";
 		this.startDate = ZonedDateTime.parse(date);
 		this.cTiming = cTiming;
-		this.model = model;
 		this.sensorID = convertSensor(cSensor).getSensorId();
 		this.friendlyName = convertSensor(cSensor).getFriendlyName();
 
@@ -80,6 +77,8 @@ public class DataGraphBuilder extends PageBuilder {
 		setXAxis();
 
 		// setTestGraph();
+
+		super.buildPage(model); // Adds the standard model attributes
 
 		return addPageAttributes();
 

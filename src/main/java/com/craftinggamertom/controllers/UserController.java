@@ -12,11 +12,21 @@ public class UserController {
 
 		return "user/postObservation";
 	}
+
 	
-	@RequestMapping(value = "/testing", method = RequestMethod.GET)
-	public String goToTesting() {
+	/**
+	 * Landing page for signed in user accounts
+	 * @return
+	 */
+	@RequestMapping(value = "/user/home", method = RequestMethod.GET)
+	public String goToUserHome() {
 
 		return "default/welcome";
 	}
 
+	@RequestMapping(value = "/user/testing", method = RequestMethod.GET)
+	public String goToTesting() {
+
+		return "default/welcome";
+	}
 }

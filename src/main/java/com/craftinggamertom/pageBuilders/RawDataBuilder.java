@@ -18,7 +18,6 @@ import com.mongodb.client.model.Filters;
 public class RawDataBuilder extends PageBuilder {
 
 	private String sensorId;
-	private Model model;
 	private String sensorName = "BLANK";
 	private String cStart;
 	private String cEnd;
@@ -48,6 +47,8 @@ public class RawDataBuilder extends PageBuilder {
 
 		this.displayedStartDate = parseDisplayedDate(cStart);
 		this.displayedEndDate = parseDisplayedDate(cEnd);
+
+		super.buildPage(model); // Adds the standard model attributes
 
 		return addPageAttributes();
 

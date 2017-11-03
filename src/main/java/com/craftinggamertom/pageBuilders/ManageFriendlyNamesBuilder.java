@@ -15,7 +15,6 @@ import com.mongodb.client.model.Filters;
 
 public class ManageFriendlyNamesBuilder extends PageBuilder {
 
-	private Model model;
 	private String sensorType;
 
 	/** Default Constructor} */
@@ -37,7 +36,8 @@ public class ManageFriendlyNamesBuilder extends PageBuilder {
 	public Model buildPage(String sensorType, Model model) {
 
 		this.sensorType = sensorType;
-		this.model = model;
+
+		super.buildPage(model); // Adds the standard model attributes
 
 		return addPageAttributes();
 
