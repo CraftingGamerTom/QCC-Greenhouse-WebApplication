@@ -6,20 +6,20 @@
            		<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
                    	<i class="fa fa-reorder"></i>
                 </button>
-           		<a href="#" class="navbar-brand">Greenhouse Automation</a>
+           		<a href="#" class="navbar-brand">QCC Live and Learn Greenhouse</a>
             </div>
             <div class="navbar-collapse collapse" id="navbar">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a aria-expanded="false" role="button" href="http://192.168.1.7/feed">Feed</a>
+                        <a aria-expanded="false" role="button" href="http://<%=request.getAttribute("domain-name")%>/feed">Feed</a>
                     </li>
                     <li class="dropdown">
                         <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">Data<span class="caret"></span></a>
                         <ul role="menu" class="dropdown-menu">
-                            <li><a href="http://192.168.1.7/view/live-data">Live Data</a></li>
-                            <li><a href="http://192.168.1.7/view/sensor-data">Sensor Data</a></li>
-                            <li><a href="http://192.168.1.7/view/raw-data">Raw Data</a></li>
-                            <li><a href="http://192.168.1.7/view/compare-data">Compare Data</a></li>
+                            <li><a href="http://<%=request.getAttribute("domain-name")%>/view/live-data">Live Data</a></li>
+                            <li><a href="http://<%=request.getAttribute("domain-name")%>/view/sensor-data">Sensor Data</a></li>
+                            <li><a href="http://<%=request.getAttribute("domain-name")%>/view/raw-data">Raw Data</a></li>
+                            <li><a href="http://<%=request.getAttribute("domain-name")%>/view/compare-data">Compare Data</a></li>
                         </ul>
                     </li>
                     <li>
@@ -28,35 +28,16 @@
                     <li class="dropdown">
                         <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>
                         <ul role="menu" class="dropdown-menu">
-                            <li><a href="http://192.168.1.7/admin/manage/sensors/friendly-names">Friendly Names</a></li>
-                            <li><a href="http://192.168.1.7/admin/manage/emergency-alerts">Alerts</a></li>
+                            <li><a href="http://<%=request.getAttribute("domain-name")%>/admin/manage/sensors/friendly-names">Friendly Names</a></li>
+                            <li><a href="http://<%=request.getAttribute("domain-name")%>/admin/manage/emergency-alerts">Alerts</a></li>
                         </ul>
                     </li>
                 </ul>
                 <!-- Start Right side of Horizontal Nav Bar -->
 				<ul class="nav navbar-top-links navbar-right">
-	                <li>
-	                    <span class="m-r-sm text-muted welcome-message">QCC Live and Learn Project</span>
-	                </li>
-	                
-	                <!-- NAVIGATION MESSAGES DROPDOWN -->
-					<!-- REMOVED UNTIL IMPLEMENTED -->
-					<!-- END NAVIGATION MESSAGES DROPDOWN -->
-	                
-	                <!-- NAVIGATION NOTIFICATIONS DROPDOWN -->
-					<!-- REMOVED UNTIL IMPLEMENTED -->
-					<!-- END NAVIGATION NOTIFICATIONS DROPDOWN -->
+				
+					<%=request.getAttribute("sign-in-section")%>
 	
-	                <li>
-	                    <a href="login.html">
-	                        <i class="fa fa-sign-out"></i> Log out
-	                    </a>
-	                </li>
-	                
-	                <!-- NAVIGATION TAKS DROPDOWN -->
-					<!-- REMOVED UNTIL IMPLEMENTED -->
-					<!-- END NAVIGATION TASKS DROPDOWN -->
-	                
             	</ul>
 				
             </div>

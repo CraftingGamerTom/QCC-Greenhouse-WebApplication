@@ -30,6 +30,8 @@ public class ConfigurationReader {
 	public static String monthlyDataCollection;
 	public static String yearlyDataCollection;
 
+	public String domainName;
+
 	/**
 	 * Loads the configuration file when created.
 	 */
@@ -59,6 +61,8 @@ public class ConfigurationReader {
 			monthlyDataCollection = properties.getProperty("monthlyDataCollection");
 			yearlyDataCollection = properties.getProperty("yearlyDataCollection");
 
+			domainName = properties.getProperty("domainName");
+
 			System.out.println("ConfigurationReader: Configuration Read / Updated");
 		} catch (FileNotFoundException e) {
 			System.out.println("*** Could not find configuration file");
@@ -70,7 +74,7 @@ public class ConfigurationReader {
 			System.out.println("*** Error while attempting to load configuration file");
 			e.printStackTrace();
 		}
-
+		
 	}
 
 	/**
@@ -82,8 +86,8 @@ public class ConfigurationReader {
 	}
 
 	/**
-	 * Verifies the stored data by printing out the data in the console.
-	 * Developer MUST update tags when config tags are changed.
+	 * Verifies the stored data by printing out the data in the console. Developer
+	 * MUST update tags when config tags are changed.
 	 */
 	public void verify() {
 		System.out.println("** CONFIGURATION VISUAL VERIFICATION **\n*");
@@ -103,6 +107,8 @@ public class ConfigurationReader {
 		System.out.println("* weeklyDataCollection: " + weeklyDataCollection);
 		System.out.println("* monthlyDataCollection: " + monthlyDataCollection);
 		System.out.println("* yearlyDataCollection: " + yearlyDataCollection);
+
+		System.out.println("* domainName: " + domainName);
 
 		System.out.println("*\n** END CONFIGURATION VISUAL VERIFICATION **");
 	}
