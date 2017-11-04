@@ -11,13 +11,14 @@ public class MongoDatabaseConnection {
 
 	}
 
+	/**
+	 * Singleton for the database
+	 * @return
+	 */
 	public static MongoDatabase getInstance() {
 		if (database == null) {
-			ConfigurationReader reader = new ConfigurationReader();
-			reader.read();
-			
 			MongoClient client = MongoClientConnection.getInstance();
-			database = client.getDatabase(ConfigurationReader.databaseName);
+			database = client.getDatabase(ConfigurationReaderSingleton.getDatabaseName());
 		}
 		return database;
 	}

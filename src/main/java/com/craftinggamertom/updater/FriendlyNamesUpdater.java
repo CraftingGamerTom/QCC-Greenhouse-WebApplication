@@ -5,7 +5,7 @@ import java.util.Iterator;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import com.craftinggamertom.database.ConfigurationReader;
+import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.MongoDatabaseConnection;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -59,7 +59,7 @@ public class FriendlyNamesUpdater {
 
 		try {
 			// Iterates through the list of persistent collections
-			collection = database.getCollection(ConfigurationReader.sensorNamesCollection);
+			collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
 
 			// The if statement below stops a user from making removing default the default
 			if(makeBoolean(isDefaultSensor) == false) {

@@ -7,7 +7,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
-import com.craftinggamertom.database.ConfigurationReader;
+import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.SensorInfo;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -63,7 +63,7 @@ public class ManageFriendlyNamesBuilder extends PageBuilder {
 		ArrayList<String> allTypes = new ArrayList<String>();
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReader.sensorNamesCollection);
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
 
 		FindIterable<Document> searchResult = collection.find();
 
@@ -142,7 +142,7 @@ public class ManageFriendlyNamesBuilder extends PageBuilder {
 		ArrayList<SensorInfo> allSensors = new ArrayList<SensorInfo>();
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReader.sensorNamesCollection);
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
 
 		FindIterable<Document> searchResult;
 		if (!sensorType.equals("all")) {

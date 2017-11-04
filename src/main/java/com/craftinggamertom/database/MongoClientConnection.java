@@ -12,10 +12,7 @@ public class MongoClientConnection {
 	
 	public static MongoClient getInstance() {
 		if(client == null) {
-			ConfigurationReader reader = new ConfigurationReader();
-			reader.read();
-			
-			client = new MongoClient( ConfigurationReader.databaseIP , ConfigurationReader.databasePort );
+			client = new MongoClient( ConfigurationReaderSingleton.getDatabaseIP() , ConfigurationReaderSingleton.getDatabasePort());
 		}
 		return client;
 	}

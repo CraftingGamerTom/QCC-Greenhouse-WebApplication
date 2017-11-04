@@ -8,7 +8,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
-import com.craftinggamertom.database.ConfigurationReader;
+import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.SensorInfo;
 import com.craftinggamertom.database.SensorSet;
 import com.mongodb.client.FindIterable;
@@ -136,7 +136,7 @@ public class RawDataBuilder extends PageBuilder {
 		Bson isNotDefaultFilter = Filters.eq("isDefault", false);
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReader.sensorNamesCollection);
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
 
 		FindIterable<Document> searchResult = collection.find(Filters.and(isVisibleFilter, isNotDefaultFilter));
 		FindIterable<Document> defaultResult = collection.find(isDefaultFilter);
@@ -172,8 +172,8 @@ public class RawDataBuilder extends PageBuilder {
 		MongoCollection<Document> rawDataCollection = null;
 		MongoCollection<Document> namesCollection = null;
 
-		namesCollection = database.getCollection(ConfigurationReader.sensorNamesCollection);
-		rawDataCollection = database.getCollection(ConfigurationReader.rawDataCollection);
+		namesCollection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		rawDataCollection = database.getCollection(ConfigurationReaderSingleton.getRawDataCollection());
 
 		// Date Fitlers
 		Bson startFilter = Filters.gte("date", cStart);

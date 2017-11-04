@@ -9,7 +9,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
-import com.craftinggamertom.database.ConfigurationReader;
+import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.MongoDatabaseConnection;
 import com.craftinggamertom.database.SensorInfo;
 import com.craftinggamertom.security.authentication.UserInfo;
@@ -69,10 +69,7 @@ public class PageBuilder {
 		Map<String, String> map = new HashMap<String, String>();
 
 		// add domain name
-		ConfigurationReader configurationReader = new ConfigurationReader();
-		configurationReader.read();
-		System.out.println("Page Builder Hit"); // ****************************************ERROR - SHOULDNT BE CALLED SO MANY TIMES
-		map.put("domain-name", configurationReader.domainName);
+		map.put("domain-name", ConfigurationReaderSingleton.getDomainName());
 
 		// layout for signed in user or anonymousUser
 		String theHTML = "";
@@ -129,7 +126,7 @@ public class PageBuilder {
 		}
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReader.sensorNamesCollection);
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
 
 		Document searchResult = collection.find(sensorFilter).first();
 

@@ -8,7 +8,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
-import com.craftinggamertom.database.ConfigurationReader;
+import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.SensorInfo;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -165,7 +165,7 @@ public class DataGraphBuilder extends PageBuilder {
 		Bson isVisibleFilter = Filters.eq("isVisible", true);
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReader.sensorNamesCollection);
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
 
 		FindIterable<Document> searchResult = collection.find(isVisibleFilter);
 		Iterator<Document> iter = searchResult.iterator();
@@ -305,15 +305,15 @@ public class DataGraphBuilder extends PageBuilder {
 	 */
 	private String getCollectionName() {
 		if (cTiming.equals("h")) {
-			return ConfigurationReader.hourlyDataCollection;
+			return ConfigurationReaderSingleton.getHourlyDataCollection();
 		} else if (cTiming.equals("d")) {
-			return ConfigurationReader.dailyDataCollection;
+			return ConfigurationReaderSingleton.getDailyDataCollection();
 		} else if (cTiming.equals("w")) {
-			return ConfigurationReader.weeklyDataCollection;
+			return ConfigurationReaderSingleton.getWeeklyDataCollection();
 		} else if (cTiming.equals("m")) {
-			return ConfigurationReader.monthlyDataCollection;
+			return ConfigurationReaderSingleton.getMonthlyDataCollection();
 		} else if (cTiming.equals("y")) {
-			return ConfigurationReader.yearlyDataCollection;
+			return ConfigurationReaderSingleton.getYearlyDataCollection();
 		} else {
 			System.out.println("Error when deciding on what collection to look in (DataGraphBuilder)");
 			return null;

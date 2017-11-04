@@ -7,7 +7,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
-import com.craftinggamertom.database.ConfigurationReader;
+import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.SensorInfo;
 import com.craftinggamertom.database.SensorSet;
 import com.mongodb.client.FindIterable;
@@ -65,7 +65,7 @@ public class LiveDataBuilder extends PageBuilder {
 		ArrayList<String> allTypes = new ArrayList<String>();
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReader.sensorNamesCollection);
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
 
 		Bson isVisibleFilter = Filters.eq("isVisible", true);
 		FindIterable<Document> searchResult = collection.find(isVisibleFilter);
@@ -131,8 +131,8 @@ public class LiveDataBuilder extends PageBuilder {
 		MongoCollection<Document> liveDataCollection = null;
 		MongoCollection<Document> namesCollection = null;
 
-		namesCollection = database.getCollection(ConfigurationReader.sensorNamesCollection);
-		liveDataCollection = database.getCollection(ConfigurationReader.liveDataCollection);
+		namesCollection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		liveDataCollection = database.getCollection(ConfigurationReaderSingleton.getLiveDataCollection());
 
 		FindIterable<Document> searchResult;
 		FindIterable<Document> valuesResult;
