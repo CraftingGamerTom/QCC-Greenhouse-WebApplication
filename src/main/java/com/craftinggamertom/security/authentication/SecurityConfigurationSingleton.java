@@ -34,9 +34,9 @@ public class SecurityConfigurationSingleton {
 			properties.load(stream);
 
 			// Sets the configurations - Add properties here
-			clientId = properties.getProperty("clientId");
-			clientSecret = properties.getProperty("clientSecret");
-
+			clientId = properties.getProperty("google.oauth2.clientId");
+			clientSecret = properties.getProperty("google.oauth2.clientSecret");
+			
 			System.out.println("SecurityReader: Security Settings Read / Updated");
 		} catch (FileNotFoundException e) {
 			System.out.println("*** Could not find configuration file");
