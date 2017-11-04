@@ -20,12 +20,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableOAuth2Client
 public class OAuth2Client {
 
-	// Has the clientId and Secret in the security.properties
-	private SecurityConfigReader reader = new SecurityConfigReader();
+	private String clientId = SecurityConfigurationSingleton.getClientId();
 
-	private String clientId = reader.getClientId();
-
-	private String clientSecret = reader.getClientSecret();
+	private String clientSecret = SecurityConfigurationSingleton.getClientSecret();
 
 	@Bean
 	// TODO retrieve from
