@@ -9,7 +9,7 @@
 				        Greenhouse Project Automation
 				    </div>
 				    <div>
-				        <strong>Developer</strong> Thomas Rokicki &copy; 2017
+				        <strong>Full Stack Developer</strong> Thomas Rokicki &copy; <%=request.getAttribute("copyright-year")%>
 				    </div>
 				</div>
 			</div>

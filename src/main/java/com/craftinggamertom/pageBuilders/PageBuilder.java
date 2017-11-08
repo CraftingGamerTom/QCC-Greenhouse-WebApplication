@@ -2,6 +2,7 @@ package com.craftinggamertom.pageBuilders;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,17 +55,17 @@ public class PageBuilder {
 	public Model buildPage(Model model) {
 		this.model = model;
 
-		this.model.addAllAttributes(getNavigationBarDetails());
+		this.model.addAllAttributes(getNavigationBarAttributes());
+		this.model.addAllAttributes(getFooterAttributes());
 
 		return this.model;
 
 	}
-	
 
 	/**
 	 * Adds the attributes for the navigation. This is needed for every single page
 	 */
-	protected Map<String, String> getNavigationBarDetails() {
+	protected Map<String, String> getNavigationBarAttributes() {
 		// Create Map
 		Map<String, String> map = new HashMap<String, String>();
 
@@ -108,7 +109,23 @@ public class PageBuilder {
 		return map;
 
 	}
-
+	
+	/**
+	 * Adds the needed attributes to all the footers.
+	 * @return
+	 */
+	private Map<String, String> getFooterAttributes() {
+		Map<String, String> map = new HashMap<String, String>();
+		
+		// Add date
+		Calendar now = Calendar.getInstance();   // Gets the current date and time
+		String year = Integer.toString(now.get(Calendar.YEAR));       // The current year converted to String
+		map.put("copyright-year", year);
+		// end add date
+		
+		return map;
+	}
+	
 	/**
 	 * If a new sensor is added it MUST be added here and on the front-end of the
 	 * UI. This method converts the value on the front end to appropriate sensorID.
