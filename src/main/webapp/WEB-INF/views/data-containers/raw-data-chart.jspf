@@ -50,6 +50,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <!-- 
                                 <tr>
                                     <td>Test Sensor</td>
                                     <td>A brief test description to show where a sensor is</td>
@@ -57,6 +58,7 @@
                                     <td class="center">2017-06-02T03:16:46-04:00</td>
                                     <td class="center">74</td>
                                 </tr>
+                                 -->
                                 <%=request.getAttribute("raw-data")%>
                                 </tbody>
                                 <tfoot>
