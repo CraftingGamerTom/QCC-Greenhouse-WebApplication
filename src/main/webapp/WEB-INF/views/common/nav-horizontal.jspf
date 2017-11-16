@@ -1,3 +1,4 @@
+<!-- Domain: "http://<%=request.getAttribute("domain-name")%>" -->
         <div class="row border-bottom">
         <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
 
@@ -11,15 +12,15 @@
             <div class="navbar-collapse collapse" id="navbar">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a aria-expanded="false" role="button" href="http://<%=request.getAttribute("domain-name")%>/feed">Feed</a>
+                        <a aria-expanded="false" role="button" href="/feed">Feed</a>
                     </li>
                     <li class="dropdown">
                         <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">Data<span class="caret"></span></a>
                         <ul role="menu" class="dropdown-menu">
-                            <li><a href="http://<%=request.getAttribute("domain-name")%>/view/live-data">Live Data</a></li>
-                            <li><a href="http://<%=request.getAttribute("domain-name")%>/view/sensor-data">Sensor Data</a></li>
-                            <li><a href="http://<%=request.getAttribute("domain-name")%>/view/raw-data">Raw Data</a></li>
-                            <li><a href="http://<%=request.getAttribute("domain-name")%>/view/compare-data">Compare Data</a></li>
+                            <li><a href="/view/live-data">Live Data</a></li>
+                            <li><a href="/view/sensor-data">Sensor Data</a></li>
+                            <li><a href="/view/raw-data">Raw Data</a></li>
+                            <li><a href="/view/compare-data">Compare Data</a></li>
                         </ul>
                     </li>
                     <li>
@@ -28,8 +29,8 @@
                     <li class="dropdown">
                         <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>
                         <ul role="menu" class="dropdown-menu">
-                            <li><a href="http://<%=request.getAttribute("domain-name")%>/admin/manage/sensors/friendly-names">Friendly Names</a></li>
-                            <li><a href="http://<%=request.getAttribute("domain-name")%>/admin/manage/emergency-alerts">Alerts</a></li>
+                            <li><a href="/admin/manage/sensors/friendly-names">Friendly Names</a></li>
+                            <li><a href="/admin/manage/emergency-alerts">Alerts</a></li>
                         </ul>
                     </li>
                 </ul>

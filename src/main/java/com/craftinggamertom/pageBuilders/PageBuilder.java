@@ -13,8 +13,9 @@ import org.springframework.ui.Model;
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.MongoDatabaseConnection;
 import com.craftinggamertom.database.SensorInfo;
-import com.craftinggamertom.security.authentication.UserInfo;
-import com.craftinggamertom.security.authorization.AppAuthorizer;
+import com.craftinggamertom.security.authentication.AppUser;
+import com.craftinggamertom.security.authorization.PageAuthority;
+import com.craftinggamertom.security.authorization.UserAuthority;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -34,8 +35,8 @@ public class PageBuilder {
 		currentTime = dtf.format(now); // 2016/11/16 12:08:43
 
 		try {
-		database = MongoDatabaseConnection.getInstance(); // Singleton
-		}catch(Exception e) {
+			database = MongoDatabaseConnection.getInstance(); // Singleton
+		} catch (Exception e) {
 			System.out.println(" ***** ERROR CONNECTING TO MONGO DB ***** ");
 			System.out.println("ERROR WHEN GETTING DATABASE. (PageBuilder.java) STACKTRACE:");
 			e.printStackTrace();
@@ -70,28 +71,21 @@ public class PageBuilder {
 		Map<String, String> map = new HashMap<String, String>();
 
 		// add domain name
-		map.put("domain-name", ConfigurationReaderSingleton.getDomainName());
+		// REMOVED BECAUSE THE THE LINK IS NOW SET UP STATICLY. JUST COMMENTED OUT FOR
+		// FUTURE USE
+		// map.put("domain-name", ConfigurationReaderSingleton.getDomainName());
 
 		// layout for signed in user or anonymousUser
 		String theHTML = "";
-		UserInfo userInfo;
-		
-		userInfo = AppAuthorizer.authorizeUser();
 
-		if (userInfo.getId().equals("anonymousUser_Id")) {
-			/*
-			String signIn = "<button class=\"btn btn-sm btn-primary\" type=\"submit\" href=\"/register\"><strong>Register</strong></button>\r\n";
-			String signUp = "<button class=\"btn btn-sm btn-white\" type=\"submit\" href=\"/login\">Log in</button>\r\n";
-			*/
-			String signIn = "<li><a href=\"/login\">Sign in</a></li>\r\n";
-			String signUp = "<li><a href=\"/register\">Register</a></li>\r\n";
-			
-			
-			theHTML = signIn + signUp;
-		} else {
+		PageAuthority pageAuthority = new PageAuthority("anonymous"); // Sets the credentials needed
+		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
+
+		if (pageAuthority.grantAccessTo(userAuthority)) { // If the user is of the "user" credentials or higher - true
 
 			String username = "	                <li>\r\n"
-					+ "	                    <span class=\"m-r-sm text-muted welcome-message\">" + userInfo.getName()
+					+ "	                    <span class=\"m-r-sm text-muted welcome-message\">" + appUser.getName()
 					+ "</span>\r\n" + "	                </li>\r\n";
 			String messages = ""; // for messages html if implemented later
 			String notifications = ""; // for notifications html if implemented later
@@ -102,6 +96,19 @@ public class PageBuilder {
 			buttons += "\n <logout/>";
 
 			theHTML = username + messages + notifications + buttons;
+
+		} else { // If the user is not signed in - do work
+			/*
+			 * String signIn =
+			 * "<button class=\"btn btn-sm btn-primary\" type=\"submit\" href=\"/register\"><strong>Register</strong></button>\r\n"
+			 * ; String signUp =
+			 * "<button class=\"btn btn-sm btn-white\" type=\"submit\" href=\"/login\">Log in</button>\r\n"
+			 * ;
+			 */
+			String signIn = "<li><a href=\"/login\">Sign in</a></li>\r\n";
+			String signUp = "<li><a href=\"/register\">Register</a></li>\r\n";
+
+			theHTML = signIn + signUp;
 		}
 
 		map.put("sign-in-section", theHTML);
@@ -109,23 +116,24 @@ public class PageBuilder {
 		return map;
 
 	}
-	
+
 	/**
 	 * Adds the needed attributes to all the footers.
+	 * 
 	 * @return
 	 */
 	private Map<String, String> getFooterAttributes() {
 		Map<String, String> map = new HashMap<String, String>();
-		
+
 		// Add date
-		Calendar now = Calendar.getInstance();   // Gets the current date and time
-		String year = Integer.toString(now.get(Calendar.YEAR));       // The current year converted to String
+		Calendar now = Calendar.getInstance(); // Gets the current date and time
+		String year = Integer.toString(now.get(Calendar.YEAR)); // The current year converted to String
 		map.put("copyright-year", year);
 		// end add date
-		
+
 		return map;
 	}
-	
+
 	/**
 	 * If a new sensor is added it MUST be added here and on the front-end of the
 	 * UI. This method converts the value on the front end to appropriate sensorID.
