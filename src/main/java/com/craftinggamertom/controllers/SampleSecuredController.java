@@ -25,19 +25,37 @@ public class SampleSecuredController {
 
 	@RequestMapping("/test2")
 	public String test2() {
-		
+
 		UserInfo userInfo = AppAuthorizer.authorizeUser();
-		
+
 		return "Welcome, " + userInfo.getName();
 	}
-	
+
 	@RequestMapping("/test-logout")
 	public ModelAndView logout() {
-		
+
 		UserInfo userInfo = AppAuthorizer.authorizeUser();
-		
-		// return "logged out ... hopefully ... username: " + userInfo.getGivenName() + " <logout/> ";
-		
+
+		// return "logged out ... hopefully ... username: " + userInfo.getGivenName() +
+		// " <logout/> ";
+
 		return new ModelAndView("logout");
 	}
+
+	@RequestMapping("/test-userinfo")
+	public String userInfo() {
+
+		UserInfo userInfo = AppAuthorizer.authorizeUser();
+
+		String name = userInfo.getName();
+		String family = userInfo.getFamilyName();
+		String gender = userInfo.getGender();
+		String givenName = userInfo.getGivenName();
+		String id = userInfo.getId();
+		String link = userInfo.getLink();
+		String picture = userInfo.getPicture();
+		return "name: " + name + " family: " + family + " gender: " + gender + " givenName: " + givenName + " id: " + id
+				+ " link: " + link + " picture: " + picture;
+	}
+
 }
