@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.craftinggamertom.security.authentication.AppUser;
 import com.craftinggamertom.security.authentication.UserInfo;
-import com.craftinggamertom.security.authorization.AppAuthorizer;
+import com.craftinggamertom.security.authorization.PageAuthority;
+import com.craftinggamertom.security.authorization.UserAuthority;
 
 @RestController
 public class SampleSecuredController {
@@ -26,17 +28,21 @@ public class SampleSecuredController {
 	@RequestMapping("/test2")
 	public String test2() {
 
-		UserInfo userInfo = AppAuthorizer.authorizeUser();
+		PageAuthority pageAuthority = new PageAuthority("anonymous"); // Sets the credentials needed
+		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
 
-		return "Welcome, " + userInfo.getName();
+		return "Welcome, " + appUser.getName();
 	}
 
 	@RequestMapping("/test-logout")
 	public ModelAndView logout() {
 
-		UserInfo userInfo = AppAuthorizer.authorizeUser();
+		PageAuthority pageAuthority = new PageAuthority("anonymous"); // Sets the credentials needed
+		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
 
-		// return "logged out ... hopefully ... username: " + userInfo.getGivenName() +
+		// return "logged out ... hopefully ... username: " + appUser.getGivenName() +
 		// " <logout/> ";
 
 		return new ModelAndView("logout");
@@ -45,15 +51,17 @@ public class SampleSecuredController {
 	@RequestMapping("/test-userinfo")
 	public String userInfo() {
 
-		UserInfo userInfo = AppAuthorizer.authorizeUser();
+		PageAuthority pageAuthority = new PageAuthority("anonymous"); // Sets the credentials needed
+		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
 
-		String name = userInfo.getName();
-		String family = userInfo.getFamilyName();
-		String gender = userInfo.getGender();
-		String givenName = userInfo.getGivenName();
-		String id = userInfo.getId();
-		String link = userInfo.getLink();
-		String picture = userInfo.getPicture();
+		String name = appUser.getName();
+		String family = appUser.getFamilyName();
+		String gender = appUser.getGender();
+		String givenName = appUser.getGivenName();
+		String id = appUser.getId();
+		String link = appUser.getLink();
+		String picture = appUser.getPicture();
 		return "name: " + name + " family: " + family + " gender: " + gender + " givenName: " + givenName + " id: " + id
 				+ " link: " + link + " picture: " + picture;
 	}
