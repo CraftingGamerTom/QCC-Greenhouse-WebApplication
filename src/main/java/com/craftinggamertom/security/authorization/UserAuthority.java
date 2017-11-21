@@ -105,7 +105,8 @@ public class UserAuthority extends Authority {
 		try {
 			if (!SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")) { // Sets
 																													// signed
-				// System.out.print("(UserAuthority.java) User Object: " + SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+				// System.out.print("(UserAuthority.java) User Object: " +
+				// SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
 				userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			}
@@ -132,35 +133,40 @@ public class UserAuthority extends Authority {
 
 	/**
 	 * Gets the user's information from the database
-	 * @param collection to get the information from
+	 * 
+	 * @param collection
+	 *            to get the information from
 	 * @return
 	 */
 	private AppUser getUserInformation(Document theUsersDoc, UserInfo userInfo) {
 		ObjectMapper mapper = new ObjectMapper();
-		 
-        /**
-         * Read JSON and convert into a Map
-         */
-        try {
-            HashMap<String, String> userMap = mapper.readValue(theUsersDoc.toJson(), new TypeReference<Map<String, Object>>() {
-            });
-            AppUser user = new AppUser(userInfo, userMap);
-            return user;
- 
-        } catch (Exception e) {
-        	System.out.println("Trouble reading the user's JSON (UserAuthority.java STACKTRACE:");
-            e.printStackTrace();
-        }
-        return null; // Will cause more problems if this is reached.
+
+		/**
+		 * Read JSON and convert into a Map
+		 */
+		try {
+			HashMap<String, String> userMap = mapper.readValue(theUsersDoc.toJson(),
+					new TypeReference<Map<String, Object>>() {
+					});
+			AppUser user = new AppUser(userInfo, userMap);
+			return user;
+
+		} catch (Exception e) {
+			System.out.println("Trouble reading the user's JSON (UserAuthority.java STACKTRACE:");
+			e.printStackTrace();
+		}
+		return null; // Will cause more problems if this is reached.
 	}
-	
+
 	/**
 	 * Called when the user does not exist. This method populates a collection
 	 * within the database with standard information that we know about the user as
 	 * well ass place markers for unknown information.
 	 * 
-	 * @param the collection to add the user to
-	 * @param the userInfo object created by spring
+	 * @param the
+	 *            collection to add the user to
+	 * @param the
+	 *            userInfo object created by spring
 	 * 
 	 * @return the AppUser object for a the new user
 	 */
@@ -178,12 +184,12 @@ public class UserAuthority extends Authority {
 		infoMap.put("cell_phone", "(000)000-0000");
 
 		AppUser newUser = new AppUser(userInfo, infoMap);
-		
-		//Add the user to the collection
-		Document document = new Document(); 
+
+		// Add the user to the collection
+		Document document = new Document();
 		document.putAll(newUser.getAllInformation());
 		collection.insertOne(document);
-		
+
 		return newUser; // Instead of then getting it from the database the user is just returned.
 	}
 

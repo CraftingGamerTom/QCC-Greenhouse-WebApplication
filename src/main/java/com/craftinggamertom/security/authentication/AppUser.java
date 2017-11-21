@@ -53,7 +53,7 @@ public class AppUser {
 	public AppUser(UserInfo userInfo, HashMap<String, String> userMap) {
 		// Sets the UserInfo
 		setUserInfo(userInfo);
-		
+
 		// Sets the other information
 		setAuthority_key(userMap.get("authority_key"));
 		setJoin_date(userMap.get("join_date"));
