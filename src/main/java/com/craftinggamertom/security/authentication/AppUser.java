@@ -55,14 +55,15 @@ public class AppUser {
 		setUserInfo(userInfo);
 
 		// Sets the other information
-		setAuthority_key(userMap.get("authority_key"));
-		setJoin_date(userMap.get("join_date"));
-		setNum_of_observations(userMap.get("num_of_observations"));
-		setNum_of_updates(userMap.get("num_of_updates"));
-		setLast_seen(userMap.get("last_seen"));
-		setNickname(userMap.get("nickname"));
-		setEmail_address(userMap.get("email_address"));
-		setCell_phone(userMap.get("cell_phone"));
+		// The defaults are used for a user that is not signed in
+		setAuthority_key(userMap.getOrDefault("authority_key", "anonymous"));
+		setJoin_date(userMap.getOrDefault("join_date", "2017/01/25 00:00:00"));
+		setNum_of_observations(userMap.getOrDefault("num_of_observations", "-1"));
+		setNum_of_updates(userMap.getOrDefault("num_of_updates", "-1"));
+		setLast_seen(userMap.getOrDefault("last_seen", "2017/01/25 00:00:00"));
+		setNickname(userMap.getOrDefault("nickname", "anon user"));
+		setEmail_address(userMap.getOrDefault("email_address", "anonymousUser_Email"));
+		setCell_phone(userMap.getOrDefault("cell_phone", "anon_phone"));
 	}
 
 	private void setUserInfo(UserInfo userInfo) {
@@ -105,7 +106,7 @@ public class AppUser {
 		return userInfo;
 	}
 
-	public static String getAuthority_key() {
+	public String getAuthority_key() {
 		return authority_key;
 	}
 

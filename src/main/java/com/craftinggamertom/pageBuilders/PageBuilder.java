@@ -78,11 +78,11 @@ public class PageBuilder {
 		// layout for signed in user or anonymousUser
 		String theHTML = "";
 
-		PageAuthority pageAuthority = new PageAuthority("anonymous"); // Sets the credentials needed
+		PageAuthority pageAuthority = new PageAuthority("unverified"); // Sets the credentials needed
 		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
 
-		if (pageAuthority.grantAccessTo(userAuthority)) { // If the user is of the "user" credentials or higher - true
+		if (pageAuthority.grantAccessTo(userAuthority)) { // If the user is >= "unverified" credentials do work
 
 			String username = "	                <li>\r\n"
 					+ "	                    <span class=\"m-r-sm text-muted welcome-message\">" + appUser.getName()

@@ -67,10 +67,11 @@ public class UserAuthority extends Authority {
 		FindIterable<Document> documents = collection.find(idFilter);
 		Document theUsersDoc = documents.first();
 
-		if (theUsersDoc == null) {
+		if (theUsersDoc == null && userInfo.getId() != "anonymousUser_Id") { // If the user does not exist in the
+																				// database and is attempting to sign in
 			return putUserInDB(collection, userInfo);
 		} else {
-			return getUserInformation(theUsersDoc, userInfo);
+			return getUserInformation(theUsersDoc, userInfo); // Will handle anonymous(not signed in)
 		}
 	}
 
@@ -139,23 +140,30 @@ public class UserAuthority extends Authority {
 	 * @return
 	 */
 	private AppUser getUserInformation(Document theUsersDoc, UserInfo userInfo) {
-		ObjectMapper mapper = new ObjectMapper();
+		if (userInfo.getId() != "anonymousUser_Id") {
+			ObjectMapper mapper = new ObjectMapper();
 
-		/**
-		 * Read JSON and convert into a Map
-		 */
-		try {
-			HashMap<String, String> userMap = mapper.readValue(theUsersDoc.toJson(),
-					new TypeReference<Map<String, Object>>() {
-					});
-			AppUser user = new AppUser(userInfo, userMap);
-			return user;
+			/*
+			 * Read JSON and convert into a Map
+			 */
+			try {
+				HashMap<String, String> userMap = mapper.readValue(theUsersDoc.toJson(),
+						new TypeReference<Map<String, Object>>() {
+						});
+				AppUser user = new AppUser(userInfo, userMap);
+				return user;
 
-		} catch (Exception e) {
-			System.out.println("Trouble reading the user's JSON (UserAuthority.java STACKTRACE:");
-			e.printStackTrace();
+			} catch (Exception e) {
+				System.out.println("Trouble reading the user's JSON (UserAuthority.java STACKTRACE:");
+				e.printStackTrace();
+			}
 		}
-		return null; // Will cause more problems if this is reached.
+		// Only hits this if there is a problem getting the User info or the user is not
+		// signed in
+		HashMap<String, String> userMap = new HashMap<String, String>();
+		AppUser user = new AppUser(userInfo, userMap);
+		return user;
+
 	}
 
 	/**
