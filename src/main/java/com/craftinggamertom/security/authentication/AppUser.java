@@ -163,7 +163,7 @@ public class AppUser {
 	}
 
 	public String getPicture() {
-		return userInfo.getName();
+		return userInfo.getPicture();
 	}
 
 	public String getToken() {

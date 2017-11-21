@@ -184,10 +184,10 @@ public class UserAuthority extends Authority {
 		HashMap<String, String> infoMap = new HashMap<String, String>();
 		infoMap.put("authority_key", "unverified");
 		infoMap.put("join_date", currentTime);
+		infoMap.put("last_seen", currentTime);
 		infoMap.put("num_of_observations", "0");
 		infoMap.put("num_of_updates", "0");
-		infoMap.put("last_seen", currentTime);
-		infoMap.put("nickname", userInfo.getGivenName());
+		infoMap.put("nickname", userInfo.getName());
 		infoMap.put("email_address", "Enter Your Email");
 		infoMap.put("cell_phone", "(000)000-0000");
 
