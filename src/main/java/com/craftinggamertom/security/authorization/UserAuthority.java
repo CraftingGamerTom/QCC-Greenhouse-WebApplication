@@ -1,13 +1,31 @@
 package com.craftinggamertom.security.authorization;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.craftinggamertom.database.ConfigurationReaderSingleton;
+import com.craftinggamertom.database.MongoDatabaseConnection;
 import com.craftinggamertom.security.authentication.AppUser;
 import com.craftinggamertom.security.authentication.UserInfo;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 
 public class UserAuthority extends Authority {
 
 	private AppUser theUser;
+
+	protected MongoDatabase database;
+	protected String currentTime = "";
 
 	/**
 	 * The user who is attempting to access a page will be looked up in spring and
@@ -15,7 +33,7 @@ public class UserAuthority extends Authority {
 	 */
 	public UserAuthority() {
 		this.theUser = getUserFromDatabase(authorizeUser()); // Gets full user information
-		setAuthorityLevel(theUser.getAuthorityKey()); // Sets the Authority level (based on key)
+		setAuthorityLevel(theUser.getAuthority_key()); // Sets the Authority level (based on key)
 	}
 
 	/**
@@ -26,13 +44,50 @@ public class UserAuthority extends Authority {
 	 */
 	public UserAuthority(UserInfo userInfo) {
 		this.theUser = getUserFromDatabase(userInfo); // Gets full user information
-		setAuthorityLevel(theUser.getAuthorityKey()); // Sets the Authority level (based on key)
+		setAuthorityLevel(theUser.getAuthority_key()); // Sets the Authority level (based on key)
 	}
 
+	/**
+	 * Gets the user information from the database and puts it into the User object.
+	 * If the user does not exist in the database (based on Id) then It puts the
+	 * user into the database.
+	 * 
+	 * @param userInfo
+	 *            the userInfo object Spring creates
+	 * @return a User Object with the data from the database
+	 */
 	private AppUser getUserFromDatabase(UserInfo userInfo) {
-		// TODO WRITE CODE TO GET THE INFORMATION FROM THE DATABASE
-		// Make sure to incorporate the UserInfo variables as well
-		return null;
+		makeConnectionToDatabase();
+
+		Bson idFilter = Filters.eq("id", userInfo.getId());
+
+		MongoCollection<Document> collection = null;
+		collection = database.getCollection(ConfigurationReaderSingleton.getAppUserCollection());
+
+		FindIterable<Document> documents = collection.find(idFilter);
+		Document theUsersDoc = documents.first();
+
+		if (theUsersDoc == null) {
+			return putUserInDB(collection, userInfo);
+		} else {
+			return getUserInformation(theUsersDoc, userInfo);
+		}
+	}
+
+	private void makeConnectionToDatabase() {
+		// Collects and sets the current Time
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		currentTime = dtf.format(now); // 2016/11/16 12:08:43
+
+		try {
+			database = MongoDatabaseConnection.getInstance(); // Singleton
+		} catch (Exception e) {
+			System.out.println(" ***** ERROR CONNECTING TO MONGO DB ***** ");
+			System.out.println("ERROR WHEN GETTING DATABASE. (PageBuilder.java) STACKTRACE:");
+			e.printStackTrace();
+			System.out.println(" ***** END ERROR ***** ");
+		}
 	}
 
 	/**
@@ -50,15 +105,9 @@ public class UserAuthority extends Authority {
 		try {
 			if (!SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")) { // Sets
 																													// signed
-																													// in
-																													// credentials
-
-				System.out.print(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+				// System.out.print("(UserAuthority.java) User Object: " + SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
 				userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-				UserAuthority ua = new UserAuthority(userInfo);
-
 			}
 		} catch (NullPointerException e) {
 			// DO NOTHING - just move on (Super ugly but this is a work around for
@@ -79,6 +128,63 @@ public class UserAuthority extends Authority {
 			e.printStackTrace();
 		}
 		return userInfo;
+	}
+
+	/**
+	 * Gets the user's information from the database
+	 * @param collection to get the information from
+	 * @return
+	 */
+	private AppUser getUserInformation(Document theUsersDoc, UserInfo userInfo) {
+		ObjectMapper mapper = new ObjectMapper();
+		 
+        /**
+         * Read JSON and convert into a Map
+         */
+        try {
+            HashMap<String, String> userMap = mapper.readValue(theUsersDoc.toJson(), new TypeReference<Map<String, Object>>() {
+            });
+            AppUser user = new AppUser(userInfo, userMap);
+            return user;
+ 
+        } catch (Exception e) {
+        	System.out.println("Trouble reading the user's JSON (UserAuthority.java STACKTRACE:");
+            e.printStackTrace();
+        }
+        return null; // Will cause more problems if this is reached.
+	}
+	
+	/**
+	 * Called when the user does not exist. This method populates a collection
+	 * within the database with standard information that we know about the user as
+	 * well ass place markers for unknown information.
+	 * 
+	 * @param the collection to add the user to
+	 * @param the userInfo object created by spring
+	 * 
+	 * @return the AppUser object for a the new user
+	 */
+	private AppUser putUserInDB(MongoCollection<Document> collection, UserInfo userInfo) {
+
+		// Creates the AppUser
+		HashMap<String, String> infoMap = new HashMap<String, String>();
+		infoMap.put("authority_key", "unverified");
+		infoMap.put("join_date", currentTime);
+		infoMap.put("num_of_observations", "0");
+		infoMap.put("num_of_updates", "0");
+		infoMap.put("last_seen", currentTime);
+		infoMap.put("nickname", userInfo.getGivenName());
+		infoMap.put("email_address", "Enter Your Email");
+		infoMap.put("cell_phone", "(000)000-0000");
+
+		AppUser newUser = new AppUser(userInfo, infoMap);
+		
+		//Add the user to the collection
+		Document document = new Document(); 
+		document.putAll(newUser.getAllInformation());
+		collection.insertOne(document);
+		
+		return newUser; // Instead of then getting it from the database the user is just returned.
 	}
 
 	/**

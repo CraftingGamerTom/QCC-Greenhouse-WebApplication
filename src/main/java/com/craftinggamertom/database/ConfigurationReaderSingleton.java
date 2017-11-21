@@ -24,6 +24,8 @@ public class ConfigurationReaderSingleton {
 	private String weeklyDataCollection;
 	private String monthlyDataCollection;
 	private String yearlyDataCollection;
+	
+	private String appUserCollection;
 
 	private String domainName;
 
@@ -61,6 +63,8 @@ public class ConfigurationReaderSingleton {
 			weeklyDataCollection = properties.getProperty("weeklyDataCollection");
 			monthlyDataCollection = properties.getProperty("monthlyDataCollection");
 			yearlyDataCollection = properties.getProperty("yearlyDataCollection");
+			
+			appUserCollection = properties.getProperty("appUserCollection");
 
 			domainName = properties.getProperty("domainName");
 
@@ -113,12 +117,14 @@ public class ConfigurationReaderSingleton {
 		System.out.println("* weeklyDataCollection: " + getWeeklyDataCollection());
 		System.out.println("* monthlyDataCollection: " + getMonthlyDataCollection());
 		System.out.println("* yearlyDataCollection: " + getYearlyDataCollection());
+		
+		System.out.println("* appUserCollection: " + getAppUserCollection());
 
 		System.out.println("* domainName: " + getDomainName());
 
 		System.out.println("*\n** END CONFIGURATION VISUAL VERIFICATION **");
 	}
-	
+
 	// Getters
 
 	public static String getDatabaseIP() {
@@ -163,6 +169,10 @@ public class ConfigurationReaderSingleton {
 
 	public static String getYearlyDataCollection() {
 		return getInstance().getPrivateYearlyDataCollection();
+	}
+	
+	public static String getAppUserCollection() {
+		return getInstance().getPrivateAppUserCollection();
 	}
 
 	public static String getDomainName() {
@@ -213,6 +223,10 @@ public class ConfigurationReaderSingleton {
 
 	public String getPrivateYearlyDataCollection() {
 		return this.yearlyDataCollection;
+	}
+	
+	private String getPrivateAppUserCollection() {
+		return this.appUserCollection;
 	}
 
 	public String getPrivateDomainName() {

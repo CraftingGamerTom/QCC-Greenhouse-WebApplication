@@ -25,14 +25,16 @@ public class Authority {
 	protected void setAuthorityLevel(String keyword) {
 		if (keyword.equals("anonymous")) {
 			this.authorityLevel = 0;
-		} else if (keyword.equals("user")) {
+		} else if (keyword.equals("unverified")) {
 			this.authorityLevel = 1;
-		} else if (keyword.equals("manager")) {
+		} else if (keyword.equals("user")) {
 			this.authorityLevel = 2;
-		} else if (keyword.equals("admin")) {
+		} else if (keyword.equals("manager")) {
 			this.authorityLevel = 3;
-		} else if (keyword.equals("developer")) {
+		} else if (keyword.equals("admin")) {
 			this.authorityLevel = 4;
+		} else if (keyword.equals("developer")) {
+			this.authorityLevel = 5;
 		} else { // SHOULD NEVER HAPPEN (would be caused by typo)
 			System.out.println("INVALID AUTHORITY LEVEL KEYWORD!");
 			this.authorityLevel = -1;
