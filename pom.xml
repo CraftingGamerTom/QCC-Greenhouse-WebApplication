@@ -144,7 +144,6 @@
 					<version>2.2</version>
 					<configuration>
 						<path>/</path>
-						<url>http://localhost:80</url>
 						<contextReloadable>true</contextReloadable>
 					</configuration>
 				</plugin>
