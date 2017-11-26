@@ -56,11 +56,81 @@ public class PageBuilder {
 	public Model buildPage(Model model) {
 		this.model = model;
 
+		this.model.addAllAttributes(getNavigationLinks());
 		this.model.addAllAttributes(getNavigationBarAttributes());
 		this.model.addAllAttributes(getFooterAttributes());
 
 		return this.model;
+	}
 
+	/**
+	 * Authorizes the user and only adds what they can see to the page
+	 */
+	private Map<String, String> getNavigationLinks() {
+		// Create Map
+		Map<String, String> map = new HashMap<String, String>();
+
+		String theHTML = ""; // This string returned;
+		
+		String anonLinks = "";
+		String appUserLinks = "";
+		String managerLinks = "";
+		String adminLinks = "";
+		String devLinks = "";
+
+		PageAuthority appUserAuthority = new PageAuthority("user");
+		PageAuthority managerAuthority = new PageAuthority("manager");
+		PageAuthority adminAuthority = new PageAuthority("admin");
+		PageAuthority developerAuthority = new PageAuthority("developer");
+		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
+		
+		if(developerAuthority.grantAccessTo(userAuthority)) {
+			devLinks = "";
+		}
+		if(adminAuthority.grantAccessTo(userAuthority)) {
+			adminLinks = "\r\n" +
+					"                    <li class=\"dropdown\">\r\n" + 
+					"                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Admin<span class=\"caret\"></span></a>\r\n" + 
+					"                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n" + 
+					"                            <li><a href=\"/admin/manage/sensors/friendly-names\">Friendly Names</a></li>\r\n" + 
+					"                            <li><a href=\"/admin/manage/emergency-alerts\">Alerts</a></li>\r\n" + 
+					"                        </ul>\r\n" + 
+					"                    </li>" +
+					"\r\n";
+
+		}
+		if(managerAuthority.grantAccessTo(userAuthority)) {
+			managerLinks = "";
+
+		}
+		if(appUserAuthority.grantAccessTo(userAuthority)) {
+			appUserLinks = "";
+
+		}
+		// anonymous links (always get put in)
+		anonLinks = "\r\n" +
+				"                    <li>\r\n" + 
+				"                        <a aria-expanded=\"false\" role=\"button\" href=\"/feed\">Feed</a>\r\n" + 
+				"                    </li>" +
+				"                    <li class=\"dropdown\">\r\n" + 
+				"                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Data<span class=\"caret\"></span></a>\r\n" + 
+				"                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n" + 
+				"                            <li><a href=\"/view/live-data\">Live Data</a></li>\r\n" + 
+				"                            <li><a href=\"/view/sensor-data\">Sensor Data</a></li>\r\n" + 
+				"                            <li><a href=\"/view/raw-data\">Raw Data</a></li>\r\n" + 
+				"                            <li><a href=\"/view/compare-data\">Compare Data</a></li>\r\n" + 
+				"                        </ul>\r\n" + 
+				"                    </li>" +
+				"                    <li>\r\n" + 
+				"                        <a aria-expanded=\"false\" role=\"button\" href=\"view/observation-notes\">Observation Notes</a>\r\n" + 
+				"                    </li>\r\n" +
+				"\r\n";
+		
+		theHTML = anonLinks + appUserLinks + managerLinks + adminLinks + devLinks; // Orders the HTML
+		map.put("nav-link-section", theHTML);
+
+		return map;
 	}
 
 	/**
@@ -84,34 +154,46 @@ public class PageBuilder {
 
 		if (pageAuthority.grantAccessTo(userAuthority)) { // If the user is >= "unverified" credentials do work
 
-			String username = "	                <li>\r\n"
-					+ "	                    <span class=\"m-r-sm text-muted welcome-message\">" + appUser.getName()
-					+ "</span>\r\n" + "	                </li>\r\n";
+			
+			//String username = "	                <li>\r\n"
+			//		+ "	                    <span class=\"m-r-sm text-muted welcome-message\">" + appUser.getName()
+			//		+ "</span>\r\n" + "	                </li>\r\n";
+			
+			String username = "\r\n"
+					+ "                    <li class=\"dropdown\">\r\n"
+					+ "                        <a aria-expanded=\"false\" role=\"button\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">" 
+					+ appUser.getName()
+					+ "<span class=\"caret\"></span></a>\r\n"
+					+ "            				<ul role=\"menu\" class=\"dropdown-menu\">\r\n"
+					+ "                           	<li><a href=\"/user/profile\">Profile</a></li>\r\n"
+					// + "                           	<li><a href=\"/user/organizations\">Organizations</a></li>\r\n"
+					// + "                            	<li><a href=\"/user/settings">Settings</a></li>\r\n"
+					+ "                        		<li>\r\n"
+					+ "                        			<a href=\"/logout\">\r\n"
+					+ "                            		<i class=\"fa fa-sign-out\"></i> Log out\r\n"
+					+ "                        			</a>\r\n" 
+					+ "                    			</li>"
+					+ "                    			<logout/>"
+					+ "                 		</ul>\r\n"
+					+ "           			</li>"
+
+					+ "\r\n";
 			String messages = ""; // for messages html if implemented later
 			String notifications = ""; // for notifications html if implemented later
 
-			String buttons = "<li>\r\n" + "                        <a href=\"/logout\">\r\n"
-					+ "                            <i class=\"fa fa-sign-out\"></i> Log out\r\n"
-					+ "                        </a>\r\n" + "                    </li>";
-			buttons += "\n <logout/>";
-
-			theHTML = username + messages + notifications + buttons;
+			theHTML = messages + notifications + username;
 
 		} else { // If the user is not signed in - do work
-			/*
-			 * String signIn =
-			 * "<button class=\"btn btn-sm btn-primary\" type=\"submit\" href=\"/register\"><strong>Register</strong></button>\r\n"
-			 * ; String signUp =
-			 * "<button class=\"btn btn-sm btn-white\" type=\"submit\" href=\"/login\">Log in</button>\r\n"
-			 * ;
-			 */
+			
+			// String signIn = "<button class=\"btn btn-sm btn-white\" href=\"/login\">Log in</button>\r\n";
+			// String signUp = "<button class=\"btn btn-sm btn-primary\" href=\"/register\"><strong>Register</strong></button>\r\n"; 
 			String signIn = "<li><a href=\"/login\">Sign in</a></li>\r\n";
 			String signUp = "<li><a href=\"/register\">Register</a></li>\r\n";
 
 			theHTML = signIn + signUp;
 		}
 
-		map.put("sign-in-section", theHTML);
+		map.put("nav-sign-in-section", theHTML);
 
 		return map;
 
