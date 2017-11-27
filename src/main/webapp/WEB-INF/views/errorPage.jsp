@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>
@@ -21,40 +21,15 @@
 *
 -->
 <body class="top-navigation">
-    <div id="wrapper">
-        <div id="page-wrapper" class="gray-bg">
-        
-		<!-- VERTICAL NAVIGATION -->
-				<!-- removed due to style conflict -->
-		<!-- END VERTICAL NAVIGATION -->
-        
-		<!-- HORIZONTAL NAVIGATION -->
-		<%@ include file="common/nav-horizontal.jspf"%>
-		<!-- END HORIZONTAL NAVIGATION -->
+	<div id="wrapper">
+		<div id="page-wrapper" class="gray-bg">
 
-    	<%=request.getAttribute("error-message")%>
-  
+			<%=request.getAttribute("error-message")%>
 
-		
 		</div>
 
-               
-  	</div>
 
-		<!-- TASKS NAVIGATION CONTAINER -->
-		<%@ include file="common/tasks.jspf"%>
-		<!-- END TASKS NAVIGATION CONTAINER -->
-		
-		<!-- FOOTER -->
-		<%@ include file="common/footer.jspf"%>
-		<!-- END FOOTER -->
-		
-	<!-- Mainly scripts -->
-	<script src="<c:url value="../../../../resources/js/jquery-3.1.1.min.js"/>"></script>
-    <script src="<c:url value="../../../../resources/js/bootstrap.min.js"/>"></script>
-    <script src="<c:url value="../../../../resources/js/plugins/metisMenu/jquery.metisMenu.js"/>"></script>
-    <script src="<c:url value="../../../../resources/js/plugins/slimscroll/jquery.slimscroll.min.js"/>"></script>
-	
+	</div>
 
 </body>
 </html>
