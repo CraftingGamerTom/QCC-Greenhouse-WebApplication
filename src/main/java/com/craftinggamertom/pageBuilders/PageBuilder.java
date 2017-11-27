@@ -119,7 +119,7 @@ public class PageBuilder {
 				"                            <li><a href=\"/view/live-data\">Live Data</a></li>\r\n" + 
 				"                            <li><a href=\"/view/sensor-data\">Sensor Data</a></li>\r\n" + 
 				"                            <li><a href=\"/view/raw-data\">Raw Data</a></li>\r\n" + 
-				"                            <li><a href=\"/view/compare-data\">Compare Data</a></li>\r\n" + 
+				// "                            <li><a href=\"/view/compare-data\">Compare Data</a></li>\r\n" + // Removed until implemented
 				"                        </ul>\r\n" + 
 				"                    </li>" +
 				"                    <li>\r\n" + 
