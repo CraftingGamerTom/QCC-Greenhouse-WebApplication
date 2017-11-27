@@ -8,19 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.craftinggamertom.pageBuilders.PageBuilder;
-
 @Controller
 public class ErrorController {
 	@RequestMapping(value = "/errors", method = RequestMethod.GET)
 	public ModelAndView goToErrorPage(HttpServletRequest httpRequest, Model model) {
-        try {
-		PageBuilder pageBuilder = new PageBuilder();
-        pageBuilder.buildPage(model); //Proper navigation bar
-        }catch(Exception e) {
-        	e.printStackTrace();
-        }
-        
         
         //Everything below for printing the error on web page
         String errorMsg = "";

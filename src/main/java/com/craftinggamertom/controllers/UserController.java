@@ -21,7 +21,7 @@ public class UserController {
 	@RequestMapping(value = "/user/home", method = RequestMethod.GET)
 	public String goToUserHome() {
 
-		return "default/welcome";
+		return "redirect:/feed"; //Temp until Organization Feed page is implemented
 	}
 
 	@RequestMapping(value = "/user/testing", method = RequestMethod.GET)
