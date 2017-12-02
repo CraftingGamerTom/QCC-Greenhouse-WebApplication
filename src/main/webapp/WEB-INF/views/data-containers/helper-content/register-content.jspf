@@ -12,7 +12,7 @@
 			eyebrow and to keep one less password out of your memory.
 			<!--Continually expanded and constantly improved Inspinia Admin Them (IN+)-->
 		</p>
-		<p>Sign in with Google+ account below.</p>
+		<p>Sign in with a Google account below.</p>
 		<a class="btn btn-block btn-social btn-google" href="/login"> <span
 			class="fa fa-google"></span> Sign in with Google
 		</a> <br /> <a class="btn btn-block btn-outline btn-primary" href="/">Take
