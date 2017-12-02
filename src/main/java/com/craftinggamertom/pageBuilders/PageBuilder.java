@@ -163,7 +163,7 @@ public class PageBuilder {
 
 					+ "                    <li class=\"dropdown\">\r\n"
 					+ "                        <a aria-expanded=\"false\" role=\"button\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">"
-					+ "<img alt=\"image\" class=\"img-thumbnail\" style=\"width:32px;height:32px;\" src=\""
+					+ "<img alt=\"image\" class=\"img-sm\" style=\"width:18px;height:18px;\" src=\""
 					+ appUser.getPicture()
 					+ "\" />\r\n"
 					+ appUser.getName()
