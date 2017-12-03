@@ -2,7 +2,7 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
     version="3.0">
 
-    <display-name>To do List</display-name>
+    <display-name>QCC Greenhouse</display-name>
 
     <servlet>
         <servlet-name>dispatcher</servlet-name>
