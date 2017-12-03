@@ -65,7 +65,7 @@ public class DataGraphBuilder extends PageBuilder {
 	public Model buildPage(String cSensor, String cTiming, String date, Model model) {
 		// Due to the use of a ZonedDateTime object we must convert this manually before
 		// parsing
-		date = date + "T00:00:00-05:00";
+		date = date + "T00:00:00-04:00";
 		this.startDate = ZonedDateTime.parse(date);
 		this.cTiming = cTiming;
 		this.sensorID = convertSensor(cSensor).getSensorId();
