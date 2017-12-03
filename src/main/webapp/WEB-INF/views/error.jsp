@@ -24,8 +24,8 @@
 		<!-- END HORIZONTAL NAVIGATION -->
 
 		<div class="container">
-			Application has encountered an error. Please contact support at 
-			<br>[If you see this - I need to update this text with the real email] - contact TomWRHS@gmail.com
+			Application has encountered an error. Please contact support
+			<br>This page should not be shown. An updated error page was created.
 		</div>
 
 
