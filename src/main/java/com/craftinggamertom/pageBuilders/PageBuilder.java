@@ -20,6 +20,12 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 
+/**
+ * Copyright (c) 2017 Thomas Rokicki
+ * 
+ * @author Thomas Rokicki
+ *
+ */
 public class PageBuilder {
 
 	protected MongoDatabase database;
@@ -71,7 +77,7 @@ public class PageBuilder {
 		Map<String, String> map = new HashMap<String, String>();
 
 		String theHTML = ""; // This string returned;
-		
+
 		String anonLinks = "";
 		String appUserLinks = "";
 		String managerLinks = "";
@@ -84,49 +90,42 @@ public class PageBuilder {
 		PageAuthority developerAuthority = new PageAuthority("developer");
 		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
-		
-		if(developerAuthority.grantAccessTo(userAuthority)) {
+
+		if (developerAuthority.grantAccessGTE(userAuthority)) {
 			devLinks = "";
 		}
-		if(adminAuthority.grantAccessTo(userAuthority)) {
-			adminLinks = "\r\n" +
-					"                    <li class=\"dropdown\">\r\n" + 
-					"                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Admin<span class=\"caret\"></span></a>\r\n" + 
-					"                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n" + 
-					"                            <li><a href=\"/admin/manage/sensors/friendly-names\">Friendly Names</a></li>\r\n" + 
-					"                            <li><a href=\"/admin/manage/emergency-alerts\">Alerts</a></li>\r\n" + 
-					"                        </ul>\r\n" + 
-					"                    </li>" +
-					"\r\n";
+		if (adminAuthority.grantAccessGTE(userAuthority)) {
+			adminLinks = "\r\n" + "                    <li class=\"dropdown\">\r\n"
+					+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Admin<span class=\"caret\"></span></a>\r\n"
+					+ "                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n"
+					+ "                            <li><a href=\"/admin/manage/sensors/friendly-names\">Friendly Names</a></li>\r\n"
+					+ "                            <li><a href=\"/admin/manage/emergency-alerts\">Alerts</a></li>\r\n"
+					+ "                        </ul>\r\n" + "                    </li>" + "\r\n";
 
 		}
-		if(managerAuthority.grantAccessTo(userAuthority)) {
+		if (managerAuthority.grantAccessGTE(userAuthority)) {
 			managerLinks = "";
 
 		}
-		if(appUserAuthority.grantAccessTo(userAuthority)) {
+		if (appUserAuthority.grantAccessGTE(userAuthority)) {
 			appUserLinks = "";
 
 		}
 		// anonymous links (always get put in)
-		anonLinks = "\r\n" +
-				"                    <li>\r\n" + 
-				"                        <a aria-expanded=\"false\" role=\"button\" href=\"/feed\">Feed</a>\r\n" + 
-				"                    </li>" +
-				"                    <li class=\"dropdown\">\r\n" + 
-				"                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Data<span class=\"caret\"></span></a>\r\n" + 
-				"                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n" + 
-				"                            <li><a href=\"/view/live-data\">Live Data</a></li>\r\n" + 
-				"                            <li><a href=\"/view/sensor-data\">Sensor Data</a></li>\r\n" + 
-				"                            <li><a href=\"/view/raw-data\">Raw Data</a></li>\r\n" + 
-				// "                            <li><a href=\"/view/compare-data\">Compare Data</a></li>\r\n" + // Removed until implemented
-				"                        </ul>\r\n" + 
-				"                    </li>" +
-				"                    <li>\r\n" + 
-				"                        <a aria-expanded=\"false\" role=\"button\" href=\"view/observation-notes\">Observation Notes</a>\r\n" + 
-				"                    </li>\r\n" +
-				"\r\n";
-		
+		anonLinks = "\r\n" + "                    <li>\r\n"
+				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"/feed\">Feed</a>\r\n"
+				+ "                    </li>" + "                    <li class=\"dropdown\">\r\n"
+				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Data<span class=\"caret\"></span></a>\r\n"
+				+ "                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n"
+				+ "                            <li><a href=\"/view/live-data\">Live Data</a></li>\r\n"
+				+ "                            <li><a href=\"/view/sensor-data\">Sensor Data</a></li>\r\n"
+				+ "                            <li><a href=\"/view/raw-data\">Raw Data</a></li>\r\n" +
+				// " <li><a href=\"/view/compare-data\">Compare Data</a></li>\r\n" + // Removed
+				// until implemented
+				"                        </ul>\r\n" + "                    </li>" + "                    <li>\r\n"
+				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"view/observation-notes\">Observation Notes</a>\r\n"
+				+ "                    </li>\r\n" + "\r\n";
+
 		theHTML = anonLinks + appUserLinks + managerLinks + adminLinks + devLinks; // Orders the HTML
 		map.put("nav-link-section", theHTML);
 
@@ -152,33 +151,27 @@ public class PageBuilder {
 		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
 
-		if (pageAuthority.grantAccessTo(userAuthority)) { // If the user is >= "unverified" credentials do work
+		if (pageAuthority.grantAccessGTE(userAuthority)) { // If the user is >= "unverified" credentials do work
 
-			
-			//String username = "	                <li>\r\n"
-			//		+ "	                    <span class=\"m-r-sm text-muted welcome-message\">" + appUser.getName()
-			//		+ "</span>\r\n" + "	                </li>\r\n";
-			
+			// String username = " <li>\r\n"
+			// + " <span class=\"m-r-sm text-muted welcome-message\">" + appUser.getName()
+			// + "</span>\r\n" + " </li>\r\n";
+
 			String username = "\r\n"
 
 					+ "                    <li class=\"dropdown\">\r\n"
 					+ "                        <a aria-expanded=\"false\" role=\"button\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">"
 					+ "<img alt=\"image\" class=\"img-sm\" style=\"width:18px;height:18px;\" src=\""
-					+ appUser.getPicture()
-					+ "\" />\r\n"
-					+ appUser.getName()
-					+ "<span class=\"caret\"></span></a>\r\n"
+					+ appUser.getPicture() + "\" />\r\n" + appUser.getName() + "<span class=\"caret\"></span></a>\r\n"
 					+ "            				<ul role=\"menu\" class=\"dropdown-menu\">\r\n"
 					+ "                           	<li><a href=\"/user/profile\">Profile</a></li>\r\n"
-					// + "                           	<li><a href=\"/user/organizations\">Organizations</a></li>\r\n"
-					// + "                            	<li><a href=\"/user/settings">Settings</a></li>\r\n"
+					// + " <li><a href=\"/user/organizations\">Organizations</a></li>\r\n"
+					// + " <li><a href=\"/user/settings">Settings</a></li>\r\n"
 					+ "                        		<li>\r\n"
 					+ "                        			<a href=\"/logout\">\r\n"
 					+ "                            		<i class=\"fa fa-sign-out\"></i> Log out\r\n"
-					+ "                        			</a>\r\n" 
-					+ "                    			</li>"
-					+ "                    			<logout/>"
-					+ "                 		</ul>\r\n"
+					+ "                        			</a>\r\n" + "                    			</li>"
+					+ "                    			<logout/>" + "                 		</ul>\r\n"
 					+ "           			</li>"
 
 					+ "\r\n";
@@ -188,9 +181,11 @@ public class PageBuilder {
 			theHTML = messages + notifications + username;
 
 		} else { // If the user is not signed in - do work
-			
-			// String signIn = "<button class=\"btn btn-sm btn-white\" href=\"/login\">Log in</button>\r\n";
-			// String signUp = "<button class=\"btn btn-sm btn-primary\" href=\"/register\"><strong>Register</strong></button>\r\n"; 
+
+			// String signIn = "<button class=\"btn btn-sm btn-white\" href=\"/login\">Log
+			// in</button>\r\n";
+			// String signUp = "<button class=\"btn btn-sm btn-primary\"
+			// href=\"/register\"><strong>Register</strong></button>\r\n";
 			String signIn = "<li><a href=\"/login\">Sign in</a></li>\r\n";
 			String signUp = "<li><a href=\"/register\">Register</a></li>\r\n";
 
@@ -225,7 +220,7 @@ public class PageBuilder {
 	 * UI. This method converts the value on the front end to appropriate sensorID.
 	 * 
 	 * @param cSensor
-	 * @return
+	 * @return SensorInfo object
 	 */
 	protected SensorInfo convertSensor(String cSensor) {
 
@@ -241,7 +236,31 @@ public class PageBuilder {
 
 		Document searchResult = collection.find(sensorFilter).first();
 
-		SensorInfo sensor = new SensorInfo(searchResult);
+		SensorInfo sensor;
+		try {
+			sensor = new SensorInfo(searchResult);
+
+		} catch (NullPointerException nullE) {
+			System.out.println("NullPointer(PageBuilder): Adding a dumby sensor with placemarkers and warning user");
+			sensor = new SensorInfo(); // Uses placemarker metadata
+
+			// To warn user of no sensor data
+			String warning = "<div class=\"row wrapper page-heading\">\r\n" + "	<div class=\"col-lg-12\">\r\n"
+					+ "		<div class=\"alert alert-warning\">\r\n"
+					+ "			<p class=\"alert-link text-center\">Hey!</p>\r\n"
+					+ "			<p class=\"text-center\">You don't seem to have any data to show. You should add some.</p>\r\n"
+					+ "			<p class=\"text-center\">Perhaps there is no default sensor set. An admin can fix that.</p>\r\n"
+					+ "		</div>\r\n" + "	</div>\r\n" + "</div>";
+			this.model.addAttribute("no-sensor-data-found-warning", warning);
+			return sensor;
+
+		} catch (Exception e) {
+			System.out.println("Error converting sensor (PageBuilder): Stacktrace: ");
+			e.printStackTrace();
+			return null;
+		}
+		model.addAttribute("no-sensor-data-found-warning", ""); // only called if data was found in database - to
+																// make sure the value is not null
 		return sensor;
 	}
 }

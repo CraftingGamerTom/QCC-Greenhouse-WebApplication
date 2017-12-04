@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.craftinggamertom.pageBuilders.PageBuilder;
+import com.craftinggamertom.pageBuilders.FeedBuilder;
 
 @Controller
 public class AnonymousController {
@@ -16,18 +16,15 @@ public class AnonymousController {
 		String redirectUrl = "feed";
 		return "redirect:" + redirectUrl;
 	}
-	
+
 	@RequestMapping(value = "/feed", method = RequestMethod.GET)
 	public ModelAndView feedPage(Model model) {
-		
+
 		try {
-			
-			PageBuilder response = new PageBuilder(); // MUST BE UPDATED WITH FeedPageBuilder.java
-			model = response.buildPage(model); // Loads the navigation and footer, etc 
-			
-			// EXAMPLE: DataGraphBuilder response = new DataGraphBuilder();
-			// EXAMPLE: model = response.buildPage(cSensor, cTiming, cDate, model);
-		
+
+			FeedBuilder response = new FeedBuilder();
+			model = response.buildPage(model);
+
 		} catch (Exception e) {
 			System.out.println("Exception: ");
 			e.printStackTrace();
