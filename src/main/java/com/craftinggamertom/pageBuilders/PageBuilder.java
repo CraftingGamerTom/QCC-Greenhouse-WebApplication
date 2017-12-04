@@ -1,3 +1,7 @@
+/**
+* Copyright (c) 2017 Thomas Rokicki
+*/
+
 package com.craftinggamertom.pageBuilders;
 
 import java.time.LocalDateTime;
@@ -21,8 +25,6 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 
 /**
- * Copyright (c) 2017 Thomas Rokicki
- * 
  * @author Thomas Rokicki
  *
  */

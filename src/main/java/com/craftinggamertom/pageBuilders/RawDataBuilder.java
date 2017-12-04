@@ -1,3 +1,7 @@
+/**
+* Copyright (c) 2017 Thomas Rokicki
+*/
+
 package com.craftinggamertom.pageBuilders;
 
 import java.time.ZonedDateTime;
@@ -16,7 +20,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 
 /**
- * Copyright (c) 2017 Thomas Rokicki
  * 
  * @author Thomas Rokicki
  *

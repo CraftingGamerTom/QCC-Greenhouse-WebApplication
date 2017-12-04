@@ -1,3 +1,7 @@
+/**
+* Copyright (c) 2017 Thomas Rokicki
+*/
+
 package com.craftinggamertom.pageBuilders;
 
 import org.springframework.ui.Model;
@@ -6,7 +10,6 @@ import com.craftinggamertom.security.authorization.PageAuthority;
 import com.craftinggamertom.security.authorization.UserAuthority;
 
 /**
- * Copyright (c) 2017 Thomas Rokicki
  * 
  * @author Thomas Rokicki
  *
