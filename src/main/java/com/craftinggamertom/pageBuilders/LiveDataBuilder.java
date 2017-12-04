@@ -14,6 +14,12 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 
+/**
+ * Copyright (c) 2017 Thomas Rokicki
+ * 
+ * @author Thomas Rokicki
+ *
+ */
 public class LiveDataBuilder extends PageBuilder {
 
 	private String chosenType;
@@ -134,66 +140,88 @@ public class LiveDataBuilder extends PageBuilder {
 		namesCollection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
 		liveDataCollection = database.getCollection(ConfigurationReaderSingleton.getLiveDataCollection());
 
-		FindIterable<Document> searchResult;
-		FindIterable<Document> valuesResult;
-		if (!chosenType.equals("default")) {
-			Bson typeFilter = Filters.eq("type", chosenType);
+		try {
 
-			Bson isVisibleFilter = Filters.eq("isVisible", true);
-			searchResult = namesCollection.find(Filters.and(isVisibleFilter, typeFilter));
-			valuesResult = liveDataCollection.find(typeFilter);
+			FindIterable<Document> searchResult;
+			FindIterable<Document> valuesResult;
+			if (!chosenType.equals("default")) {
+				Bson typeFilter = Filters.eq("type", chosenType);
 
-			// Sets the type for display
-			this.type = chosenType;
+				Bson isVisibleFilter = Filters.eq("isVisible", true);
+				searchResult = namesCollection.find(Filters.and(isVisibleFilter, typeFilter));
+				valuesResult = liveDataCollection.find(typeFilter);
 
-		} else { // If the sensor was not specified it will get the default and all with the same
-					// type
-			FindIterable<Document> searchDefault;
-			Bson defaultFilter = Filters.eq("isDefault", true);
+				// Sets the type for display
+				this.type = chosenType;
 
-			searchDefault = namesCollection.find(defaultFilter);
-			String type = searchDefault.first().getString("type");
+			} else { // If the sensor was not specified it will get the default and all with the same
+						// type
 
-			Bson typeFilter = Filters.eq("type", type);
-			searchResult = namesCollection.find(typeFilter);
-			valuesResult = liveDataCollection.find(typeFilter);
+				FindIterable<Document> searchDefault;
+				Bson defaultFilter = Filters.eq("isDefault", true);
 
-			// Set the type to the default type for display
-			this.type = type;
-		}
-		Iterator<Document> namesIter = searchResult.iterator();
-		while (namesIter.hasNext()) {
-			Document namesDoc = namesIter.next();
-			Iterator<Document> valuesIter = valuesResult.iterator(); // must be local to make new iterator each time.
+				searchDefault = namesCollection.find(defaultFilter);
+				String type = searchDefault.first().getString("type");
 
-			while (valuesIter.hasNext()) {
-				Document valuesDoc = valuesIter.next();
-				// If the ID's match -> do work
-				if (namesDoc.getString("sensorId").equals(valuesDoc.getString("sensorId"))) {
-					SensorSet set = new SensorSet(namesDoc, valuesDoc);
-					allSensors.add(set);
-				}
+				Bson typeFilter = Filters.eq("type", type);
+				searchResult = namesCollection.find(typeFilter);
+				valuesResult = liveDataCollection.find(typeFilter);
+
+				// Set the type to the default type for display
+				this.type = type;
 
 			}
-		}
-		for (int i = 0; i < allSensors.size(); i++) {
+			Iterator<Document> namesIter = searchResult.iterator();
+			while (namesIter.hasNext()) {
+				Document namesDoc = namesIter.next();
+				Iterator<Document> valuesIter = valuesResult.iterator(); // must be local to make new iterator each
+																			// time.
 
-			// String sensorID = allSensors.get(i).getSensorId();
-			String type = allSensors.get(i).getType();
-			String description = allSensors.get(i).getDescription();
-			String friendlyName = allSensors.get(i).getFriendlyName();
-			Double value = allSensors.get(i).getValue();
-			String time = allSensors.get(i).getDate();
+				while (valuesIter.hasNext()) {
+					Document valuesDoc = valuesIter.next();
+					// If the ID's match -> do work
+					if (namesDoc.getString("sensorId").equals(valuesDoc.getString("sensorId"))) {
+						SensorSet set = new SensorSet(namesDoc, valuesDoc);
+						allSensors.add(set);
+					}
 
-			message += "                                <tr>\r\n" + "                                    <td>"
-					+ friendlyName + "</td>\r\n" + "                                    <td>" + description
-					+ "</td>\r\n" + "                                    <td>" + type + "</td>\r\n"
-					+ "                                    <td class=\"center\">" + time + "</td>\r\n"
-					+ "                                    <td class=\"center\">" + value + "</td>\r\n"
-					+ "                                </tr>";
+				}
+			}
+			for (int i = 0; i < allSensors.size(); i++) {
+
+				// String sensorID = allSensors.get(i).getSensorId();
+				String type = allSensors.get(i).getType();
+				String description = allSensors.get(i).getDescription();
+				String friendlyName = allSensors.get(i).getFriendlyName();
+				Double value = allSensors.get(i).getValue();
+				String time = allSensors.get(i).getDate();
+
+				message += "                                <tr>\r\n" + "                                    <td>"
+						+ friendlyName + "</td>\r\n" + "                                    <td>" + description
+						+ "</td>\r\n" + "                                    <td>" + type + "</td>\r\n"
+						+ "                                    <td class=\"center\">" + time + "</td>\r\n"
+						+ "                                    <td class=\"center\">" + value + "</td>\r\n"
+						+ "                                </tr>";
+			}
+
+		} catch (NullPointerException nullE) {
+			System.out
+					.println("NullPointer(LiveDataBuilder): Adding a dumby sensor with placemarkers and warning user");
+			this.type = "no available";
+
+			// To warn user of no sensor data
+			String warning = "<div class=\"row wrapper page-heading\">\r\n" + "	<div class=\"col-lg-12\">\r\n"
+					+ "		<div class=\"alert alert-warning\">\r\n"
+					+ "			<p class=\"alert-link text-center\">Hey!</p>\r\n"
+					+ "			<p class=\"text-center\">You don't seem to have any data to show. You should add some.</p>\r\n"
+					+ "			<p class=\"text-center\">Perhaps there is no default sensor set. An admin can fix that.</p>\r\n"
+					+ "		</div>\r\n" + "	</div>\r\n" + "</div>";
+
+			model.addAttribute("no-sensor-data-found-warning", warning);
 		}
+		model.addAttribute("no-sensor-data-found-warning", ""); // only called if data was found in database - to
+																// make sure the value is not null
+
 		return message;
-
 	}
-
 }

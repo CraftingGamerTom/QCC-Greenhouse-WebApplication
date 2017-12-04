@@ -63,13 +63,18 @@ public class DataGraphBuilder extends PageBuilder {
 	 * @return
 	 */
 	public Model buildPage(String cSensor, String cTiming, String date, Model model) {
+
+		super.buildPage(model); // Adds the standard model attributes
+
+		SensorInfo sensor = convertSensor(cSensor); // Gathers info on a sensor based on Id
+
 		// Due to the use of a ZonedDateTime object we must convert this manually before
 		// parsing
 		date = date + "T00:00:00-04:00";
 		this.startDate = ZonedDateTime.parse(date);
 		this.cTiming = cTiming;
-		this.sensorID = convertSensor(cSensor).getSensorId();
-		this.friendlyName = convertSensor(cSensor).getFriendlyName();
+		this.sensorID = sensor.getSensorId();
+		this.friendlyName = sensor.getFriendlyName();
 
 		setStartDate(); // MUST BE FIRST - Critical errors otherwise
 		setEndDate(); // MUST BE AFTER START DATE - Critical errors otherwise
@@ -77,8 +82,6 @@ public class DataGraphBuilder extends PageBuilder {
 		setXAxis();
 
 		// setTestGraph();
-
-		super.buildPage(model); // Adds the standard model attributes
 
 		return addPageAttributes();
 

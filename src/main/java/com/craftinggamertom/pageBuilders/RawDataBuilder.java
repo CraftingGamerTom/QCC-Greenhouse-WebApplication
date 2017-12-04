@@ -15,6 +15,12 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 
+/**
+ * Copyright (c) 2017 Thomas Rokicki
+ * 
+ * @author Thomas Rokicki
+ *
+ */
 public class RawDataBuilder extends PageBuilder {
 
 	private String sensorId;
@@ -128,36 +134,41 @@ public class RawDataBuilder extends PageBuilder {
 	 * @return A string of html to represent the options
 	 */
 	private String getSensorOptions() {
-		String message = "";
-		ArrayList<SensorInfo> allVisibleSensors = new ArrayList<SensorInfo>();
+		try {
+			String message = "";
+			ArrayList<SensorInfo> allVisibleSensors = new ArrayList<SensorInfo>();
 
-		Bson isVisibleFilter = Filters.eq("isVisible", true);
-		Bson isDefaultFilter = Filters.eq("isDefault", true);
-		Bson isNotDefaultFilter = Filters.eq("isDefault", false);
+			Bson isVisibleFilter = Filters.eq("isVisible", true);
+			Bson isDefaultFilter = Filters.eq("isDefault", true);
+			Bson isNotDefaultFilter = Filters.eq("isDefault", false);
 
-		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+			MongoCollection<Document> collection = null;
+			collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
 
-		FindIterable<Document> searchResult = collection.find(Filters.and(isVisibleFilter, isNotDefaultFilter));
-		FindIterable<Document> defaultResult = collection.find(isDefaultFilter);
+			FindIterable<Document> searchResult = collection.find(Filters.and(isVisibleFilter, isNotDefaultFilter));
+			FindIterable<Document> defaultResult = collection.find(isDefaultFilter);
 
-		Document defaultSensor = defaultResult.first();
-		allVisibleSensors.add(new SensorInfo(defaultSensor));
+			Document defaultSensor = defaultResult.first();
+			allVisibleSensors.add(new SensorInfo(defaultSensor));
 
-		Iterator<Document> resultIter = searchResult.iterator();
-		while (resultIter.hasNext()) {
-			allVisibleSensors.add(new SensorInfo(resultIter.next()));
+			Iterator<Document> resultIter = searchResult.iterator();
+			while (resultIter.hasNext()) {
+				allVisibleSensors.add(new SensorInfo(resultIter.next()));
+			}
+			for (int i = 0; i < allVisibleSensors.size(); i++) {
+				message += "\n";
+				message += "<option value=\"";
+				message += allVisibleSensors.get(i).getSensorId();
+				message += "\">";
+				message += allVisibleSensors.get(i).getFriendlyName();
+				message += "</option>";
+			}
+
+			return message;
+		} catch (NullPointerException nullE) {
+			System.out.println("NullPointer(RawDataBuilder): adding sumby code for sensorOptions");
+			return "";
 		}
-		for (int i = 0; i < allVisibleSensors.size(); i++) {
-			message += "\n";
-			message += "<option value=\"";
-			message += allVisibleSensors.get(i).getSensorId();
-			message += "\">";
-			message += allVisibleSensors.get(i).getFriendlyName();
-			message += "</option>";
-		}
-
-		return message;
 	}
 
 	/**
@@ -189,15 +200,33 @@ public class RawDataBuilder extends PageBuilder {
 
 		} else { // If the sensor was not specified it will get the default and all with the same
 					// type
-			Bson defaultFilter = Filters.eq("isDefault", true);
+			try {
 
-			Document defaultResult = namesCollection.find(defaultFilter).first();
-			this.sensorId = defaultResult.getString("sensorId");
+				Bson defaultFilter = Filters.eq("isDefault", true);
 
-			Bson sensorFilter = Filters.eq("sensorId", sensorId);
+				Document defaultResult = namesCollection.find(defaultFilter).first();
+				this.sensorId = defaultResult.getString("sensorId");
 
-			searchResult = namesCollection.find(sensorFilter);
-			valuesResult = rawDataCollection.find(Filters.and(sensorFilter, dateFilter));
+				Bson sensorFilter = Filters.eq("sensorId", sensorId);
+
+				searchResult = namesCollection.find(sensorFilter);
+				valuesResult = rawDataCollection.find(Filters.and(sensorFilter, dateFilter));
+			} catch (NullPointerException nullE) {
+				System.out.println("NullPointer(RawDataBuilder): warning user to add sensor data");
+
+				// To warn user of no sensor data
+				String warning = "<div class=\"row wrapper page-heading\">\r\n" + "	<div class=\"col-lg-12\">\r\n"
+						+ "		<div class=\"alert alert-warning\">\r\n"
+						+ "			<p class=\"alert-link text-center\">Hey!</p>\r\n"
+						+ "			<p class=\"text-center\">You don't seem to have any data to show. You should add some.</p>\r\n"
+						+ "			<p class=\"text-center\">Perhaps there is no default sensor set. An admin can fix that.</p>\r\n"
+						+ "		</div>\r\n" + "	</div>\r\n" + "</div>";
+				model.addAttribute("no-sensor-data-found-warning", warning);
+				return "";
+			}
+
+			model.addAttribute("no-sensor-data-found-warning", ""); // only called if data was found in database - to
+																	// make sure the value is not null
 
 		}
 

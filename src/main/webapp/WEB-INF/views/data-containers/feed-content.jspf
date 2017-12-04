@@ -1,5 +1,8 @@
 
 <div class="row wrapper page-heading">
+
+	<%=request.getAttribute("alert-content")%>
+
 	<div class="col-lg-12">
 		<div class="alert alert-warning alert-dismissable">
 			<button aria-hidden="true" data-dismiss="alert" class="close"
@@ -9,6 +12,7 @@
 				any info that seems to be wrong. It probably is.</p>
 		</div>
 	</div>
+
 </div>
 
 <div class="row">

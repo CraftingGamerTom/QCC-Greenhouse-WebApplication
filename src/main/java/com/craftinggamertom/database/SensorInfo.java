@@ -3,7 +3,7 @@ package com.craftinggamertom.database;
 import org.bson.Document;
 
 public class SensorInfo {
-	
+
 	private String sensorID;
 	private String type;
 	private String date;
@@ -11,7 +11,11 @@ public class SensorInfo {
 	private String description;
 	private boolean isVisible;
 	private boolean isDefault;
-	
+
+	/**
+	 * SensorInfo object with all blank fields (great for when there is not sensor
+	 * data in the database)
+	 */
 	public SensorInfo() {
 		this.sensorID = "Blank";
 		this.type = "Blank";
@@ -20,8 +24,9 @@ public class SensorInfo {
 		this.description = "Blank";
 		this.isVisible = true;
 	}
-	
-	public SensorInfo(String sensorID, String type, String date, String friendlyName, String description, boolean isVisible, boolean isDefault) {
+
+	public SensorInfo(String sensorID, String type, String date, String friendlyName, String description,
+			boolean isVisible, boolean isDefault) {
 		this.sensorID = sensorID;
 		this.type = type;
 		this.date = date;
@@ -30,7 +35,7 @@ public class SensorInfo {
 		this.isVisible = isVisible;
 		this.isVisible = isDefault;
 	}
-	
+
 	public SensorInfo(Document searchResult) {
 		this.sensorID = searchResult.getString("sensorId");
 		this.type = searchResult.getString("type");
@@ -57,7 +62,6 @@ public class SensorInfo {
 		return friendlyName;
 	}
 
-
 	public String getDescription() {
 		return description;
 	}
@@ -65,7 +69,7 @@ public class SensorInfo {
 	public boolean isVisible() {
 		return isVisible;
 	}
-	
+
 	public boolean isDefault() {
 		return isDefault;
 	}
@@ -75,6 +79,8 @@ public class SensorInfo {
 	 */
 	@Override
 	public String toString() {
-		return String.format("SensorInfo[id=%s, SensorID='%s', Type='%s', Date=%s, FriendlyName='%s', Description='%s', isVisible=%s, isDefault=%s]", sensorID, type, date, friendlyName, description, isVisible, isDefault);
+		return String.format(
+				"SensorInfo[id=%s, SensorID='%s', Type='%s', Date=%s, FriendlyName='%s', Description='%s', isVisible=%s, isDefault=%s]",
+				sensorID, type, date, friendlyName, description, isVisible, isDefault);
 	}
 }
