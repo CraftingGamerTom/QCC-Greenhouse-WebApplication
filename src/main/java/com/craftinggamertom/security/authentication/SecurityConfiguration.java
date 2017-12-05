@@ -40,6 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and().authorizeRequests()
 				.antMatchers(GET, "/feed/**").permitAll() // home page
 				.antMatchers(GET, "/").permitAll() // actual home page (redirects to home page)
+				.antMatchers(GET, "/manager/**").authenticated() // manager pages
 				.antMatchers(GET, "/dev/version").permitAll() // dev ops - app version
 				.antMatchers(GET, "/dev/**").authenticated() // dev ops
 				.antMatchers(GET, "/test").authenticated() // for testing

@@ -7,7 +7,6 @@ package com.craftinggamertom.security.authorization;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -17,8 +16,6 @@ import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.MongoDatabaseConnection;
 import com.craftinggamertom.security.authentication.AppUser;
 import com.craftinggamertom.security.authentication.UserInfo;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.MongoTimeoutException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -86,7 +83,7 @@ public class UserAuthority extends Authority {
 				return getUserInformation(theUsersDoc, userInfo); // Will handle anonymous(not signed in)
 			}
 		} catch (MongoTimeoutException mte) { // Could not connect to database
-			System.out.println("(UserAuthority)MongoTimeoutException. Is the database running?");
+			System.out.println("(UserAuthority) MongoTimeoutException. Is the database running?");
 
 			// Creates anonymous AppUser and returns it (so the navigation bar does not say
 			// "null" and break the page
@@ -94,6 +91,7 @@ public class UserAuthority extends Authority {
 					"anonymousUser_familyName", "anonymousUser_gender", "anonymousUser_picture", "anonymousUser_link");
 			HashMap<String, String> userMap = new HashMap<String, String>(); // empty HashMap for AppUser constructor to
 																				// handle with default values
+			userMap.put("_id", null);
 			userMap.put("authority_key", null);
 			userMap.put("join_date", null);
 			userMap.put("last_seen", null);
@@ -173,20 +171,11 @@ public class UserAuthority extends Authority {
 	 */
 	private AppUser getUserInformation(Document theUsersDoc, UserInfo userInfo) {
 		if (userInfo.getId() != "anonymousUser_Id") {
-			ObjectMapper mapper = new ObjectMapper();
-
-			/*
-			 * Read JSON and convert into a Map
-			 */
 			try {
-				HashMap<String, String> userMap = mapper.readValue(theUsersDoc.toJson(),
-						new TypeReference<Map<String, Object>>() {
-						});
-				AppUser user = new AppUser(userInfo, userMap);
-				return user;
+				return new AppUser(theUsersDoc);
 
 			} catch (Exception e) {
-				System.out.println("Trouble reading the user's JSON (UserAuthority.java STACKTRACE:");
+				System.out.println("Trouble reading the user's JSON (UserAuthority) STACKTRACE:");
 				e.printStackTrace();
 			}
 		}
@@ -230,7 +219,7 @@ public class UserAuthority extends Authority {
 		document.putAll(newUser.getAllInformation());
 		collection.insertOne(document);
 
-		return newUser; // Instead of then getting it from the database the user is just returned.
+		return getUserFromDatabase(userInfo); // Instead of then getting it from the database the user is just returned.
 	}
 
 	/**

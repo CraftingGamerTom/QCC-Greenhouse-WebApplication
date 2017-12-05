@@ -1,3 +1,7 @@
+/**
+* Copyright (c) 2017 Thomas Rokicki
+*/
+
 package com.craftinggamertom.security.authentication;
 
 import com.fasterxml.jackson.annotation.JsonCreator;

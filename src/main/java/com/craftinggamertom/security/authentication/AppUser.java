@@ -7,6 +7,8 @@ package com.craftinggamertom.security.authentication;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bson.Document;
+
 /**
  * A object that contains all of the information on a user.
  * 
@@ -21,35 +23,39 @@ public class AppUser {
 	 */
 	private UserInfo userInfo;
 
-	private static String authority_key; // Keyword for authority level
-	private static String join_date; // Date the user was added to the database
-	private static String num_of_observations; // Number of observations the user has created
-	private static String num_of_updates; // Number of updates the user has created
-	private static String last_seen; // Last time the user was known to be online
-	private static String nickname; // Nickname for the user
-	private static String email_address; // Users Email address
-	private static String cell_phone; // Users cell phone number to text - in case of emergency
+	private String database_id; // _id in database
+	private String authority_key; // Keyword for authority level
+	private String join_date; // Date the user was added to the database
+	private String num_of_observations; // Number of observations the user has created
+	private String num_of_updates; // Number of updates the user has created
+	private String last_seen; // Last time the user was known to be online
+	private String nickname; // Nickname for the user
+	private String email_address; // Users Email address
+	private String cell_phone; // Users cell phone number to text - in case of emergency
 
 	// The items below are meant to be implemented later
 	// When they get implemented the entire User collection in the database must be
 	// updated to have these values as they wont exist
 
-	// private static Map<String, String> notification_subscriptions; // A Map of
+	// private Map<String, String> notification_subscriptions; // A Map of
 	// the notifications a user is subscribed to
 	// ([{n1:true},{n2:false}, etc])
-	// private static Map<String, String> recieved_notifications; // A Map of the
+	// private Map<String, String> recieved_notifications; // A Map of the
 	// notifications a user recieved (track type(phone, email,
 	// web), wether it has been opened or not on web, and the notification
 	// object(not sure how that is set up yet but is should have the
 	// date-time, a title, hidden list of recipients and a description)
-	// private static Map<String, String> conversations; // Conversations the user
+	// private Map<String, String> conversations; // Conversations the user
 	// has had (track: messages(time, recipient, sender), hasBeenReadBoolean, and
 	// more?)
-	// private static String num_of_messages; // For display on navigation bar
+	// private String num_of_messages; // For display on navigation bar
 
 	/**
 	 * Creates the AppUser from a map. this is the easiest way to create a user
 	 * based on the information in the database
+	 * 
+	 * Ideally this should only be used for users that are not signed in. Use
+	 * AppUser(Document) constructor otherwise
 	 * 
 	 * @param userMap
 	 * @param userInfo
@@ -60,6 +66,7 @@ public class AppUser {
 
 		// Sets the other information
 		// The defaults are used for a user that is not signed in
+		setDatabaseId(userMap.getOrDefault("_id", "anonymous_db_id"));
 		setAuthority_key(userMap.getOrDefault("authority_key", "anonymous"));
 		setJoin_date(userMap.getOrDefault("join_date", "2017/01/25 00:00:00"));
 		setNum_of_observations(userMap.getOrDefault("num_of_observations", "-1"));
@@ -70,40 +77,68 @@ public class AppUser {
 		setCell_phone(userMap.getOrDefault("cell_phone", "anon_phone"));
 	}
 
+	public AppUser(Document userDoc) {
+
+		// Sets the UserInfo
+		setUserInfo(new UserInfo(userDoc.getString("id"), userDoc.getString("name"), userDoc.getString("given_name"),
+				userDoc.getString("family_name"), userDoc.getString("gender"), userDoc.getString("picture"),
+				userDoc.getString("link")));
+
+		// Sets the other information
+		// The defaults are used for a user that is not signed in
+		setDatabaseId(userDoc.getObjectId("_id").toString());
+		setAuthority_key(userDoc.getString("authority_key"));
+		setJoin_date(userDoc.getString("join_date"));
+		setNum_of_observations(userDoc.getString("num_of_observations"));
+		setNum_of_updates(userDoc.getString("num_of_updates"));
+		setLast_seen(userDoc.getString("last_seen"));
+		setNickname(userDoc.getString("nickname"));
+		setEmail_address(userDoc.getString("email_address"));
+		setCell_phone(userDoc.getString("cell_phone"));
+	}
+
+	private void setDatabaseId(String database_id) {
+		this.database_id = database_id;
+	}
+
 	private void setUserInfo(UserInfo userInfo) {
 		this.userInfo = userInfo;
 	}
 
-	private static void setAuthority_key(String authority_key) {
-		AppUser.authority_key = authority_key;
+	private void setAuthority_key(String authority_key) {
+		this.authority_key = authority_key;
 	}
 
-	private static void setJoin_date(String join_date) {
-		AppUser.join_date = join_date;
+	private void setJoin_date(String join_date) {
+		this.join_date = join_date;
 	}
 
-	private static void setNum_of_observations(String num_of_observations) {
-		AppUser.num_of_observations = num_of_observations;
+	private void setNum_of_observations(String num_of_observations) {
+		this.num_of_observations = num_of_observations;
 	}
 
-	private static void setNum_of_updates(String num_of_updates) {
-		AppUser.num_of_updates = num_of_updates;
+	private void setNum_of_updates(String num_of_updates) {
+		this.num_of_updates = num_of_updates;
 	}
 
-	private static void setLast_seen(String last_seen) {
-		AppUser.last_seen = last_seen;
+	private void setLast_seen(String last_seen) {
+		this.last_seen = last_seen;
 	}
 
-	private static void setNickname(String nickname) {
-		AppUser.nickname = nickname;
+	private void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
-	private static void setEmail_address(String email_address) {
-		AppUser.email_address = email_address;
+	private void setEmail_address(String email_address) {
+		this.email_address = email_address;
 	}
 
-	private static void setCell_phone(String cell_phone) {
-		AppUser.cell_phone = cell_phone;
+	private void setCell_phone(String cell_phone) {
+		this.cell_phone = cell_phone;
+	}
+
+	public String getDatabaseId() {
+		return database_id;
 	}
 
 	public UserInfo getUserInfo() {
@@ -114,31 +149,31 @@ public class AppUser {
 		return authority_key;
 	}
 
-	public static String getJoin_date() {
+	public String getJoin_date() {
 		return join_date;
 	}
 
-	public static String getNum_of_observations() {
+	public String getNum_of_observations() {
 		return num_of_observations;
 	}
 
-	public static String getNum_of_updates() {
+	public String getNum_of_updates() {
 		return num_of_updates;
 	}
 
-	public static String getLast_seen() {
+	public String getLast_seen() {
 		return last_seen;
 	}
 
-	public static String getNickname() {
+	public String getNickname() {
 		return nickname;
 	}
 
-	public static String getEmail_address() {
+	public String getEmail_address() {
 		return email_address;
 	}
 
-	public static String getCell_phone() {
+	public String getCell_phone() {
 		return cell_phone;
 	}
 
@@ -187,6 +222,7 @@ public class AppUser {
 		infoMap.put("link", getLink());
 
 		// Other
+		infoMap.put("_id", getDatabaseId());
 		infoMap.put("authority_key", getAuthority_key());
 		infoMap.put("join_date", getJoin_date());
 		infoMap.put("num_of_observations", getNum_of_observations());

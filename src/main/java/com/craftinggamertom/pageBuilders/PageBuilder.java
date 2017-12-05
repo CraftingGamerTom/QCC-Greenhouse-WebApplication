@@ -101,12 +101,19 @@ public class PageBuilder {
 					+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Admin<span class=\"caret\"></span></a>\r\n"
 					+ "                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n"
 					+ "                            <li><a href=\"/admin/manage/sensors/friendly-names\">Friendly Names</a></li>\r\n"
-					+ "                            <li><a href=\"/admin/manage/emergency-alerts\">Alerts</a></li>\r\n"
+					+ "                            <li><a href=\"/admin/manage/users\">Users</a></li>\r\n"
+					// + " <li><a
+					// href=\"/admin/manage/modules/emergency-alerts\">Alerts</a></li>\r\n"
+					// + " <li><a href=\"/admin/manage/modules/meetings\">Meetings</a></li>\r\n"
 					+ "                        </ul>\r\n" + "                    </li>" + "\r\n";
 
 		}
 		if (managerAuthority.grantAccessGTE(userAuthority)) {
-			managerLinks = "";
+			managerLinks = "\r\n" + "                    <li class=\"dropdown\">\r\n"
+					+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Manager<span class=\"caret\"></span></a>\r\n"
+					+ "                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n"
+					+ "                            <li><a href=\"/manager/manage/users\">Users</a></li>\r\n"
+					+ "                        </ul>\r\n" + "                    </li>" + "\r\n";
 
 		}
 		if (appUserAuthority.grantAccessGTE(userAuthority)) {
