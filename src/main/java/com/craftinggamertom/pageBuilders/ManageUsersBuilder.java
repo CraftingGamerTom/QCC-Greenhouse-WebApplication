@@ -115,6 +115,8 @@ public class ManageUsersBuilder extends PageBuilder {
 				if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Adds admin actions content
 					chart += "                                    <td class=\"text-right\">\r\n"
 							+ "                                        <div class=\"btn-group\">\r\n"
+							+ "                                            	    <button onclick=\"window.location.href='/view/profile/user?"
+							+ theUser.getDatabaseId() + "'\" class=\"btn-success btn btn-xs\">Profile</button>\r\n"
 							+ "                                            	    <button onclick=\"window.location.href='/admin/manage/user?"
 							+ theUser.getDatabaseId() + "'\" class=\"btn-warning btn btn-xs\">Edit</button>\r\n"
 							+ "                                                 <button class=\"btn-danger btn btn-xs press-delete\">Delete</button>\r\n"
