@@ -1,3 +1,7 @@
+/**
+* Copyright (c) 2017 Thomas Rokicki
+*/
+
 package com.craftinggamertom.security.authentication;
 
 import java.io.FileNotFoundException;
@@ -8,7 +12,7 @@ import java.util.Properties;
 public class SecurityConfigurationSingleton {
 
 	private static SecurityConfigurationSingleton instance = null; // Singleton
-	
+
 	private String clientId;
 	private String clientSecret;
 
@@ -24,10 +28,10 @@ public class SecurityConfigurationSingleton {
 	 * readed the configuration file always done in singleton instance
 	 */
 	private void read() {
-		
+
 		// Config file name here
 		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("security.properties");
-		
+
 		try {
 			// Loads File then Loads the properties
 			Properties properties = new Properties();
@@ -36,7 +40,7 @@ public class SecurityConfigurationSingleton {
 			// Sets the configurations - Add properties here
 			clientId = properties.getProperty("google.oauth2.clientId");
 			clientSecret = properties.getProperty("google.oauth2.clientSecret");
-			
+
 			System.out.println("SecurityReader: Security Settings Read / Updated");
 		} catch (FileNotFoundException e) {
 			System.out.println("*** Could not find configuration file");
@@ -48,11 +52,11 @@ public class SecurityConfigurationSingleton {
 			System.out.println("*** Error while attempting to load configuration file");
 			e.printStackTrace();
 		}
-		
+
 		// close stream
 		try {
-		stream.close();
-		}catch(IOException e) {
+			stream.close();
+		} catch (IOException e) {
 			System.out.println("Could not close security configuration stream. IOException: ");
 			e.printStackTrace();
 		}
@@ -71,7 +75,7 @@ public class SecurityConfigurationSingleton {
 	 * Verifies the stored data by printing out the data in the console. Developer
 	 * MUST update tags when config tags are changed.
 	 */
-	public void verify() {
+	private void verify() {
 		System.out.println("** CONFIGURATION VISUAL VERIFICATION **\n*");
 
 		System.out.println("* clientId: " + getClientId());
@@ -79,7 +83,7 @@ public class SecurityConfigurationSingleton {
 
 		System.out.println("*\n** END CONFIGURATION VISUAL VERIFICATION **");
 	}
-	
+
 	// Getters
 
 	public static String getClientId() {
@@ -90,7 +94,6 @@ public class SecurityConfigurationSingleton {
 		return getInstance().getPrivateClientSecret();
 	}
 
-	
 	// Private Getters
 
 	public String getPrivateClientId() {
