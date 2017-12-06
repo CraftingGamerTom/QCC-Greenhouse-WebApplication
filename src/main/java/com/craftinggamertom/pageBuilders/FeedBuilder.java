@@ -7,7 +7,6 @@ package com.craftinggamertom.pageBuilders;
 import org.springframework.ui.Model;
 
 import com.craftinggamertom.security.authorization.PageAuthority;
-import com.craftinggamertom.security.authorization.UserAuthority;
 
 /**
  * 
@@ -24,8 +23,6 @@ public class FeedBuilder extends PageBuilder {
 
 		super.buildPage(model);
 
-		this.model.addAttribute("alert-content", getAlertContent()); // Alert Container just below the navigation bar
-
 		return model;
 	}
 
@@ -34,12 +31,11 @@ public class FeedBuilder extends PageBuilder {
 	 * 
 	 * @return String of content
 	 */
-	private String getAlertContent() {
+	@Override
+	protected String getAlertContent() {
 
-		String content = "";
-
+		String content = super.getAlertContent(); // Gets the super to add onto its alerts
 		PageAuthority unverifiedUserAuthority = new PageAuthority("unverified");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 
 		if (unverifiedUserAuthority.grantAccessEqual(userAuthority)) {
 			content += "\r\n" + "	<div class=\"col-lg-12\">\r\n"

@@ -35,12 +35,16 @@ public class PageBuilder {
 
 	protected Model model;
 
+	protected UserAuthority userAuthority;
+
 	public PageBuilder() {
 
 		// Collects and sets the current Time
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
 		currentTime = dtf.format(now); // 2016/11/16 12:08:43
+
+		userAuthority = new UserAuthority(); // Gets the user to check against
 
 		try {
 			database = MongoDatabaseConnection.getInstance(); // Singleton
@@ -68,6 +72,8 @@ public class PageBuilder {
 		this.model.addAllAttributes(getNavigationBarAttributes());
 		this.model.addAllAttributes(getFooterAttributes());
 
+		this.model.addAttribute("alert-content", getAlertContent()); // Alert Container just below the navigation bar
+
 		return this.model;
 	}
 
@@ -90,8 +96,6 @@ public class PageBuilder {
 		PageAuthority managerAuthority = new PageAuthority("manager");
 		PageAuthority adminAuthority = new PageAuthority("admin");
 		PageAuthority developerAuthority = new PageAuthority("developer");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
-		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
 
 		if (developerAuthority.grantAccessGTE(userAuthority)) {
 			devLinks = "";
@@ -157,7 +161,6 @@ public class PageBuilder {
 		String theHTML = "";
 
 		PageAuthority pageAuthority = new PageAuthority("unverified"); // Sets the credentials needed
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
 
 		if (pageAuthority.grantAccessGTE(userAuthority)) { // If the user is >= "unverified" credentials do work
@@ -272,4 +275,37 @@ public class PageBuilder {
 																// make sure the value is not null
 		return sensor;
 	}
+
+	/**
+	 * For page alerts. Even if the attibute is added the page MUST include the tag
+	 * below
+	 * 
+	 * <%=request.getAttribute("alert-content")%>
+	 * 
+	 * @return the string that makes up the alert
+	 */
+	protected String getAlertContent() {
+		String alert = "";
+
+		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
+
+		System.out.println("DELETE. ID: " + appUser.getId());
+
+		if (!appUser.getId().equals("anonymousUser_Id") && appUser.getDatabaseId().equals("anonymous_db_id")) { // to
+																												// check
+																												// if
+																												// the
+																												// database
+																												// is
+																												// online
+			alert = "<div class=\"row wrapper page-heading\">\r\n" + "	<div class=\"col-lg-12\">\r\n"
+					+ "		<div class=\"alert alert-warning\">\r\n"
+					+ "			<p class=\"alert-link text-center\">Umm..</p>\r\n"
+					+ "			<p class=\"text-center\">You wouldn't happen to have seen a database run by here, have you?</p>\r\n"
+					+ "			<p class=\"text-center\">Contact a server admin to fix this mess.</p>\r\n"
+					+ "		</div>\r\n" + "	</div>\r\n" + "</div>";
+		}
+		return alert;
+	}
+
 }

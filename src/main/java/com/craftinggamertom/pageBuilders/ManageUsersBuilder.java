@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.security.authentication.AppUser;
 import com.craftinggamertom.security.authorization.PageAuthority;
-import com.craftinggamertom.security.authorization.UserAuthority;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
@@ -44,7 +43,6 @@ public class ManageUsersBuilder extends PageBuilder {
 	private String getChartContent() {
 
 		PageAuthority adminUserAuthority = new PageAuthority("admin");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 
 		String chart = "";
 

@@ -75,9 +75,10 @@ public class UserAuthority extends Authority {
 			FindIterable<Document> documents = collection.find(idFilter);
 			Document theUsersDoc = documents.first();
 
-			if (theUsersDoc == null && userInfo.getId() != "anonymousUser_Id") { // If the user does not exist in the
-																					// database and is attempting to
-																					// sign in
+			if (theUsersDoc == null && !userInfo.getId().equals("anonymousUser_Id")) { // If the user does not exist in
+																						// the
+																						// database and is attempting to
+																						// sign in
 				return putUserInDB(collection, userInfo);
 			} else {
 				return getUserInformation(theUsersDoc, userInfo); // Will handle anonymous(not signed in)
@@ -85,23 +86,14 @@ public class UserAuthority extends Authority {
 		} catch (MongoTimeoutException mte) { // Could not connect to database
 			System.out.println("(UserAuthority) MongoTimeoutException. Is the database running?");
 
-			// Creates anonymous AppUser and returns it (so the navigation bar does not say
-			// "null" and break the page
-			UserInfo anonUserInfo = new UserInfo("anonymousUser_Id", "anonymousUser_name", "anonymousUser_givenName",
-					"anonymousUser_familyName", "anonymousUser_gender", "anonymousUser_picture", "anonymousUser_link");
+			// Hashmap filled with null for the App User to handle no database
 			HashMap<String, String> userMap = new HashMap<String, String>(); // empty HashMap for AppUser constructor to
 																				// handle with default values
-			userMap.put("_id", null);
-			userMap.put("authority_key", null);
-			userMap.put("join_date", null);
-			userMap.put("last_seen", null);
-			userMap.put("num_of_observations", null);
-			userMap.put("num_of_updates", null);
-			userMap.put("nickname", null);
-			userMap.put("email_address", null);
-			userMap.put("cell_phone", null);
 
-			return new AppUser(anonUserInfo, userMap);
+			if (!userInfo.getId().equals("anonymousUser_Id")) { // If a user is signed in
+				userMap.put("authority_key", "unverified");
+			}
+			return new AppUser(userInfo, userMap);
 		}
 	}
 
