@@ -1,3 +1,7 @@
+/**
+* Copyright (c) 2017 Thomas Rokicki
+*/
+
 package com.craftinggamertom.controllers;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,5 +59,14 @@ public class AuthenticationController {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
 		return "redirect:/"; // redirect to landing page.
+	}
+
+	/**
+	 * A safe place to send a user who is unauthorized to do something
+	 */
+	@RequestMapping("/unauthorized")
+	public ModelAndView unauthorized(Model model) {
+
+		return new ModelAndView("pages/common/unauthorized"); // unauthorized page
 	}
 }
