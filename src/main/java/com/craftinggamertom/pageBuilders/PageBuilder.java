@@ -289,8 +289,6 @@ public class PageBuilder {
 
 		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
 
-		System.out.println("DELETE. ID: " + appUser.getId());
-
 		if (!appUser.getId().equals("anonymousUser_Id") && appUser.getDatabaseId().equals("anonymous_db_id")) { // to
 																												// check
 																												// if

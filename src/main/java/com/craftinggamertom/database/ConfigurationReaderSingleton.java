@@ -1,3 +1,7 @@
+/**
+* Copyright (c) 2017 Thomas Rokicki
+*/
+
 package com.craftinggamertom.database;
 
 import java.io.FileNotFoundException;
@@ -24,7 +28,7 @@ public class ConfigurationReaderSingleton {
 	private String weeklyDataCollection;
 	private String monthlyDataCollection;
 	private String yearlyDataCollection;
-	
+
 	private String appUserCollection;
 
 	private String domainName;
@@ -41,10 +45,10 @@ public class ConfigurationReaderSingleton {
 	 * readed the configuration file always done in singleton instance
 	 */
 	private void read() {
-		
+
 		// Config file name here
 		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("database.cfg");
-		
+
 		try {
 			// Loads File then Loads the properties
 			Properties properties = new Properties();
@@ -63,7 +67,7 @@ public class ConfigurationReaderSingleton {
 			weeklyDataCollection = properties.getProperty("weeklyDataCollection");
 			monthlyDataCollection = properties.getProperty("monthlyDataCollection");
 			yearlyDataCollection = properties.getProperty("yearlyDataCollection");
-			
+
 			appUserCollection = properties.getProperty("appUserCollection");
 
 			domainName = properties.getProperty("domainName");
@@ -79,11 +83,11 @@ public class ConfigurationReaderSingleton {
 			System.out.println("*** Error while attempting to load configuration file");
 			e.printStackTrace();
 		}
-		
+
 		// close stream
 		try {
-		stream.close();
-		}catch(IOException e) {
+			stream.close();
+		} catch (IOException e) {
 			System.out.println("Could not close configuration stream. IOException: ");
 			e.printStackTrace();
 		}
@@ -107,7 +111,7 @@ public class ConfigurationReaderSingleton {
 
 		System.out.println("* datebaseIP: " + getDatabaseIP());
 		System.out.println("* databasePort: " + getDatabasePort());
-		
+
 		System.out.println("* databaseName: " + getDatabaseName());
 		System.out.println("* sensorNamesCollection: " + getSensorNamesCollection());
 		System.out.println("* liveDataCollection: " + getLiveDataCollection());
@@ -117,7 +121,7 @@ public class ConfigurationReaderSingleton {
 		System.out.println("* weeklyDataCollection: " + getWeeklyDataCollection());
 		System.out.println("* monthlyDataCollection: " + getMonthlyDataCollection());
 		System.out.println("* yearlyDataCollection: " + getYearlyDataCollection());
-		
+
 		System.out.println("* appUserCollection: " + getAppUserCollection());
 
 		System.out.println("* domainName: " + getDomainName());
@@ -170,7 +174,7 @@ public class ConfigurationReaderSingleton {
 	public static String getYearlyDataCollection() {
 		return getInstance().getPrivateYearlyDataCollection();
 	}
-	
+
 	public static String getAppUserCollection() {
 		return getInstance().getPrivateAppUserCollection();
 	}
@@ -181,55 +185,55 @@ public class ConfigurationReaderSingleton {
 
 	// Private Getters
 
-	public String getPrivateDatabaseIP() {
+	private String getPrivateDatabaseIP() {
 		return this.databaseIP;
 	}
 
-	public int getPrivateDatabasePort() {
+	private int getPrivateDatabasePort() {
 		return this.databasePort;
 	}
 
-	public String getPrivateDatabaseName() {
+	private String getPrivateDatabaseName() {
 		return this.databaseName;
 	}
 
-	public String getPrivateSensorNamesCollection() {
+	private String getPrivateSensorNamesCollection() {
 		return this.sensorNamesCollection;
 	}
 
-	public String getPrivateLiveDataCollection() {
+	private String getPrivateLiveDataCollection() {
 		return this.liveDataCollection;
 	}
 
-	public String getPrivateRawDataCollection() {
+	private String getPrivateRawDataCollection() {
 		return this.rawDataCollection;
 	}
 
-	public String getPrivateHourlyDataCollection() {
+	private String getPrivateHourlyDataCollection() {
 		return this.hourlyDataCollection;
 	}
 
-	public String getPrivateDailyDataCollection() {
+	private String getPrivateDailyDataCollection() {
 		return this.dailyDataCollection;
 	}
 
-	public String getPrivateWeeklyDataCollection() {
+	private String getPrivateWeeklyDataCollection() {
 		return this.weeklyDataCollection;
 	}
 
-	public String getPrivateMonthlyDataCollection() {
+	private String getPrivateMonthlyDataCollection() {
 		return this.monthlyDataCollection;
 	}
 
-	public String getPrivateYearlyDataCollection() {
+	private String getPrivateYearlyDataCollection() {
 		return this.yearlyDataCollection;
 	}
-	
+
 	private String getPrivateAppUserCollection() {
 		return this.appUserCollection;
 	}
 
-	public String getPrivateDomainName() {
+	private String getPrivateDomainName() {
 		return this.domainName;
 	}
 }

@@ -202,7 +202,7 @@ public class UserAuthority extends Authority {
 		infoMap.put("num_of_updates", "0");
 		infoMap.put("nickname", userInfo.getName());
 		infoMap.put("email_address", "Enter Your Email");
-		infoMap.put("cell_phone", "(000)000-0000");
+		infoMap.put("cell_phone", "(000) 000-0000");
 
 		AppUser newUser = new AppUser(userInfo, infoMap);
 

@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2017 Thomas Rokicki
+ */
+
 package com.craftinggamertom.controllers;
 
 import org.springframework.stereotype.Controller;
@@ -13,20 +17,15 @@ public class UserController {
 		return "user/postObservation";
 	}
 
-	
 	/**
 	 * Landing page for signed in user accounts
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/user/home", method = RequestMethod.GET)
 	public String goToUserHome() {
 
-		return "redirect:/feed"; //Temp until Organization Feed page is implemented
+		return "redirect:/feed"; // Temp until Organization Feed page is implemented
 	}
 
-	@RequestMapping(value = "/user/testing", method = RequestMethod.GET)
-	public String goToTesting() {
-
-		return "default/welcome";
-	}
 }

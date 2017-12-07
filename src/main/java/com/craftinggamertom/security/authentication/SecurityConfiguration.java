@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2017 Thomas Rokicki
+ */
+
 package com.craftinggamertom.security.authentication;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -38,15 +42,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.addFilterAfter(oAuth2ClientContextFilter(), AbstractPreAuthenticatedProcessingFilter.class)
 				.addFilterAfter(openIdConnectAuthenticationFilter(), OAuth2ClientContextFilter.class)
 				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and().authorizeRequests()
-				.antMatchers(GET, "/feed/**").permitAll() // home page
 				.antMatchers(GET, "/").permitAll() // actual home page (redirects to home page)
-				.antMatchers(GET, "/manager/**").authenticated() // manager pages
-				.antMatchers(GET, "/dev/version").permitAll() // dev ops - app version
-				.antMatchers(GET, "/dev/**").authenticated() // dev ops
-				.antMatchers(GET, "/test").authenticated() // for testing
-				.antMatchers(GET, "/test2").permitAll() // for testing
+				.antMatchers(GET, "/view/**").permitAll() // view pages
+				.antMatchers(GET, "/feed/**").permitAll() // home page
+				.antMatchers(GET, "/test").authenticated() // remove
+				.antMatchers(GET, "/test2").permitAll() // remove
 				.antMatchers(GET, "/user/**").authenticated() // user panels
-				.antMatchers(GET, "/admin/**").authenticated().antMatchers(GET, "/test-userinfo").authenticated() // for testing
+				.antMatchers(GET, "/manager/**").authenticated() // Manager pages
+				.antMatchers(GET, "/admin/**").authenticated() // Admin Pages
+				.antMatchers(GET, "/test-userinfo").authenticated() // remove
+				.antMatchers(GET, "/dev/**").authenticated() // - dev ops
+				.antMatchers(GET, "/dev/version").permitAll() // - app version
 				.antMatchers(GET, "/test-login").authenticated().and().formLogin().loginPage("/login").permitAll().and()
 				.logout().logoutSuccessUrl("/login?logout").permitAll();
 	}
