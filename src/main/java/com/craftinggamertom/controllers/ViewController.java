@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2017 Thomas Rokicki
+ */
+
 package com.craftinggamertom.controllers;
 
 import java.time.ZonedDateTime;
@@ -11,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.craftinggamertom.pageBuilders.DataGraphBuilder;
 import com.craftinggamertom.pageBuilders.LiveDataBuilder;
+import com.craftinggamertom.pageBuilders.PageBuilder;
 import com.craftinggamertom.pageBuilders.RawDataBuilder;
 
 @Controller
@@ -114,6 +119,32 @@ public class ViewController {
 		}
 
 		return new ModelAndView("view/raw-data");
+	}
+
+	/**
+	 * Handles the request to view a users profile
+	 * 
+	 * @param model
+	 *            for the variables
+	 * @return the page containing loaded data
+	 */
+	@RequestMapping(value = "profile/user")
+	public ModelAndView handleProfileRequest(@RequestParam(value = "dbid", defaultValue = "me") String databaseId,
+			Model model) {
+		PageBuilder pb = new PageBuilder();
+
+		try {
+			pb.buildPage(model);
+
+			// UserProfileBuilder response = new UserProfileBuilder();
+			// model = response.buildPage(databaseId, model);
+
+		} catch (Exception e) {
+			System.out.println("Exception: ");
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("pages/user/profile");
 	}
 
 	/**
