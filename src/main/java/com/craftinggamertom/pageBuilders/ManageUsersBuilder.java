@@ -115,7 +115,7 @@ public class ManageUsersBuilder extends PageBuilder {
 							+ "                                        <div class=\"btn-group\">\r\n"
 							+ "                                            	    <button onclick=\"window.location.href='/view/profile/user?"
 							+ theUser.getDatabaseId() + "'\" class=\"btn-success btn btn-xs\">Profile</button>\r\n"
-							+ "                                            	    <button onclick=\"window.location.href='/admin/manage/user?"
+							+ "                                            	    <button onclick=\"window.location.href='/admin/manage/users/user?"
 							+ theUser.getDatabaseId() + "'\" class=\"btn-warning btn btn-xs\">Edit</button>\r\n"
 							+ "                                                 <button class=\"btn-danger btn btn-xs press-delete\">Delete</button>\r\n"
 							+ "                                        </div>\r\n"

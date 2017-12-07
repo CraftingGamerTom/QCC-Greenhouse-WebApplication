@@ -1,3 +1,7 @@
+/**
+* Copyright (c) 2017 Thomas Rokicki
+*/
+
 package com.craftinggamertom.controllers;
 
 import java.net.URISyntaxException;
@@ -11,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.craftinggamertom.pageBuilders.ManageFriendlyNamesBuilder;
+import com.craftinggamertom.pageBuilders.PageBuilder;
+import com.craftinggamertom.security.authorization.PageAuthority;
+import com.craftinggamertom.security.authorization.UserAuthority;
 import com.craftinggamertom.updater.FriendlyNamesUpdater;
 
 @Controller
@@ -114,6 +121,97 @@ public class AdminController {
 		}
 
 		return new ModelAndView("admin/test");
+	}
+
+	/**
+	 * Handles the request to view the sensor data graph UI
+	 * 
+	 * @param sensorID
+	 *            The ID as defined by the raspberry pi and held in the database
+	 * @param timing
+	 *            The timing to gather data from the appropriate table
+	 * @param startDate
+	 *            The first date for the data to be shown
+	 * @param model
+	 * @return the page containing loaded data
+	 */
+	@RequestMapping(value = "manage/users/user", method = RequestMethod.GET)
+	public ModelAndView handleEditUserRequest(@RequestParam(value = "dbid", defaultValue = "me") String dbid,
+			Model model) {
+
+		PageAuthority adminUserAuthority = new PageAuthority("admin");
+		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+
+		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+			try {
+				PageBuilder response = new PageBuilder();
+				// ManageEditUserBuilder response = new ManageEditUserBuilder();
+				model = response.buildPage(model);
+
+			} catch (Exception e) {
+				System.out.println("Exception: ");
+				e.printStackTrace();
+			}
+			return new ModelAndView("pages/manager/manage/user-edit");
+		} else { // if not authorized to be on this page
+
+			PageBuilder response = new PageBuilder();
+			response.buildPage(model);
+
+			return new ModelAndView("pages/common/unauthorized"); // unauthorized page
+		}
+	}
+
+	/**
+	 * Handles the request to view the sensor data graph UI
+	 * 
+	 * @param sensorID
+	 *            The ID as defined by the raspberry pi and held in the database
+	 * @param timing
+	 *            The timing to gather data from the appropriate table
+	 * @param startDate
+	 *            The first date for the data to be shown
+	 * @param model
+	 * @return the page containing loaded data
+	 */
+	@RequestMapping(value = "manage/users/user/update", method = RequestMethod.GET)
+	public String handleUpdateUserRequest(@RequestParam(value = "dbid", defaultValue = "me") String dbid,
+			@RequestParam(value = "authLevel", defaultValue = "default") String authLevel,
+			@RequestParam(value = "email", defaultValue = "default") String email,
+			@RequestParam(value = "phoneNum", defaultValue = "default") String phoneNum,
+			@RequestParam(value = "nickname", defaultValue = "default") String nickname, Model model) {
+
+		String redirectUrl = ""; // initialize
+
+		PageAuthority adminUserAuthority = new PageAuthority("admin");
+		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+
+		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+			try {
+				// AppUserUpdater updater = new AppUserUpdater();
+				// updater.updateWith(dbid, authLevel, email, phoneNum, nickname);
+
+			} catch (Exception e) {
+				System.out.println("Exception: ");
+				e.printStackTrace();
+			}
+			if (dbid.equals("me")) {
+				redirectUrl = "/admin/manage/users/user?" + userAuthority.getUser().getDatabaseId(); // Sends user back
+																										// to
+																										// self if no
+																										// params
+			} else {
+				redirectUrl = "/admin/manage/users/user?" + dbid; // Sends user back to user view
+			}
+
+		} else { // if not authorized to be on this page
+
+			PageBuilder response = new PageBuilder();
+			response.buildPage(model);
+
+			redirectUrl = "/unauthorized";
+		}
+		return "redirect:" + redirectUrl;
 	}
 
 	/**

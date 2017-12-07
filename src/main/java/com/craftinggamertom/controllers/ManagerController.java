@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.craftinggamertom.pageBuilders.ManageUsersBuilder;
@@ -42,14 +43,14 @@ public class ManagerController {
 	 * @return the page containing loaded data
 	 */
 	@RequestMapping(value = "manage/users", method = RequestMethod.GET)
-	public ModelAndView handleManageUsersRequest(Model model) {
+	public ModelAndView handleManageUsersRequest(@RequestParam(value = "dbid", defaultValue = "me") String databaseId,
+			Model model) {
 
 		PageAuthority adminUserAuthority = new PageAuthority("manager");
 		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 
 		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
 			try {
-				// make a ManageFriendlyNamesBuilder object and build page
 				ManageUsersBuilder response = new ManageUsersBuilder();
 				model = response.buildPage(model);
 
@@ -66,4 +67,5 @@ public class ManagerController {
 			return new ModelAndView("pages/common/unauthorized"); // unauthorized page
 		}
 	}
+
 }
