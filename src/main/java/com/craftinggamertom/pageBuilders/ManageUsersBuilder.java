@@ -110,17 +110,19 @@ public class ManageUsersBuilder extends PageBuilder {
 						+ "<img alt=\"image\" class=\"img-sm\" style=\"width:18px;height:18px;\" src=\""
 						+ theUser.getPicture() + "\" />\r\n" + "                                    </td>\r\n";
 
-				if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Adds admin actions content
-					chart += "                                    <td class=\"text-right\">\r\n"
-							+ "                                        <div class=\"btn-group\">\r\n"
-							+ "                                            	    <button onclick=\"window.location.href='/view/profile/user?"
-							+ theUser.getDatabaseId() + "'\" class=\"btn-success btn btn-xs\">Profile</button>\r\n"
-							+ "                                            	    <button onclick=\"window.location.href='/admin/manage/users/user?"
+				// Control Buttons
+				chart += "                                    <td class=\"text-right\">\r\n"
+						+ "                                        <div class=\"btn-group\">\r\n"
+						+ "                                            	    <button onclick=\"window.location.href='/view/profile/user?"
+						+ theUser.getDatabaseId() + "'\" class=\"btn-success btn btn-xs\">Profile</button>\r\n";
+				if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Adds admin actions
+					chart += "                                            	    <button onclick=\"window.location.href='/admin/manage/users/user?"
 							+ theUser.getDatabaseId() + "'\" class=\"btn-warning btn btn-xs\">Edit</button>\r\n"
 							+ "                                                 <button class=\"btn-danger btn btn-xs press-delete\">Delete</button>\r\n"
-							+ "                                        </div>\r\n"
-							+ "                                    </td>\r\n" + "                                </tr>";
+							+ "                                        </div>\r\n";
 				}
+				chart += "                                    </td>\r\n"; // Finishes Control Buttons
+				chart += "                                </tr>"; // Finishes row
 			}
 
 			// Closes chart
