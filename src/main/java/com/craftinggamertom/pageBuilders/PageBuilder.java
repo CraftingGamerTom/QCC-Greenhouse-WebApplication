@@ -175,7 +175,7 @@ public class PageBuilder {
 					+ "<img alt=\"image\" class=\"img-sm\" style=\"width:18px;height:18px;\" src=\""
 					+ appUser.getPicture() + "\" />\r\n" + appUser.getName() + "<span class=\"caret\"></span></a>\r\n"
 					+ "            				<ul role=\"menu\" class=\"dropdown-menu\">\r\n"
-					+ "                           	<li><a href=\"/user/profile\">Profile</a></li>\r\n"
+					+ "                           	<li><a href=\"/view/profile/user\">Profile</a></li>\r\n"
 					// + " <li><a href=\"/user/organizations\">Organizations</a></li>\r\n"
 					// + " <li><a href=\"/user/settings">Settings</a></li>\r\n"
 					+ "                        		<li>\r\n"
