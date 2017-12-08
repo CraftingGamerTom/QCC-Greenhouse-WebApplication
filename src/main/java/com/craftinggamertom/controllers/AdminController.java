@@ -152,7 +152,7 @@ public class AdminController {
 				System.out.println("Exception: ");
 				e.printStackTrace();
 			}
-			return new ModelAndView("pages/manager/manage/user-edit");
+			return new ModelAndView("pages/admin/manage/user-edit");
 		} else { // if not authorized to be on this page
 
 			PageBuilder response = new PageBuilder();
