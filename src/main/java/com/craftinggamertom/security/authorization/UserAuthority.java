@@ -208,7 +208,7 @@ public class UserAuthority extends Authority {
 
 		// Add the user to the collection
 		Document document = new Document();
-		document.putAll(newUser.getAllInformation());
+		document.putAll(newUser.getInformationToPutInDatabase());
 		collection.insertOne(document);
 
 		return getUserFromDatabase(userInfo); // Instead of then getting it from the database the user is just returned.

@@ -209,6 +209,17 @@ public class AppUser {
 		return userInfo.getToken();
 	}
 
+	/**
+	 * Gets the information about the AppUser in the form of a map.
+	 * 
+	 * This method includes the database id for the user ("_id")
+	 * 
+	 * IMPORTANT: Do NOT use this to create a new user. The _id must be defined by
+	 * the database. If you use this method to create a new AppUser in the database
+	 * their _id will be wrong.
+	 * 
+	 * @return A Map that contains all the AppUser's information
+	 */
 	public Map<String, String> getAllInformation() {
 		HashMap<String, String> infoMap = new HashMap<String, String>();
 
@@ -223,6 +234,39 @@ public class AppUser {
 
 		// Other
 		infoMap.put("_id", getDatabaseId());
+		infoMap.put("authority_key", getAuthority_key());
+		infoMap.put("join_date", getJoin_date());
+		infoMap.put("num_of_observations", getNum_of_observations());
+		infoMap.put("num_of_updates", getNum_of_updates());
+		infoMap.put("last_seen", getLast_seen());
+		infoMap.put("nickname", getNickname());
+		infoMap.put("email_address", getEmail_address());
+		infoMap.put("cell_phone", getCell_phone());
+
+		return infoMap;
+	}
+
+	/**
+	 * This method gets the information to create a new user in the database.
+	 * 
+	 * It does not include the users database id ("_id") so that the database can
+	 * create a unique id for the user
+	 * 
+	 * @return information needed for the database to create a new user
+	 */
+	public Map<String, String> getInformationToPutInDatabase() {
+		HashMap<String, String> infoMap = new HashMap<String, String>();
+
+		// UserInfo
+		infoMap.put("id", getId());
+		infoMap.put("name", getName());
+		infoMap.put("given_name", getGivenName());
+		infoMap.put("family_name", getFamilyName());
+		infoMap.put("gender", getGender());
+		infoMap.put("picture", getPicture());
+		infoMap.put("link", getLink());
+
+		// Other (Does not include _id on purpose)
 		infoMap.put("authority_key", getAuthority_key());
 		infoMap.put("join_date", getJoin_date());
 		infoMap.put("num_of_observations", getNum_of_observations());
