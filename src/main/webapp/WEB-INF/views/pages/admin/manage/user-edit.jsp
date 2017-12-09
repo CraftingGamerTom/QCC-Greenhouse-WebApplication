@@ -84,8 +84,11 @@
     <!-- Select2 -->
     <script src="<c:url value="/resources/js/plugins/select2/select2.full.min.js"/>"></script>
 
+	<!-- Puts the current authority level in as a place marker -->
 	<script>
     $(".auth_level_select").select2({
+    	placeholder: "<%=request.getAttribute("authority_key")%>",
+    	allowClear: true
     });
 
     </script>

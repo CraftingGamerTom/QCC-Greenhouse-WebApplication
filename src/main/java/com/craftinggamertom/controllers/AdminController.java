@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.craftinggamertom.pageBuilders.ManageEditUserBuilder;
 import com.craftinggamertom.pageBuilders.ManageFriendlyNamesBuilder;
 import com.craftinggamertom.pageBuilders.PageBuilder;
 import com.craftinggamertom.security.authorization.PageAuthority;
@@ -124,14 +125,10 @@ public class AdminController {
 	}
 
 	/**
-	 * Handles the request to view the sensor data graph UI
+	 * The page allows the admin or higher to make changes to the users metadata
 	 * 
-	 * @param sensorID
-	 *            The ID as defined by the raspberry pi and held in the database
-	 * @param timing
-	 *            The timing to gather data from the appropriate table
-	 * @param startDate
-	 *            The first date for the data to be shown
+	 * @param dbid
+	 *            is the id for the user _id object
 	 * @param model
 	 * @return the page containing loaded data
 	 */
@@ -144,9 +141,8 @@ public class AdminController {
 
 		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
 			try {
-				PageBuilder response = new PageBuilder();
-				// ManageEditUserBuilder response = new ManageEditUserBuilder();
-				model = response.buildPage(model);
+				ManageEditUserBuilder response = new ManageEditUserBuilder();
+				model = response.buildPage(dbid, model);
 
 			} catch (Exception e) {
 				System.out.println("Exception: ");
@@ -163,16 +159,20 @@ public class AdminController {
 	}
 
 	/**
-	 * Handles the request to view the sensor data graph UI
+	 * This is the endpoint for updating a user's meta data
 	 * 
-	 * @param sensorID
-	 *            The ID as defined by the raspberry pi and held in the database
-	 * @param timing
-	 *            The timing to gather data from the appropriate table
-	 * @param startDate
-	 *            The first date for the data to be shown
+	 * @param dbid
+	 *            : _id of the user to be updated
+	 * @param authLevel
+	 *            to replace old
+	 * @param email
+	 *            to replace old
+	 * @param phoneNum
+	 *            to replace old
+	 * @param nickname
+	 *            to replace old
 	 * @param model
-	 * @return the page containing loaded data
+	 * @return
 	 */
 	@RequestMapping(value = "manage/users/user/update", method = RequestMethod.GET)
 	public String handleUpdateUserRequest(@RequestParam(value = "dbid", defaultValue = "me") String dbid,
@@ -195,13 +195,12 @@ public class AdminController {
 				System.out.println("Exception: ");
 				e.printStackTrace();
 			}
+			// If no dbid was set then the edit user page for the admin who made the call is
+			// loaded
 			if (dbid.equals("me")) {
-				redirectUrl = "/admin/manage/users/user?" + userAuthority.getUser().getDatabaseId(); // Sends user back
-																										// to
-																										// self if no
-																										// params
+				redirectUrl = "/admin/manage/users/user?dbid=" + userAuthority.getUser().getDatabaseId();
 			} else {
-				redirectUrl = "/admin/manage/users/user?" + dbid; // Sends user back to user view
+				redirectUrl = "/admin/manage/users/user?dbid=" + dbid; // Sends user back to user view
 			}
 
 		} else { // if not authorized to be on this page

@@ -2,7 +2,7 @@
 	<div class="ibox float-e-margins">
 		<div class="ibox-title">
 			<h5>
-				Edit User <small>John Smith</small>
+				Edit User <small><%=request.getAttribute("name")%></small>
 			</h5>
 		</div>
 		<div class="ibox-content">
@@ -11,7 +11,8 @@
 					<label class="col-sm-2 control-label">First</label>
 
 					<div class="col-sm-4">
-						<input type="text" disabled="" placeholder="John"
+						<input type="text" disabled=""
+							placeholder="<%=request.getAttribute("given_name")%>"
 							class="form-control">
 					</div>
 				</div>
@@ -20,7 +21,8 @@
 					<label class="col-sm-2 control-label">Last</label>
 
 					<div class="col-sm-4">
-						<input type="text" disabled="" placeholder="Smith"
+						<input type="text" disabled=""
+							placeholder="<%=request.getAttribute("family_name")%>"
 							class="form-control">
 					</div>
 				</div>
@@ -29,7 +31,8 @@
 					<label class="col-sm-2 control-label">Database Id</label>
 
 					<div class="col-sm-4">
-						<input type="text" disabled="" placeholder="3945683409209250235"
+						<input type="text" disabled=""
+							placeholder="<%=request.getAttribute("_id")%>"
 							class="form-control">
 					</div>
 				</div>
@@ -38,7 +41,8 @@
 					<label class="col-sm-2 control-label">Join Date</label>
 
 					<div class="col-sm-4">
-						<input type="text" disabled="" placeholder="2017/01/25 00:00:00"
+						<input type="text" disabled=""
+							placeholder="<%=request.getAttribute("join_date")%>"
 							class="form-control">
 					</div>
 				</div>
@@ -47,7 +51,8 @@
 					<label class="col-sm-2 control-label">Last Seen</label>
 
 					<div class="col-sm-4">
-						<input type="text" disabled="" placeholder="2017/01/25 00:00:00"
+						<input type="text" disabled=""
+							placeholder="<%=request.getAttribute("last_seen")%>"
 							class="form-control">
 					</div>
 				</div>
@@ -57,7 +62,8 @@
 						Observations</label>
 
 					<div class="col-sm-4">
-						<input type="text" disabled="" placeholder="12"
+						<input type="text" disabled=""
+							placeholder="<%=request.getAttribute("num_of_observations")%>"
 							class="form-control">
 					</div>
 				</div>
@@ -66,7 +72,8 @@
 					<label class="col-sm-2 control-label">Number of Updates</label>
 
 					<div class="col-sm-4">
-						<input type="text" disabled="" placeholder="28"
+						<input type="text" disabled=""
+							placeholder="<%=request.getAttribute("num_of_updates")%>"
 							class="form-control">
 					</div>
 				</div>
@@ -78,15 +85,10 @@
 					<div class="col-sm-4">
 						<p>This is the Authorization level for the user. Proceed with
 							caution.</p>
-						<select class="auth_level_select form-control" name="authLevel" id="authLevel">
-							<option value="Bahamas">Bahamas</option>
-							<option value="Bahrain">Bahrain</option>
-							<option value="Bangladesh">Bangladesh</option>
-							<option value="Barbados">Barbados</option>
-							<option value="Belarus">Belarus</option>
-							<option value="Belgium">Belgium</option>
-							<option value="Belize">Belize</option>
-							<option value="Benin">Benin</option>
+						<select class="auth_level_select form-control" name="authLevel"
+							id="authLevel">
+							<option></option>
+							<%=request.getAttribute("auth-options")%>
 						</select>
 
 					</div>
@@ -96,7 +98,9 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label">Email</label>
 					<div class="col-sm-4">
-						<input type="email" placeholder="Enter email" class="form-control" name="email" id="email">
+						<input type="email"
+							placeholder="<%=request.getAttribute("email_address")%>"
+							class="form-control" name="email" id="email">
 					</div>
 				</div>
 				<div class="hr-line-dashed"></div>
@@ -105,7 +109,8 @@
 					<label class="col-sm-2 control-label">Phone</label>
 					<div class="col-sm-4">
 						<input type="text" class="form-control" data-mask="(999) 999-9999"
-							placeholder="(774) 886-1059" name="phoneNum" id="phoneNum">
+							placeholder="<%=request.getAttribute("cell_phone")%>"
+							name="phoneNum" id="phoneNum">
 					</div>
 				</div>
 				<div class="hr-line-dashed"></div>
@@ -113,17 +118,19 @@
 					<label class="col-sm-2 control-label">Nickname</label>
 
 					<div class="col-sm-4">
-						<input type="text" placeholder="Johnny" class="form-control" name="nickname" id="nickname">
+						<input type="text"
+							placeholder="<%=request.getAttribute("nickname")%>"
+							class="form-control" name="nickname" id="nickname">
 					</div>
 				</div>
 				<div class="hr-line-dashed"></div>
-				
-				<input type="hidden" value="SET-VALUE-IN-JSPF" name="dbid" id="dbid" />
-				
-				<input id="submit-button" class="btn btn-primary pull-right btn-sm"
-					type="submit" value="Update"> <a
+
+				<input type="hidden" value="<%=request.getAttribute("_id")%>"
+					name="dbid" id="dbid" /> <input id="submit-button"
+					class="btn btn-primary pull-right btn-sm" type="submit"
+					value="Update"> <a
 					class="btn btn-outline btn-danger pull-left btn-sm"
-					href="user/save">Go Back</a>
+					href="/manager/manage/users">Go Back</a>
 				<div class="clearfix"></div>
 			</form>
 		</div>
