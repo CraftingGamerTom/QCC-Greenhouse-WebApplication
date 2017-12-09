@@ -67,6 +67,10 @@ public class AuthenticationController {
 	@RequestMapping("/unauthorized")
 	public ModelAndView unauthorized(Model model) {
 
+
+		PageBuilder response = new PageBuilder();
+		response.buildPage(model);
+		
 		return new ModelAndView("pages/common/unauthorized"); // unauthorized page
 	}
 }
