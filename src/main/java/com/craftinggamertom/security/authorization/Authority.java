@@ -4,6 +4,9 @@
 
 package com.craftinggamertom.security.authorization;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
  * 
  * This object handles authority levels for authorization. This is implemented
@@ -14,40 +17,38 @@ package com.craftinggamertom.security.authorization;
  */
 public class Authority {
 
+	private Map<String, Integer> authLevels = new TreeMap<String, Integer>();
 	private int authorityLevel;
 
 	/**
-	 * Constructor
+	 * Constructs the TreeMap of authorityLevels. Puts all the authority levels into
+	 * a Map
 	 */
 	public Authority() {
+		authLevels.put("anonymous", 1);
+		authLevels.put("unverified", 2);
+		authLevels.put("user", 3);
+		authLevels.put("manager", 4);
+		authLevels.put("admin", 5);
+		authLevels.put("developer", 6);
 	}
 
 	/**
-	 * sets the authority level for it to be compared
+	 * Sets the authority level for it to be compared
 	 * 
 	 * @param keyword
 	 */
 	protected void setAuthorityLevel(String keyword) {
 		try {
-			if (keyword.equals("anonymous")) {
-				this.authorityLevel = 0;
-			} else if (keyword.equals("unverified")) {
-				this.authorityLevel = 1;
-			} else if (keyword.equals("user")) {
-				this.authorityLevel = 2;
-			} else if (keyword.equals("manager")) {
-				this.authorityLevel = 3;
-			} else if (keyword.equals("admin")) {
-				this.authorityLevel = 4;
-			} else if (keyword.equals("developer")) {
-				this.authorityLevel = 5;
+			if (authLevels.containsKey(keyword)) {
+				authorityLevel = authLevels.get(keyword);
 			} else { // SHOULD NEVER HAPPEN (would be caused by typo)
 				System.out.println("INVALID AUTHORITY LEVEL KEYWORD!");
 				this.authorityLevel = -1;
 			}
 		} catch (NullPointerException nullE) {
 			System.out.println("(Authority) NullPointerException: No keyword was found. Is the database running?");
-			setAuthorityLevel("anonymous"); // Sets the authority level
+			setAuthorityLevel("anonymous"); // calls self to set the authority level
 		}
 	}
 
@@ -60,6 +61,16 @@ public class Authority {
 	 */
 	protected int getAuthorityLevel() {
 		return authorityLevel;
+	}
+
+	/**
+	 * The map contains all the authority levels and their corresponding integer
+	 * levels.
+	 * 
+	 * @return A Map with key value pair <"AuthLevel", level>
+	 */
+	public Map<String, Integer> getLevelsList() {
+		return authLevels;
 	}
 
 }
