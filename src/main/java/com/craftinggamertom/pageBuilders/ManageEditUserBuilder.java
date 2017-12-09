@@ -85,8 +85,11 @@ public class ManageEditUserBuilder extends PageBuilder {
 		Map<Integer, String> numberSortLevels = new TreeMap<Integer, String>();
 
 		// Puts the levels in authority level order (they are originally alphabetical)
+		// Does not add "anonymous" since this will break the user if it is chosen.
 		for (Map.Entry<String, Integer> m : alphebetSortLevels.entrySet()) {
-			numberSortLevels.put(m.getValue(), m.getKey());
+			if (!m.getKey().equals("anonymous")) {
+				numberSortLevels.put(m.getValue(), m.getKey());
+			}
 		}
 		for (Map.Entry<Integer, String> m : numberSortLevels.entrySet()) {
 			html += "<option value=\"" + m.getValue() + "\">" + m.getValue() + "</option>\r\n";

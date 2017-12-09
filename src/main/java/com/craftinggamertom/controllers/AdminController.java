@@ -19,6 +19,7 @@ import com.craftinggamertom.pageBuilders.ManageFriendlyNamesBuilder;
 import com.craftinggamertom.pageBuilders.PageBuilder;
 import com.craftinggamertom.security.authorization.PageAuthority;
 import com.craftinggamertom.security.authorization.UserAuthority;
+import com.craftinggamertom.updater.AppUserUpdater;
 import com.craftinggamertom.updater.FriendlyNamesUpdater;
 
 @Controller
@@ -84,7 +85,7 @@ public class AdminController {
 			@RequestParam(value = "description", required = true) String sensorDescription,
 			@RequestParam(value = "friendly-name", required = true) String friendlyName,
 			@RequestParam(value = "is-visible", defaultValue = "0") String isVisible,
-			@RequestParam(value = "is-default", defaultValue = "0") String isDefaultSensor, Model model) {
+			@RequestParam(value = "is-default", defaultValue = "0") String isDefaultSensor) {
 
 		FriendlyNamesUpdater nameUpdater = new FriendlyNamesUpdater();
 		nameUpdater.updateWith(sensorID, sensorDescription, friendlyName, isVisible, isDefaultSensor);
@@ -179,34 +180,25 @@ public class AdminController {
 			@RequestParam(value = "authLevel", defaultValue = "default") String authLevel,
 			@RequestParam(value = "email", defaultValue = "default") String email,
 			@RequestParam(value = "phoneNum", defaultValue = "default") String phoneNum,
-			@RequestParam(value = "nickname", defaultValue = "default") String nickname, Model model) {
+			@RequestParam(value = "nickname", defaultValue = "default") String nickname) {
 
 		String redirectUrl = ""; // initialize
 
 		PageAuthority adminUserAuthority = new PageAuthority("admin");
 		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 
+		// Makes sure the _id is valid
+		if (dbid.equals("me")) {
+			dbid = userAuthority.getUser().getDatabaseId();
+		}
+
 		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
-			try {
-				// AppUserUpdater updater = new AppUserUpdater();
-				// updater.updateWith(dbid, authLevel, email, phoneNum, nickname);
 
-			} catch (Exception e) {
-				System.out.println("Exception: ");
-				e.printStackTrace();
-			}
-			// If no dbid was set then the edit user page for the admin who made the call is
-			// loaded
-			if (dbid.equals("me")) {
-				redirectUrl = "/admin/manage/users/user?dbid=" + userAuthority.getUser().getDatabaseId();
-			} else {
-				redirectUrl = "/admin/manage/users/user?dbid=" + dbid; // Sends user back to user view
-			}
+			AppUserUpdater updater = new AppUserUpdater();
+			updater.updateWith(dbid, authLevel, email, phoneNum, nickname);
 
+			redirectUrl = "/admin/manage/users/user?dbid=" + dbid; // Sends user back to user view
 		} else { // if not authorized to be on this page
-
-			PageBuilder response = new PageBuilder();
-			response.buildPage(model);
 
 			redirectUrl = "/unauthorized";
 		}
