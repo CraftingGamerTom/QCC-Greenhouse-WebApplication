@@ -8,6 +8,7 @@ import static org.springframework.http.HttpMethod.GET;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -39,6 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		// http.csrf().disable(); //Only enable when testing REST API on Development
+
 		http.addFilterAfter(oAuth2ClientContextFilter(), AbstractPreAuthenticatedProcessingFilter.class)
 				.addFilterAfter(openIdConnectAuthenticationFilter(), OAuth2ClientContextFilter.class)
 				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint()).and().authorizeRequests()
@@ -53,6 +56,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(GET, "/test-userinfo").authenticated() // remove
 				.antMatchers(GET, "/dev/**").authenticated() // - dev ops
 				.antMatchers(GET, "/dev/version").permitAll() // - app version
+				.antMatchers(HttpMethod.DELETE, "/api/**").authenticated() // - api delete functions
+				.antMatchers(HttpMethod.POST, "/api/**").authenticated() // - api post functions
+				.antMatchers(HttpMethod.PUT, "/api/**").authenticated() // - api put functions
+				.antMatchers(HttpMethod.PATCH, "/api/**").authenticated() // - api patch functions
+				.antMatchers(HttpMethod.GET, "/api/**").authenticated() // - api get functions
 				.antMatchers(GET, "/test-login").authenticated().and().formLogin().loginPage("/login").permitAll().and()
 				.logout().logoutSuccessUrl("/login?logout").permitAll();
 	}
