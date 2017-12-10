@@ -116,13 +116,16 @@ public class ManageUsersBuilder extends PageBuilder {
 						+ "                                            	    <button onclick=\"window.location.href='/view/profile/user?"
 						+ theUser.getDatabaseId() + "'\" class=\"btn-success btn btn-xs\">Profile</button>\r\n";
 				if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Adds admin actions
-					chart += "                                            	    <button onclick=\"window.location.href='/admin/manage/users/user?"
+					chart += "                                            	    <button onclick=\"window.location.href='/admin/manage/users/user?dbid="
 							+ theUser.getDatabaseId() + "'\" class=\"btn-warning btn btn-xs\">Edit</button>\r\n"
-							+ "                                                 <button class=\"btn-danger btn btn-xs press-delete\">Delete</button>\r\n"
-							+ "                                        </div>\r\n";
+							+ "                                                 <button class=\"btn-danger btn btn-xs\" onclick=\"delete_onclick('"
+							+ theUser.getDatabaseId() + "')\">Delete</button>\r\n";
 				}
-				chart += "                                    </td>\r\n"; // Finishes Control Buttons
-				chart += "                                </tr>"; // Finishes row
+				// Finishes Control Buttons
+				chart += "                                        </div>\r\n"
+						+ "                                    </td>\r\n";
+				// Finishes Row
+				chart += "                                </tr>";
 			}
 
 			// Closes chart

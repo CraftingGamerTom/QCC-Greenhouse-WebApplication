@@ -4,6 +4,11 @@
 <!-- Head starts in header.jspf -->
 <%@ include file="../../../common/header.jspf"%>
 
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+
+
+
 <link href="<c:url value="/resources/css/animate.css"/>"
 	rel="stylesheet">
 <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet">
@@ -88,27 +93,73 @@
 			$('.footable').footable();
 
 		});
+	</script>
+	<!-- For deleting user -->
+	<script type="text/javascript">
+		function delete_onclick(id) {
 
-		$('.press-delete')
-				.click(
-						function() {
-							swal(
-									{
-										title : "Are you sure?",
-										text : "This can cause permanant damage and cannot be undone!",
-										type : "warning",
-										showCancelButton : true,
-										confirmButtonColor : "#DD6B55",
-										confirmButtonText : "Yes, delete it!",
-										closeOnConfirm : false
-									},
-									function() {
-										swal(
-												"Blocked",
-												"This function is not implemented for safety.",
-												"error");
-									});
-						});
+			var form = this;
+
+			swal(
+					{
+						title : "Are you sure?",
+						text : "This cannot be reversed. There could be serious problems.",
+						type : "warning",
+						showCancelButton : true,
+						confirmButtonColor : '#DD6B55',
+						confirmButtonText : 'Yes, I am sure!',
+						cancelButtonText : "No, cancel it!",
+						closeOnConfirm : false,
+						closeOnCancel : false
+					},
+					function(isConfirm) {
+						if (isConfirm) {
+
+							$
+									.ajax(
+											{
+												url : "http://localhost/api/user/"
+														+ id,
+												type : "DELETE"
+											})
+									.done(
+											function(data) {
+												swal(
+														{
+															title : "Deleted!",
+															text : "User "
+																	+ id
+																	+ " was successfully deleted!",
+															type : "success",
+															showCancelButton : false
+														},
+														function() {
+															// Redirect the user
+															window.location.href = "/manager/manage/users";
+														});
+											})
+									.error(
+											function(data) {
+												swal("Oops", "Error: "
+														+ data.message, "error");
+											});
+
+						} else {
+							swal("Cancelled", "Phew, that was a close one! :)",
+									"error");
+						}
+					});
+		}
+	</script>
+
+	<!-- To Make REST work - Prevent CSRF Attacks -->
+	<script type="text/javascript">
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(header, token);
+		});
 	</script>
 
 

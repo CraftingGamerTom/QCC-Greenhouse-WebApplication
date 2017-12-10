@@ -47,15 +47,15 @@ public class AppUserUpdater {
 				userCollection.findOneAndUpdate(query, updateAuthLevel);
 			}
 			if (!email.equals("default")) {
-				
+
 				userCollection.findOneAndUpdate(query, updateEmail);
 			}
 			if (!phoneNum.equals("default")) {
 
 				// Format the phone number
-				phoneNum = phoneNum.replaceAll("\\D+","");
+				phoneNum = phoneNum.replaceAll("\\D+", "");
 				phoneNum = String.valueOf(phoneNum).replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
-				
+
 				userCollection.findOneAndUpdate(query, updatePhone);
 			}
 			if (!nickname.equals("default")) {
