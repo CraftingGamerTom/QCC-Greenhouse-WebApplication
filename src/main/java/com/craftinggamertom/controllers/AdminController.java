@@ -6,7 +6,6 @@ package com.craftinggamertom.controllers;
 
 import java.net.URISyntaxException;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.craftinggamertom.constants.JSPLocation;
 import com.craftinggamertom.pageBuilders.ManageEditUserBuilder;
 import com.craftinggamertom.pageBuilders.ManageFriendlyNamesBuilder;
 import com.craftinggamertom.pageBuilders.PageBuilder;
@@ -25,16 +25,6 @@ import com.craftinggamertom.updater.FriendlyNamesUpdater;
 @Controller
 @RequestMapping("admin")
 public class AdminController {
-
-	/**
-	 * Landing page for admin users
-	 * 
-	 * @return Dashboard for admins
-	 */
-	@RequestMapping(value = "")
-	public String handleAdminRequest() {
-		return "admin/test";
-	}
 
 	/**
 	 * Handles the request to view the sensor data graph UI
@@ -64,7 +54,7 @@ public class AdminController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("admin/manage/sensors/friendly-names");
+		return new ModelAndView(JSPLocation.manageSensorsFriendlyNames);
 	}
 
 	/**
@@ -149,13 +139,13 @@ public class AdminController {
 				System.out.println("Exception: ");
 				e.printStackTrace();
 			}
-			return new ModelAndView("pages/admin/manage/user-edit");
+			return new ModelAndView(JSPLocation.manageUsersEditUser);
 		} else { // if not authorized to be on this page
 
 			PageBuilder response = new PageBuilder();
 			response.buildPage(model);
 
-			return new ModelAndView("pages/common/unauthorized"); // unauthorized page
+			return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
 		}
 	}
 
@@ -203,28 +193,6 @@ public class AdminController {
 			redirectUrl = "/unauthorized";
 		}
 		return "redirect:" + redirectUrl;
-	}
-
-	/**
-	 * 
-	 * @param sensorID
-	 *            The ID as defined by the raspberry pi and held in the database
-	 * @param timing
-	 *            The timing to gather data from the appropriate table
-	 * @param startDate
-	 *            The first date for the data to be shown
-	 * @param model
-	 * @return the page containing loaded data
-	 */
-	@RequestMapping(value = "test")
-	public ModelAndView handleTestRequest(@RequestParam(value = "sensorID", defaultValue = "rp1-01") String sensorID,
-			@RequestParam(value = "timing", defaultValue = "hourly") String timing,
-			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "startDate", defaultValue = "2000-10-31") String startDate,
-			Model model) {
-
-		model.addAttribute(
-				"sensor report test with ID, timing, and start-time : " + sensorID + ", " + timing + ", " + startDate);
-		return new ModelAndView("admin/test", "sensorID", sensorID);
 	}
 
 }

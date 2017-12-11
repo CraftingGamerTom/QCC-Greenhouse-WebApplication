@@ -6,7 +6,7 @@
 <html>
 
 <!-- Head starts in header.jspf -->
-<%@ include file="common/header.jspf"%>
+<%@ include file="../../content/common/header.jspf"%>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 

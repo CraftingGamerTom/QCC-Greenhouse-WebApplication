@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2017 Thomas Rokicki
+ */
+
 package com.craftinggamertom.controllers;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.craftinggamertom.constants.JSPLocation;
 
 @Controller
 public class ErrorController {
@@ -37,7 +43,7 @@ public class ErrorController {
 		}
 		model.addAttribute("error-message", errorMsg);
 
-		return new ModelAndView("errorPage");
+		return new ModelAndView(JSPLocation.errorPage);
 	}
 
 	/**

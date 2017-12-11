@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2017 Thomas Rokicki
+ */
+
 package com.craftinggamertom.controllers;
 
 import java.io.FileReader;

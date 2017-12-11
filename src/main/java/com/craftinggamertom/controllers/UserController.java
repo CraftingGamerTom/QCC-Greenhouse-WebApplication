@@ -11,12 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class UserController {
 
-	@RequestMapping(value = "/user/postObservation", method = RequestMethod.GET)
-	public String goToPostObservation() {
-
-		return "user/postObservation";
-	}
-
 	/**
 	 * Landing page for signed in user accounts
 	 * 

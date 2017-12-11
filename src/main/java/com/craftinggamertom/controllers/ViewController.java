@@ -10,9 +10,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.craftinggamertom.constants.JSPLocation;
 import com.craftinggamertom.pageBuilders.DataGraphBuilder;
 import com.craftinggamertom.pageBuilders.LiveDataBuilder;
 import com.craftinggamertom.pageBuilders.PageBuilder;
@@ -21,16 +23,6 @@ import com.craftinggamertom.pageBuilders.RawDataBuilder;
 @Controller
 @RequestMapping("view")
 public class ViewController {
-
-	/**
-	 * Landing page for view data
-	 * 
-	 * @return The index page for viewing data
-	 */
-	@RequestMapping(value = "")
-	public String handleViewRequest() {
-		return "view/index";
-	}
 
 	/**
 	 * Handles the request to view the sensor data graph UI
@@ -71,7 +63,7 @@ public class ViewController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("view/sensor-data");
+		return new ModelAndView(JSPLocation.sensorData);
 	}
 
 	/**
@@ -94,7 +86,7 @@ public class ViewController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("view/live-data");
+		return new ModelAndView(JSPLocation.liveData);
 	}
 
 	/**
@@ -118,7 +110,7 @@ public class ViewController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("view/raw-data");
+		return new ModelAndView(JSPLocation.rawData);
 	}
 
 	/**
@@ -144,29 +136,19 @@ public class ViewController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("pages/user/profile");
+		return new ModelAndView(JSPLocation.userProfile);
 	}
 
 	/**
+	 * Handles request to view the observations There is the ability to POST
+	 * observations here too using the REST client
 	 * 
-	 * @param sensorID
-	 *            The ID as defined by the raspberry pi and held in the database
-	 * @param timing
-	 *            The timing to gather data from the appropriate table
-	 * @param startDate
-	 *            The first date for the data to be shown
-	 * @param model
-	 * @return the page containing loaded data
+	 * @return
 	 */
-	@RequestMapping(value = "test")
-	public ModelAndView handleTestRequest(@RequestParam(value = "sensorID", defaultValue = "rp1-01") String sensorID,
-			@RequestParam(value = "timing", defaultValue = "hourly") String timing,
-			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "startDate", defaultValue = "2000-10-31") String startDate,
-			Model model) {
+	@RequestMapping(value = "observations", method = RequestMethod.GET)
+	public String goToObservation() {
 
-		model.addAttribute(
-				"sensor report test with ID, timing, and start-time : " + sensorID + ", " + timing + ", " + startDate);
-		return new ModelAndView("view/test", "sensorID", sensorID);
+		return JSPLocation.observations;
 	}
 
 }

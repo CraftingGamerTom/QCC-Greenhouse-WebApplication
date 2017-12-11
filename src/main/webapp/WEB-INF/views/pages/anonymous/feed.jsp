@@ -1,7 +1,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%@ include file="../common/header.jspf"%>
+<%@ include file="../../content/common/header.jspf"%>
 
 </head>
 
@@ -20,11 +20,11 @@
 			<!-- END VERTICAL NAVIGATION -->
 
 			<!-- HORIZONTAL NAVIGATION -->
-			<%@ include file="../common/nav-horizontal.jspf"%>
+			<%@ include file="../../content/common/nav-horizontal.jspf"%>
 			<!-- END HORIZONTAL NAVIGATION -->
 
 			<!-- LIVE-PRIMARY CONTAINER -->
-			<%@ include file="../data-containers/feed-content.jspf"%>
+			<%@ include file="../../content/anonymous/feed-content.jspf"%>
 			<!-- END LIVE-PRIMARY CONTAINER -->
 
 
@@ -403,7 +403,7 @@
 
 	</div>
 	<!-- COMMON FOOTER -->
-	<%@ include file="../common/footer.jspf"%>
+	<%@ include file="../../content/common/footer.jspf"%>
 	<!-- END COMMON FOOTER -->
 
 

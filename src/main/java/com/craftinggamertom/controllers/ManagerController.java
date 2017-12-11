@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.craftinggamertom.constants.JSPLocation;
 import com.craftinggamertom.pageBuilders.ManageUsersBuilder;
 import com.craftinggamertom.pageBuilders.PageBuilder;
 import com.craftinggamertom.security.authorization.PageAuthority;
@@ -19,16 +20,6 @@ import com.craftinggamertom.security.authorization.UserAuthority;
 @Controller
 @RequestMapping("manager")
 public class ManagerController {
-
-	/**
-	 * Landing page for manager users
-	 * 
-	 * @return Dashboard for managers
-	 */
-	@RequestMapping(value = "")
-	public String handleAdminRequest() {
-		return "pages/manager/test";
-	}
 
 	/**
 	 * Handles the request to view the sensor data graph UI
@@ -58,13 +49,13 @@ public class ManagerController {
 				System.out.println("Exception: ");
 				e.printStackTrace();
 			}
-			return new ModelAndView("pages/manager/manage/users");
+			return new ModelAndView(JSPLocation.manageUsers);
 		} else { // if not authorized to be on this page
 
 			PageBuilder response = new PageBuilder();
 			response.buildPage(model);
 
-			return new ModelAndView("pages/common/unauthorized"); // unauthorized page
+			return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
 		}
 	}
 

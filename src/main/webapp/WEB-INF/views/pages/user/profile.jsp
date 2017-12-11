@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!-- Head starts in header.jspf -->
-<%@ include file="../../common/header.jspf"%>
+<%@ include file="../../content/common/header.jspf"%>
 
 <link href="<c:url value="/resources/css/animate.css"/>"
 	rel="stylesheet">
@@ -27,7 +27,7 @@
 			<!-- END VERTICAL NAVIGATION -->
 
 			<!-- HORIZONTAL NAVIGATION -->
-			<%@ include file="../../common/nav-horizontal.jspf"%>
+			<%@ include file="../../content/common/nav-horizontal.jspf"%>
 			<!-- END HORIZONTAL NAVIGATION -->
 
 			<!-- USER-DATA CONTAINER -->
@@ -35,7 +35,7 @@
 			<!-- END USER-DATA CONTAINER -->
 
 			<!-- FOOTER -->
-			<%@ include file="../../common/footer.jspf"%>
+			<%@ include file="../../content/common/footer.jspf"%>
 			<!-- END FOOTER -->
 
 		</div>
@@ -44,7 +44,7 @@
 	</div>
 
 	<!-- TASKS NAVIGATION CONTAINER -->
-	<%@ include file="../../common/tasks.jspf"%>
+	<%@ include file="../../content/common/tasks.jspf"%>
 	<!-- END TASKS NAVIGATION CONTAINER -->
 
 
@@ -66,20 +66,18 @@
 		src="<c:url value="/resources/js/plugins/sparkline/jquery.sparkline.min.js"/>"></script>
 
 	<script>
-        $(document).ready(function() {
+		$(document).ready(function() {
 
+			$("#sparkline1").sparkline([ 34, 43, 43, 35, 44, 32, 44, 48 ], {
+				type : 'line',
+				width : '100%',
+				height : '50',
+				lineColor : '#1ab394',
+				fillColor : "transparent"
+			});
 
-            $("#sparkline1").sparkline([34, 43, 43, 35, 44, 32, 44, 48], {
-                type: 'line',
-                width: '100%',
-                height: '50',
-                lineColor: '#1ab394',
-                fillColor: "transparent"
-            });
-
-
-        });
-    </script>
+		});
+	</script>
 
 
 </body>

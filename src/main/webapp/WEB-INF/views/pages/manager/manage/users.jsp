@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!-- Head starts in header.jspf -->
-<%@ include file="../../../common/header.jspf"%>
+<%@ include file="../../../content/common/header.jspf"%>
 
 <meta name="_csrf" content="${_csrf.token}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
@@ -43,7 +43,7 @@
 			<!-- END VERTICAL NAVIGATION -->
 
 			<!-- HORIZONTAL NAVIGATION -->
-			<%@ include file="../../../common/nav-horizontal.jspf"%>
+			<%@ include file="../../../content/common/nav-horizontal.jspf"%>
 			<!-- END HORIZONTAL NAVIGATION -->
 
 			<!-- USER-DATA CONTAINER -->
@@ -51,7 +51,7 @@
 			<!-- END USER-DATA CONTAINER -->
 
 			<!-- FOOTER -->
-			<%@ include file="../../../common/footer.jspf"%>
+			<%@ include file="../../../content/common/footer.jspf"%>
 			<!-- END FOOTER -->
 
 		</div>
@@ -60,7 +60,7 @@
 	</div>
 
 	<!-- TASKS NAVIGATION CONTAINER -->
-	<%@ include file="../../../common/tasks.jspf"%>
+	<%@ include file="../../../content/common/tasks.jspf"%>
 	<!-- END TASKS NAVIGATION CONTAINER -->
 
 

@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.craftinggamertom.constants.JSPLocation;
 import com.craftinggamertom.pageBuilders.PageBuilder;
 
 @Controller
@@ -33,7 +34,7 @@ public class AuthenticationController {
 		PageBuilder builder = new PageBuilder();
 		builder.buildPage(model);
 
-		return new ModelAndView("anonymous/register");
+		return new ModelAndView(JSPLocation.register);
 
 	}
 
@@ -67,10 +68,9 @@ public class AuthenticationController {
 	@RequestMapping("/unauthorized")
 	public ModelAndView unauthorized(Model model) {
 
-
 		PageBuilder response = new PageBuilder();
 		response.buildPage(model);
-		
-		return new ModelAndView("pages/common/unauthorized"); // unauthorized page
+
+		return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
 	}
 }
