@@ -169,7 +169,7 @@ public class PageBuilder {
 			// + "</span>\r\n" + " </li>\r\n";
 
 			String username = "\r\n"
-
+					+ "             <ul class=\"nav navbar-nav navbar-right\">\r\n"
 					+ "                    <li class=\"dropdown\">\r\n"
 					+ "                        <a aria-expanded=\"false\" role=\"button\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">"
 					+ "<img alt=\"image\" class=\"img-sm\" style=\"width:18px;height:18px;\" src=\""
@@ -183,8 +183,8 @@ public class PageBuilder {
 					+ "                            		<i class=\"fa fa-sign-out\"></i> Log out\r\n"
 					+ "                        			</a>\r\n" + "                    			</li>"
 					+ "                    			<logout/>" + "                 		</ul>\r\n"
-					+ "           			</li>"
-
+					+ "           			</li>\r\n"
+					+ "            	</ul>\r\n"
 					+ "\r\n";
 			String messages = ""; // for messages html if implemented later
 			String notifications = ""; // for notifications html if implemented later
@@ -197,10 +197,12 @@ public class PageBuilder {
 			// in</button>\r\n";
 			// String signUp = "<button class=\"btn btn-sm btn-primary\"
 			// href=\"/register\"><strong>Register</strong></button>\r\n";
-			String signIn = "<li><a href=\"/login\">Sign in</a></li>\r\n";
-			String signUp = "<li><a href=\"/register\">Register</a></li>\r\n";
+			String navStart = "             <ul class=\"nav navbar-top-links navbar-right\">\r\n";
+			String signIn = "                   <li><a href=\"/login\">Sign in</a></li>\r\n";
+			String signUp = "                   <li><a href=\"/register\">Register</a></li>\r\n";
+			String navEnd = "            	</ul>\r\n";
 
-			theHTML = signIn + signUp;
+			theHTML = navStart + signIn + signUp + navEnd;
 		}
 
 		map.put("nav-sign-in-section", theHTML);

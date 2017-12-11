@@ -14,11 +14,7 @@
                     <%=request.getAttribute("nav-link-section")%>
                 </ul>
                 <!-- Start Right side of Horizontal Nav Bar -->
-				<ul class="nav navbar-top-links navbar-right">
-				
-					<%=request.getAttribute("nav-sign-in-section")%>
-	
-            	</ul>
+				<%=request.getAttribute("nav-sign-in-section")%>
 				
             </div>
         </nav>
