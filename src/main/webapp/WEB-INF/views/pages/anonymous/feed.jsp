@@ -23,10 +23,11 @@
 			<%@ include file="../../content/common/nav-horizontal.jspf"%>
 			<!-- END HORIZONTAL NAVIGATION -->
 
-			<!-- LIVE-PRIMARY CONTAINER -->
-			<%@ include file="../../content/anonymous/feed-content.jspf"%>
-			<!-- END LIVE-PRIMARY CONTAINER -->
-
+			<div class="wrapper wrapper-content">
+				<!-- FEED CONTAINER -->
+				<%@ include file="../../content/anonymous/feed-content.jspf"%>
+				<!-- END FEED CONTAINER -->
+			</div>
 
 		</div>
 	</div>

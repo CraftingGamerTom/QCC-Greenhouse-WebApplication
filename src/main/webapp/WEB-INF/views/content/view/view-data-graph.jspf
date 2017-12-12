@@ -15,89 +15,101 @@ RESPONSE
  -->
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    
-    <%=request.getAttribute("no-sensor-data-found-warning")%>
-    
-	<div class="row">
+	pageEncoding="ISO-8859-1"%>
+
+<%=request.getAttribute("no-sensor-data-found-warning")%>
+
+<div class="row">
 	<div class="col-lg-8">
-	    <div class="ibox float-e-margins">
-	        <div class="ibox-content">
-	            <div>
-	                    <span class="pull-right text-right">
-	                    <small>Currently showing the data for the <strong><%=request.getAttribute("friendly-name")%></strong>. (<%=request.getAttribute("sensor-id")%>)</small>
-	                        <br/>
-	                        Time Frame: <%=request.getAttribute("start-date")%> - <%=request.getAttribute("end-date")%>
-	                    </span>
-	                <h3 class="font-bold no-margins">
-	                    QCC Greenhouse - View Data
-	                </h3>
-	                <small>Timing: <%=request.getAttribute("timing")%>.</small>
-	            </div>
-	
-	            <div class="m-t-lg">
-	                <div class="row">
-	                    <div class="col-Lg-2">
-	                        <div>
-	                        	<canvas id="lineChart" height="114"></canvas>
-	                        </div>
-	                    </div>
-			            <div class="m-t-md">
-			                <small class="pull-right">
-			                    <i class="fa fa-clock-o"> </i>
-			                    Updated on <%=request.getAttribute("current-time")%>
-			                </small>
-			                <small>
-			                    <strong>Look Mom!</strong> We are paving the way of the future!
-			                </small>
-			            </div>
-	              	</div>
-	            </div>
-	        </div>
-	    </div>
+		<div class="ibox float-e-margins">
+			<div class="ibox-content">
+				<div>
+					<span class="pull-right text-right"> <small>Currently
+							showing the data for the <strong><%=request.getAttribute("friendly-name")%></strong>.
+							(<%=request.getAttribute("sensor-id")%>)
+					</small> <br /> Time Frame: <%=request.getAttribute("start-date")%> - <%=request.getAttribute("end-date")%>
+					</span>
+					<h3 class="font-bold no-margins">QCC Greenhouse - View Data</h3>
+					<small>Timing: <%=request.getAttribute("timing")%>.
+					</small>
+				</div>
+
+				<div class="m-t-lg">
+					<div class="row">
+						<div class="col-Lg-2">
+							<div>
+								<canvas id="lineChart" height="114"></canvas>
+							</div>
+						</div>
+						<div class="m-t-md">
+							<small class="pull-right"> <i class="fa fa-clock-o">
+							</i> Updated on <%=request.getAttribute("current-time")%>
+							</small> <small> <strong>Look Mom!</strong> We are paving the way
+								of the future!
+							</small>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-<div class="col-lg-4">
-	    <div class="ibox float-e-margins">
-	        <div class="ibox-content">
-	            <div class="m-t-sm">
-            	     	<div class="col-Lg-3">
-	                    	<div class="ibox float-e-margins">
-	                    		<form>
-			                    	<div class="ibox-title">
-			                            <h5>Database Query <small>Choose what you want us to show you.</small></h5>
-			                        </div>
-					                <div class="ibox-content">
-		                                <div class="form-group"><label class="font-normal"><strong>Choose Sensor</strong><br/><small class="text-navy">Choose a sensor ID</small></label>
-		                                    <select class="form-control m-b" name="c-sensor" id="sensorForm">
-		                                        <%=request.getAttribute("sensor-options")%>
-		                                    </select>
-		                                </div>
-					                </div> 
-					                <div class="ibox-content">
-		                                <div class="form-group"><label class="font-normal"><strong>Choose Timing</strong><br/><small class="text-navy">Changes the detail of the graph</small></label>
-		                                    <select class="form-control m-b" name="c-timing" id="timingForm">
-		                                        <option value="h">Hourly</option>
-		                                        <option value="d">Daily</option>
-		                                        <option value="w">Weekly</option>
-		                                        <option value="m">Monthly</option>
-		                                        <option value="y">Yearly</option>
-		                                    </select>
-		                                </div>
-					                </div>        
-			                        <div class="ibox-content">			
-			                            <div class="form-group" id="data_1">
-			                                <label class="font-normal"><strong>Choose Start Date</strong><br/><small class="text-navy">We will do the math</small></label>
-			                                <div class="input-group date">
-			                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input name="start-date" id="calander" type="text" class="form-control" value="">
-			                                </div>
-			                            </div>
-			                        </div>
-			                        <input class="btn btn-sm btn-primary pull-right" type="submit" value="Submit">
-								</form>						                        
-		                    </div>
-                        </div>
-	            </div>
-	       </div>
-	 	</div>
+	<div class="col-lg-4">
+		<div class="ibox float-e-margins">
+			<div class="ibox-content">
+				<div class="m-t-sm">
+					<div class="col-Lg-3">
+						<div class="ibox float-e-margins">
+							<form>
+								<div class="ibox-title">
+									<h5>
+										Database Query <small>Choose what you want us to show
+											you.</small>
+									</h5>
+								</div>
+								<div class="ibox-content">
+									<div class="form-group">
+										<label class="font-normal"><strong>Choose
+												Sensor</strong><br />
+										<small class="text-navy">Choose a sensor ID</small></label> <select
+											class="form-control m-b" name="c-sensor" id="sensorForm">
+											<%=request.getAttribute("sensor-options")%>
+										</select>
+									</div>
+								</div>
+								<div class="ibox-content">
+									<div class="form-group">
+										<label class="font-normal"><strong>Choose
+												Timing</strong><br />
+										<small class="text-navy">Changes the detail of the
+												graph</small></label> <select class="form-control m-b" name="c-timing"
+											id="timingForm">
+											<option value="h">Hourly</option>
+											<option value="d">Daily</option>
+											<option value="w">Weekly</option>
+											<option value="m">Monthly</option>
+											<option value="y">Yearly</option>
+										</select>
+									</div>
+								</div>
+								<div class="ibox-content">
+									<div class="form-group" id="data_1">
+										<label class="font-normal"><strong>Choose
+												Start Date</strong><br />
+										<small class="text-navy">We will do the math</small></label>
+										<div class="input-group date">
+											<span class="input-group-addon"><i
+												class="fa fa-calendar"></i></span><input name="start-date"
+												id="calander" type="text" class="form-control" value="">
+										</div>
+									</div>
+								</div>
+								<input class="btn btn-sm btn-primary pull-right" type="submit"
+									value="Submit">
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

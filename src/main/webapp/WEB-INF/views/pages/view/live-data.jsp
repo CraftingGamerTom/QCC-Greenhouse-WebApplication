@@ -32,10 +32,11 @@
 			<%@ include file="../../content/common/nav-horizontal.jspf"%>
 			<!-- END HORIZONTAL NAVIGATION -->
 
-
-			<!-- LIVE-PRIMARY CONTAINER -->
-			<%@ include file="../../content/view/live-data-chart.jspf"%>
-			<!-- END LIVE-PRIMARY CONTAINER -->
+			<div class="wrapper wrapper-content">
+					<!-- LIVE-PRIMARY CONTAINER -->
+					<%@ include file="../../content/view/live-data-chart.jspf"%>
+					<!-- END LIVE-PRIMARY CONTAINER -->
+			</div>
 
 			<!-- FOOTER -->
 			<%@ include file="../../content/common/footer.jspf"%>
@@ -87,14 +88,13 @@
 
 	<!-- Page-Level Scripts -->
 	<script>
-        $(document).ready(function() {
+		$(document).ready(function() {
 
-            $('.footable').footable();
-            $('.footable2').footable();
+			$('.footable').footable();
+			$('.footable2').footable();
 
-        });
-
-    </script>
+		});
+	</script>
 
 
 </body>

@@ -43,10 +43,11 @@
 			<%@ include file="../../content/common/nav-horizontal.jspf"%>
 			<!-- END HORIZONTAL NAVIGATION -->
 
-
-			<!-- LIVE-PRIMARY CONTAINER -->
-			<%@ include file="../../content/view/raw-data-chart.jspf"%>
-			<!-- END LIVE-PRIMARY CONTAINER -->
+			<div class="wrapper wrapper-content">
+					<!-- RAW DATA CONTAINER -->
+					<%@ include file="../../content/view/raw-data-chart.jspf"%>
+					<!-- END RAW-DATA CONTAINER -->
+			</div>
 
 			<!-- FOOTER -->
 			<%@ include file="../../content/common/footer.jspf"%>
@@ -111,24 +112,23 @@
 
 	<!-- Page-Level Scripts -->
 	<script>
-        $(document).ready(function() {
+		$(document).ready(function() {
 
-            $('.footable').footable();
-            $('.footable2').footable();
+			$('.footable').footable();
+			$('.footable2').footable();
 
-            $('#datepicker .input-daterange').datepicker({
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true
-            });
-            
-            $('.dual_select').bootstrapDualListbox({
-                selectorMinimalHeight: 160
-            });
+			$('#datepicker .input-daterange').datepicker({
+				keyboardNavigation : false,
+				forceParse : false,
+				autoclose : true
+			});
 
-        });
+			$('.dual_select').bootstrapDualListbox({
+				selectorMinimalHeight : 160
+			});
 
-    </script>
+		});
+	</script>
 
 
 </body>

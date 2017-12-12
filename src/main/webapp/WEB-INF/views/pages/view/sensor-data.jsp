@@ -29,10 +29,11 @@
 			<!-- HORIZONTAL NAVIGATION -->
 			<%@ include file="../../content/common/nav-horizontal.jspf"%>
 			<!-- END HORIZONTAL NAVIGATION -->
-
-			<!-- VIEW-DATA-GRAPH CONTAINER -->
-			<%@ include file="../../content/view/view-data-graph.jspf"%>
-			<!-- END VIEW-DATA-GRAPH CONTAINER -->
+			<div class="wrapper wrapper-content">
+					<!-- VIEW-DATA-GRAPH CONTAINER -->
+					<%@ include file="../../content/view/view-data-graph.jspf"%>
+					<!-- END VIEW-DATA-GRAPH CONTAINER -->
+			</div>
 
 			<!-- FOOTER -->
 			<%@ include file="../../content/common/footer.jspf"%>

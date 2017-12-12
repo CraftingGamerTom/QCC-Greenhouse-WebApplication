@@ -24,7 +24,11 @@
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 
-			<%=request.getAttribute("error-message")%>
+			<div class="wrapper wrapper-content">
+					<!-- ERROR MESSAGE -->
+					<%=request.getAttribute("error-message")%>
+					<!-- END ERROR MESSAGE -->
+			</div>
 
 		</div>
 

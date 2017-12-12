@@ -46,14 +46,11 @@
 			<%@ include file="../../../../content/common/nav-horizontal.jspf"%>
 			<!-- END HORIZONTAL NAVIGATION -->
 
-			<!-- USER-DATA CONTAINER -->
-			<%@ include
-				file="../../../../content/manager/manage/user-metadata.jspf"%>
-			<!-- END USER-DATA CONTAINER -->
-
-			<!-- FOOTER -->
-			<%@ include file="../../../../content/common/footer.jspf"%>
-			<!-- END FOOTER -->
+			<div class="wrapper wrapper-content">
+					<!-- USER-DATA CONTAINER -->
+					<%@ include file="../../../../content/manager/manage/user-metadata.jspf"%>
+					<!-- END USER-DATA CONTAINER -->
+			</div>
 
 		</div>
 
@@ -93,9 +90,17 @@
 	<!-- Puts the current authority level in as a place marker -->
 	<script>
     $(".auth_level_select").select2({
-    	placeholder: "<%=request.getAttribute("authority_key")%>",
+    	placeholder: "<%=request.getAttribute("authority_key")%>", <!-- Must be on same line as attribute getter -->
 			allowClear : true
 		});
 	</script>
 
 </body>
+
+<footer>
+
+			<!-- FOOTER -->
+			<%@ include file="../../../../content/common/footer.jspf"%>
+			<!-- END FOOTER -->
+
+</footer>

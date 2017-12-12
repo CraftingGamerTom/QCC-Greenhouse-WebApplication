@@ -46,9 +46,11 @@
 			<%@ include file="../../../content/common/nav-horizontal.jspf"%>
 			<!-- END HORIZONTAL NAVIGATION -->
 
-			<!-- USER-DATA CONTAINER -->
-			<%@ include file="../../../content/manager/manage/users-chart.jspf"%>
-			<!-- END USER-DATA CONTAINER -->
+			<div class="wrapper wrapper-content">
+				<!-- USER-DATA CONTAINER -->
+				<%@ include file="../../../content/manager/manage/users-chart.jspf"%>
+				<!-- END USER-DATA CONTAINER -->
+			</div>
 
 			<!-- FOOTER -->
 			<%@ include file="../../../content/common/footer.jspf"%>

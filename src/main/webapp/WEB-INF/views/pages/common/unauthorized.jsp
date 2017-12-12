@@ -38,28 +38,29 @@
 				<div id="wrapper">
 					<div id="page-wrapper" class="gray-bg">
 
-						<div class="middle-box text-center animated fadeInDown">
-							<h3>Unauthorized</h3>
-							<h1 class="logo-name">
-								<i class="fa fa-lock"></i>
-							</h1>
-							<div class="error-desc">
-								<h4 class="font-bold">Curiosity killed the cat</h4>
-								<h5>It's best you enter through the front door in the
-									future.</h5>
+						<div class="wrapper wrapper-content">
+							<div class="middle-box text-center animated fadeInDown">
+								<h3>Unauthorized</h3>
+								<h1 class="logo-name">
+									<i class="fa fa-lock"></i>
+								</h1>
+								<div class="error-desc">
+									<h4 class="font-bold">Curiosity killed the cat</h4>
+									<h5>It's best you enter through the front door in the
+										future.</h5>
+								</div>
 							</div>
 						</div>
-
 					</div>
 
 
 				</div>
 
-			</body>
+				<!-- FOOTER -->
+				<%@ include file="../../content/common/footer.jspf"%>
+				<!-- END FOOTER -->
 
-			<!-- FOOTER -->
-			<%@ include file="../../content/common/footer.jspf"%>
-			<!-- END FOOTER -->
+			</body>
 
 		</div>
 

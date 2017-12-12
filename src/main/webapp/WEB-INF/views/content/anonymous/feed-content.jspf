@@ -25,7 +25,8 @@
 			</div>
 			<img
 				src="http://drive.google.com/uc?export=view&id=1Kq4UrPTzNdFC1nI9uxWJiEs4Irq3dMDU"
-				class="img-circle circle-border m-b-md" style="width:90%;" alt="profile">
+				class="img-circle circle-border m-b-md" style="width: 90%;"
+				alt="profile">
 			<div>
 				<span>100 Members</span> | <span>350 Sensors</span> | <span>610
 					Plants</span>
@@ -391,14 +392,8 @@
 
 	</div>
 </div>
-
-
-<div class="ibox float-e-margins">
-	<!-- Creates gap at bottom of row -->
-</div>
-
+<!-- 
 <div class="row">
-
-	<!-- The row can be used for boxes of descriptions of web app elements - similar to "package" on theme site -->
-
+	// The row can be used for boxes of descriptions of web app elements - similar to "package" on theme site
 </div>
+ -->

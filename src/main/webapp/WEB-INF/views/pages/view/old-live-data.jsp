@@ -28,10 +28,11 @@
 			<%@ include file="../../content/common/nav-horizontal.jspf"%>
 			<!-- END HORIZONTAL NAVIGATION -->
 
-
-			<!-- LIVE-PRIMARY CONTAINER -->
-			<%@ include file="../../content/view/live-primary.jspf"%>
-			<!-- END LIVE-PRIMARY CONTAINER -->
+			<div class="wrapper wrapper-content">
+					<!-- LIVE-PRIMARY CONTAINER -->
+					<%@ include file="../../content/view/live-primary.jspf"%>
+					<!-- END LIVE-PRIMARY CONTAINER -->
+			</div>
 
 			<!-- FOOTER -->
 			<%@ include file="../../content/common/footer.jspf"%>

@@ -38,10 +38,11 @@
 			<%@ include file="../../../../content/common/nav-horizontal.jspf"%>
 			<!-- END HORIZONTAL NAVIGATION -->
 
-			<!-- ADMIN-MANAGE-SENSORS-FRIENDLY-NAMES CONTAINER -->
-			<%@ include
-				file="../../../../content/admin/manage/admin-manage-sensors.jspf"%>
-			<!-- END ADMIN-MANAGE-SENSORS-FRIENDLY-NAMES CONTAINER -->
+			<div class="wrapper wrapper-content">
+					<!-- ADMIN-MANAGE-SENSORS-FRIENDLY-NAMES CONTAINER -->
+					<%@ include file="../../../../content/admin/manage/admin-manage-sensors.jspf"%>
+					<!-- END ADMIN-MANAGE-SENSORS-FRIENDLY-NAMES CONTAINER -->
+			</div>
 
 			<!-- FOOTER -->
 			<%@ include file="../../../../content/common/footer.jspf"%>
