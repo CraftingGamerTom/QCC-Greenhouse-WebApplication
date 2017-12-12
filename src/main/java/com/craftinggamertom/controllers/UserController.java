@@ -8,6 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.craftinggamertom.constants.JSPLocation;
+import com.craftinggamertom.constants.URLLocation;
+import com.craftinggamertom.security.authorization.PageAuthority;
+import com.craftinggamertom.security.authorization.UserAuthority;
+
 @Controller
 public class UserController {
 
@@ -19,7 +24,18 @@ public class UserController {
 	@RequestMapping(value = "/user/home", method = RequestMethod.GET)
 	public String goToUserHome() {
 
-		return "redirect:/feed"; // Temp until Organization Feed page is implemented
+		PageAuthority userUserAuthority = new PageAuthority("admin");
+		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+
+		if (userUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+			/**
+			 * Dashboard?
+			 */
+			return "redirect:/feed"; // Temp until Organization Feed page is implemented
+		} else { // if not authorized to be on this page
+
+			return "redirect:" + URLLocation.unauthorized;
+		}
 	}
 
 }

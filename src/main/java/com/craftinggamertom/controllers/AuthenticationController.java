@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.controllers;
 
@@ -17,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.craftinggamertom.constants.JSPLocation;
 import com.craftinggamertom.pageBuilders.PageBuilder;
+import com.craftinggamertom.security.authorization.PageAuthority;
+import com.craftinggamertom.security.authorization.UserAuthority;
 
 @Controller
 public class AuthenticationController {
@@ -31,10 +33,22 @@ public class AuthenticationController {
 	@RequestMapping("/register")
 	public ModelAndView goToRegister(Model model) {
 
-		PageBuilder builder = new PageBuilder();
-		builder.buildPage(model);
+		PageAuthority anonUserAuthority = new PageAuthority("anonymous");
+		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 
-		return new ModelAndView(JSPLocation.register);
+		if (anonUserAuthority.grantAccessLTE(userAuthority)) { // Only admin and higher allowed
+
+			PageBuilder builder = new PageBuilder();
+			builder.buildPage(model);
+
+			return new ModelAndView(JSPLocation.register);
+		} else { // if not authorized to be on this page
+
+			PageBuilder response = new PageBuilder();
+			response.buildPage(model);
+
+			return new ModelAndView(JSPLocation.userProfile); // unauthorized page
+		}
 
 	}
 

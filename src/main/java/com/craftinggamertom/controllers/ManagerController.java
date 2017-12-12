@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.controllers;
 
@@ -22,16 +22,12 @@ import com.craftinggamertom.security.authorization.UserAuthority;
 public class ManagerController {
 
 	/**
-	 * Handles the request to view the sensor data graph UI
+	 * Handles the manager users request
 	 * 
-	 * @param sensorID
-	 *            The ID as defined by the raspberry pi and held in the database
-	 * @param timing
-	 *            The timing to gather data from the appropriate table
-	 * @param startDate
-	 *            The first date for the data to be shown
+	 * @param databaseId
+	 *            the _id of the user in the database
 	 * @param model
-	 * @return the page containing loaded data
+	 * @return
 	 */
 	@RequestMapping(value = "manage/users", method = RequestMethod.GET)
 	public ModelAndView handleManageUsersRequest(@RequestParam(value = "dbid", defaultValue = "me") String databaseId,

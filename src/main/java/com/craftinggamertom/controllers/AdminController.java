@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.controllers;
 
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.craftinggamertom.constants.JSPLocation;
+import com.craftinggamertom.constants.URLLocation;
 import com.craftinggamertom.pageBuilders.ManageEditUserBuilder;
 import com.craftinggamertom.pageBuilders.ManageFriendlyNamesBuilder;
 import com.craftinggamertom.pageBuilders.PageBuilder;
@@ -42,19 +43,33 @@ public class AdminController {
 	public ModelAndView handleManageFriendlyNamesRequest(
 			@RequestParam(value = "chosen-type", defaultValue = "all") String sensorType, Model model) {
 
-		try {
-			// make a ManageFriendlyNamesBuilder object and build page
-			ManageFriendlyNamesBuilder response = new ManageFriendlyNamesBuilder();
-			model = response.buildPage(sensorType, model); // IF NO DATABASE PRESENT THERE WILL BE ERRORS
+		PageAuthority adminUserAuthority = new PageAuthority("admin");
+		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 
-			// EXAMPLE: DataGraphBuilder response = new DataGraphBuilder();
-			// EXAMPLE: model = response.buildPage(cSensor, cTiming, cDate, model);
-		} catch (Exception e) {
-			System.out.println("Exception: ");
-			e.printStackTrace();
+		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+
+			try {
+				// make a ManageFriendlyNamesBuilder object and build page
+				ManageFriendlyNamesBuilder response = new ManageFriendlyNamesBuilder();
+				model = response.buildPage(sensorType, model); // IF NO DATABASE PRESENT THERE WILL BE ERRORS
+
+				// EXAMPLE: DataGraphBuilder response = new DataGraphBuilder();
+				// EXAMPLE: model = response.buildPage(cSensor, cTiming, cDate, model);
+			} catch (Exception e) {
+				System.out.println("Exception: ");
+				e.printStackTrace();
+			}
+
+			return new ModelAndView(JSPLocation.manageSensorsFriendlyNames);
+		} else
+
+		{ // if not authorized to be on this page
+
+			PageBuilder response = new PageBuilder();
+			response.buildPage(model);
+
+			return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
 		}
-
-		return new ModelAndView(JSPLocation.manageSensorsFriendlyNames);
 	}
 
 	/**
@@ -77,18 +92,30 @@ public class AdminController {
 			@RequestParam(value = "is-visible", defaultValue = "0") String isVisible,
 			@RequestParam(value = "is-default", defaultValue = "0") String isDefaultSensor) {
 
-		FriendlyNamesUpdater nameUpdater = new FriendlyNamesUpdater();
-		nameUpdater.updateWith(sensorID, sensorDescription, friendlyName, isVisible, isDefaultSensor);
-
-		System.out.println("Using correct controller");
-		System.out.println(sensorID);
-		System.out.println(sensorDescription);
-		System.out.println(friendlyName);
-		System.out.println(isVisible);
-		System.out.println(isDefaultSensor);
-
 		String redirectUrl = "";
-		return "redirect:" + redirectUrl;
+
+		PageAuthority adminUserAuthority = new PageAuthority("admin");
+		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+
+		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+
+			FriendlyNamesUpdater nameUpdater = new FriendlyNamesUpdater();
+			nameUpdater.updateWith(sensorID, sensorDescription, friendlyName, isVisible, isDefaultSensor);
+
+			System.out.println("Using correct controller");
+			System.out.println(sensorID);
+			System.out.println(sensorDescription);
+			System.out.println(friendlyName);
+			System.out.println(isVisible);
+			System.out.println(isDefaultSensor);
+
+			return "redirect:" + redirectUrl;
+
+		} else { // if not authorized to be on this page
+
+			redirectUrl = URLLocation.unauthorized;
+			return "redirect:" + redirectUrl;
+		}
 	}
 
 	/**
@@ -101,18 +128,32 @@ public class AdminController {
 	@RequestMapping(value = "manage/modules/meeting")
 	public ModelAndView handleManageMeetingModuleRequest(Model model) {
 
-		try {
-			// make a ManageMeetingModuleBuilder object and build page
+		PageAuthority adminUserAuthority = new PageAuthority("admin");
+		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 
-			// EXAMPLE: DataGraphBuilder response = new DataGraphBuilder();
-			// EXAMPLE: model = response.buildPage(cSensor, cTiming, cDate, model);
+		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
 
-		} catch (Exception e) {
-			System.out.println("Exception: ");
-			e.printStackTrace();
+			try {
+				// make a ManageMeetingModuleBuilder object and build page
+
+				// EXAMPLE: DataGraphBuilder response = new DataGraphBuilder();
+				// EXAMPLE: model = response.buildPage(cSensor, cTiming, cDate, model);
+
+			} catch (Exception e) {
+				System.out.println("Exception: ");
+				e.printStackTrace();
+			}
+
+			return new ModelAndView("admin/test");
+		} else
+
+		{ // if not authorized to be on this page
+
+			PageBuilder response = new PageBuilder();
+			response.buildPage(model);
+
+			return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
 		}
-
-		return new ModelAndView("admin/test");
 	}
 
 	/**
@@ -177,22 +218,22 @@ public class AdminController {
 		PageAuthority adminUserAuthority = new PageAuthority("admin");
 		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 
-		// Makes sure the _id is valid
-		if (dbid.equals("me")) {
-			dbid = userAuthority.getUser().getDatabaseId();
-		}
-
 		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+			// Makes sure the _id is valid
+			if (dbid.equals("me")) {
+				dbid = userAuthority.getUser().getDatabaseId();
+			}
 
 			AppUserUpdater updater = new AppUserUpdater();
 			updater.updateWith(dbid, authLevel, email, phoneNum, nickname);
 
 			redirectUrl = "/admin/manage/users/user?dbid=" + dbid; // Sends user back to user view
+			return "redirect:" + redirectUrl;
 		} else { // if not authorized to be on this page
 
-			redirectUrl = "/unauthorized";
+			redirectUrl = URLLocation.unauthorized;
+			return "redirect:" + redirectUrl;
 		}
-		return "redirect:" + redirectUrl;
 	}
 
 }
