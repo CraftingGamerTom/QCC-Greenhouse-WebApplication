@@ -48,12 +48,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(GET, "/").permitAll() // actual home page (redirects to home page)
 				.antMatchers(GET, "/view/**").permitAll() // view pages
 				.antMatchers(GET, "/feed/**").permitAll() // home page
-				.antMatchers(GET, "/test").authenticated() // remove
-				.antMatchers(GET, "/test2").permitAll() // remove
 				.antMatchers(GET, "/user/**").authenticated() // user panels
 				.antMatchers(GET, "/manager/**").authenticated() // Manager pages
 				.antMatchers(GET, "/admin/**").authenticated() // Admin Pages
-				.antMatchers(GET, "/test-userinfo").authenticated() // remove
 				.antMatchers(GET, "/dev/**").authenticated() // - dev ops
 				.antMatchers(GET, "/dev/version").permitAll() // - app version
 				.antMatchers(HttpMethod.DELETE, "/api/**").authenticated() // - api delete functions
@@ -61,7 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.PUT, "/api/**").authenticated() // - api put functions
 				.antMatchers(HttpMethod.PATCH, "/api/**").authenticated() // - api patch functions
 				.antMatchers(HttpMethod.GET, "/api/**").authenticated() // - api get functions
-				.antMatchers(GET, "/test-login").authenticated().and().formLogin().loginPage("/login").permitAll().and()
-				.logout().logoutSuccessUrl("/login?logout").permitAll();
+				.and().formLogin().loginPage("/login").permitAll().and().logout().logoutSuccessUrl("/login?logout")
+				.permitAll();
 	}
 }
