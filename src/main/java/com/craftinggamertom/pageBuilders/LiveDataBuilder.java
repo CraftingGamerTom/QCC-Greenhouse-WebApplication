@@ -218,6 +218,7 @@ public class LiveDataBuilder extends PageBuilder {
 					+ "		</div>\r\n" + "	</div>\r\n" + "</div>";
 
 			model.addAttribute("no-sensor-data-found-warning", warning);
+			return ""; // Returns nothing since there is no data
 		}
 		model.addAttribute("no-sensor-data-found-warning", ""); // only called if data was found in database - to
 																// make sure the value is not null
