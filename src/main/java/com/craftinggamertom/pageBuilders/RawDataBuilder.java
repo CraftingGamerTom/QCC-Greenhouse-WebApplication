@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.pageBuilders;
 
@@ -152,7 +152,9 @@ public class RawDataBuilder extends PageBuilder {
 			FindIterable<Document> defaultResult = collection.find(isDefaultFilter);
 
 			Document defaultSensor = defaultResult.first();
-			allVisibleSensors.add(new SensorInfo(defaultSensor));
+			if (defaultSensor != null) { // If the default is set
+				allVisibleSensors.add(new SensorInfo(defaultSensor));
+			}
 
 			Iterator<Document> resultIter = searchResult.iterator();
 			while (resultIter.hasNext()) {
@@ -168,8 +170,9 @@ public class RawDataBuilder extends PageBuilder {
 			}
 
 			return message;
-		} catch (NullPointerException nullE) {
-			System.out.println("NullPointer(RawDataBuilder): adding sumby code for sensorOptions");
+		} catch (Exception e) {
+			System.out.println("Error getting Raw Data Sensor Options. Printing stacktrace.");
+			e.printStackTrace();
 			return "";
 		}
 	}
