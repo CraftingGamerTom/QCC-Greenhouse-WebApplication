@@ -80,7 +80,7 @@ public class SensorInfo {
 	@Override
 	public String toString() {
 		return String.format(
-				"SensorInfo[id=%s, SensorID='%s', Type='%s', Date=%s, FriendlyName='%s', Description='%s', isVisible=%s, isDefault=%s]",
+				"SensorInfo[SensorID='%s', Type='%s', Date=%s, FriendlyName='%s', Description='%s', isVisible=%s, isDefault=%s]",
 				sensorID, type, date, friendlyName, description, isVisible, isDefault);
 	}
 }
