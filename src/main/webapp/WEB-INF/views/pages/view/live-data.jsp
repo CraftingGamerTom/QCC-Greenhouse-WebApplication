@@ -38,10 +38,6 @@
 					<!-- END LIVE-PRIMARY CONTAINER -->
 			</div>
 
-			<!-- FOOTER -->
-			<%@ include file="../../content/common/footer.jspf"%>
-			<!-- END FOOTER -->
-
 		</div>
 
 
@@ -98,3 +94,11 @@
 
 
 </body>
+
+<footer>
+
+			<!-- FOOTER -->
+			<%@ include file="../../content/common/footer.jspf"%>
+			<!-- END FOOTER -->
+
+</footer>

@@ -66,12 +66,6 @@
 			</div>
 		</div>
 
-		<!-- COMMON FOOTER -->
-		<%@ include file="../../content/common/footer.jspf"%>
-		<!-- END COMMON FOOTER -->
-
-
-
 		<!-- Mainly scripts -->
 		<script src="<c:url value="/resources/js/jquery-3.1.1.min.js"/>"></script>
 		<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
@@ -80,3 +74,11 @@
 		<script
 			src="<c:url value="/resources/js/plugins/slimscroll/jquery.slimscroll.min.js"/>"></script>
 </body>
+
+<footer>
+
+			<!-- FOOTER -->
+			<%@ include file="../../content/common/footer.jspf"%>
+			<!-- END FOOTER -->
+
+</footer>

@@ -56,10 +56,6 @@
 
 				</div>
 
-				<!-- FOOTER -->
-				<%@ include file="../../content/common/footer.jspf"%>
-				<!-- END FOOTER -->
-
 			</body>
 
 		</div>
@@ -88,3 +84,11 @@
 
 
 </body>
+
+<footer>
+
+			<!-- FOOTER -->
+			<%@ include file="../../content/common/footer.jspf"%>
+			<!-- END FOOTER -->
+
+</footer>
