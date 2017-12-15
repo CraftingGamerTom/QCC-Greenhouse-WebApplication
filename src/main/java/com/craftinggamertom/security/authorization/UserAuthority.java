@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.security.authorization;
 
@@ -21,6 +21,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 
 /**
  * 
@@ -39,8 +40,15 @@ public class UserAuthority extends Authority {
 	 * then their information will be retrieved from the database
 	 */
 	public UserAuthority() {
+		setTheTime();
+
 		this.theUser = getUserFromDatabase(authorizeUser()); // Gets full user information
 		setAuthorityLevel(theUser.getAuthority_key()); // Sets the Authority level (based on key)
+
+		// If the user exists
+		if (!theUser.getId().equals("anonymousUser_Id")) {
+			updateLastSeen(theUser);
+		}
 	}
 
 	/**
@@ -50,8 +58,21 @@ public class UserAuthority extends Authority {
 	 * @param userInfo
 	 */
 	public UserAuthority(UserInfo userInfo) {
+		setTheTime();
+
 		this.theUser = getUserFromDatabase(userInfo); // Gets full user information
 		setAuthorityLevel(theUser.getAuthority_key()); // Sets the Authority level (based on key)
+	}
+
+	/**
+	 * Set the current time
+	 */
+	private void setTheTime() {
+		// Collects and sets the current Time
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		currentTime = dtf.format(now); // 2016/11/16 12:08:43
+
 	}
 
 	/**
@@ -98,10 +119,6 @@ public class UserAuthority extends Authority {
 	}
 
 	private void makeConnectionToDatabase() {
-		// Collects and sets the current Time
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-		LocalDateTime now = LocalDateTime.now();
-		currentTime = dtf.format(now); // 2016/11/16 12:08:43
 
 		try {
 			database = MongoDatabaseConnection.getInstance(); // Singleton
@@ -222,6 +239,37 @@ public class UserAuthority extends Authority {
 	 */
 	public AppUser getUser() {
 		return theUser;
+	}
+
+	/**
+	 * Updates the user's last seen value when a page is loaded.
+	 */
+	private void updateLastSeen(AppUser theUserToUpdate) {
+
+		try {
+			makeConnectionToDatabase();
+
+			Bson idFilter = Filters.eq("id", theUserToUpdate.getId());
+
+			MongoCollection<Document> collection = null;
+			collection = database.getCollection(ConfigurationReaderSingleton.getAppUserCollection());
+
+			FindIterable<Document> documents = collection.find(idFilter);
+			Document theUsersDoc = documents.first();
+
+			// If the user does not exist
+			if (theUsersDoc == null) {
+				return;
+			} else {
+				Bson updateLastSeen = Updates.set("last_seen", currentTime);
+				collection.findOneAndUpdate(idFilter, updateLastSeen);
+				System.out.println("(UserAuthority) Remove: Last Seen: " + currentTime);				
+			}
+		} catch (MongoTimeoutException mte) { // Could not connect to database
+			System.out.println("(UserAuthority) MongoTimeoutException. Is the database running?");
+			System.out.println("(UserAuthority) Could not update the last seen value of the user.");
+			return;
+		}
 	}
 
 	/*
