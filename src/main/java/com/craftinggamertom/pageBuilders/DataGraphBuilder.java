@@ -92,9 +92,9 @@ public class DataGraphBuilder extends PageBuilder {
 	 * collected and put into the ArrayList containing all the points on the graph
 	 */
 	private void addDataGraphData() {
-//		System.out.println("Timing: " + cTiming);
-//		System.out.println("Start: " + startDate);
-//		System.out.println("End: " + endDate);
+		// System.out.println("Timing: " + cTiming);
+		// System.out.println("Start: " + startDate);
+		// System.out.println("End: " + endDate);
 		// Filter Types
 		// Sensor ID
 		Bson sensorFilter = Filters.eq("sensorId", sensorID);
@@ -114,10 +114,15 @@ public class DataGraphBuilder extends PageBuilder {
 
 			Iterator<Document> iter = searchResult.iterator();
 
+			// Prevents NoSuchElementException
+			if (searchResult.first() == null) {
+				return;
+			}
+
 			ZonedDateTime workDate = startDate; // Date to be iterated through to set null values
-			Document doc = (Document) iter.next(); // Initialize
-			ZonedDateTime docDate = ZonedDateTime.parse(doc.get("date").toString()); // initialize
-			boolean readyToIterate = false;
+			Document doc = null; // Initialize
+			ZonedDateTime docDate = null; // initialize
+			boolean readyToIterate = true;
 
 			do {
 				boolean foundValue = true; // Set to false if the value should be set to null
@@ -135,7 +140,7 @@ public class DataGraphBuilder extends PageBuilder {
 						highValue.add((Double) doc.get("highValue"));
 
 						readyToIterate = true;
-//						System.out.println("Hour: " + docDate.getHour());
+						// System.out.println("Hour: " + docDate.getHour());
 
 					} else {
 						foundValue = false;
@@ -147,14 +152,14 @@ public class DataGraphBuilder extends PageBuilder {
 						highValue.add((Double) doc.get("highValue"));
 
 						readyToIterate = true;
-//						System.out.println("Day: " + docDate.getDayOfYear());
+						// System.out.println("Day: " + docDate.getDayOfYear());
 
 					} else {
 						foundValue = false;
 					}
 					workDate = workDate.plusDays(1);
 				} else if (cTiming.equals("w")) {
-//					System.out.println("HIT");
+					// System.out.println("HIT");
 					ZonedDateTime lastWorkDate = workDate.plusWeeks(1);
 					if (workDate.getDayOfYear() <= docDate.getDayOfYear()
 							&& lastWorkDate.getDayOfYear() >= docDate.getDayOfYear()) {
@@ -162,11 +167,11 @@ public class DataGraphBuilder extends PageBuilder {
 						highValue.add((Double) doc.get("highValue"));
 
 						readyToIterate = true;
-//						System.out.println("Day (weekly): " + docDate.getDayOfYear());
+						// System.out.println("Day (weekly): " + docDate.getDayOfYear());
 
 					} else {
 						foundValue = false;
-//						System.out.println("(weekly): no value");
+						// System.out.println("(weekly): no value");
 					}
 					workDate = workDate.plusWeeks(1);
 				} else if (cTiming.equals("m")) {
@@ -175,7 +180,7 @@ public class DataGraphBuilder extends PageBuilder {
 						highValue.add((Double) doc.get("highValue"));
 
 						readyToIterate = true;
-//						System.out.println("Month: " + docDate.getMonthValue());
+						// System.out.println("Month: " + docDate.getMonthValue());
 
 					} else {
 						foundValue = false;
@@ -187,7 +192,7 @@ public class DataGraphBuilder extends PageBuilder {
 						highValue.add((Double) doc.get("highValue"));
 
 						readyToIterate = true;
-//						System.out.println("Year: " + docDate.getYear());
+						// System.out.println("Year: " + docDate.getYear());
 
 					} else {
 						foundValue = false;
@@ -205,9 +210,9 @@ public class DataGraphBuilder extends PageBuilder {
 
 					readyToIterate = false;
 				}
-//				System.out.println("Count Day: " + workDate.getDayOfYear());
-//				System.out.println("Count Hour: " + workDate.getHour());
-//				System.out.println(lowValue.toString());
+				// System.out.println("Count Day: " + workDate.getDayOfYear());
+				// System.out.println("Count Hour: " + workDate.getHour());
+				// System.out.println(lowValue.toString());
 			} while (iter.hasNext() || !readyToIterate);
 
 		} catch (
