@@ -92,6 +92,9 @@ public class DataGraphBuilder extends PageBuilder {
 	 * collected and put into the ArrayList containing all the points on the graph
 	 */
 	private void addDataGraphData() {
+//		System.out.println("Timing: " + cTiming);
+//		System.out.println("Start: " + startDate);
+//		System.out.println("End: " + endDate);
 		// Filter Types
 		// Sensor ID
 		Bson sensorFilter = Filters.eq("sensorId", sensorID);
@@ -111,14 +114,105 @@ public class DataGraphBuilder extends PageBuilder {
 
 			Iterator<Document> iter = searchResult.iterator();
 
-			while (iter.hasNext()) {
-				Document d = (Document) iter.next();
-				// PRINTS EACH DOCUMENT RECIEVED System.out.println(d);
+			ZonedDateTime workDate = startDate; // Date to be iterated through to set null values
+			Document doc = (Document) iter.next(); // Initialize
+			ZonedDateTime docDate = ZonedDateTime.parse(doc.get("date").toString()); // initialize
+			boolean readyToIterate = false;
 
-				lowValue.add((Double) d.get("lowValue"));
-				highValue.add((Double) d.get("highValue"));
-			}
-		} catch (Exception e) {
+			do {
+				boolean foundValue = true; // Set to false if the value should be set to null
+
+				if (readyToIterate) {
+					doc = (Document) iter.next();
+					docDate = ZonedDateTime.parse(doc.get("date").toString());
+				}
+
+				// For Hourly Data
+				if (cTiming.equals("h")) {
+
+					if (workDate.getHour() == docDate.getHour()) {
+						lowValue.add((Double) doc.get("lowValue"));
+						highValue.add((Double) doc.get("highValue"));
+
+						readyToIterate = true;
+//						System.out.println("Hour: " + docDate.getHour());
+
+					} else {
+						foundValue = false;
+					}
+					workDate = workDate.plusHours(1);
+				} else if (cTiming.equals("d")) {
+					if (workDate.getDayOfYear() == docDate.getDayOfYear()) {
+						lowValue.add((Double) doc.get("lowValue"));
+						highValue.add((Double) doc.get("highValue"));
+
+						readyToIterate = true;
+//						System.out.println("Day: " + docDate.getDayOfYear());
+
+					} else {
+						foundValue = false;
+					}
+					workDate = workDate.plusDays(1);
+				} else if (cTiming.equals("w")) {
+//					System.out.println("HIT");
+					ZonedDateTime lastWorkDate = workDate.plusWeeks(1);
+					if (workDate.getDayOfYear() <= docDate.getDayOfYear()
+							&& lastWorkDate.getDayOfYear() >= docDate.getDayOfYear()) {
+						lowValue.add((Double) doc.get("lowValue"));
+						highValue.add((Double) doc.get("highValue"));
+
+						readyToIterate = true;
+//						System.out.println("Day (weekly): " + docDate.getDayOfYear());
+
+					} else {
+						foundValue = false;
+//						System.out.println("(weekly): no value");
+					}
+					workDate = workDate.plusWeeks(1);
+				} else if (cTiming.equals("m")) {
+					if (workDate.getMonthValue() == docDate.getMonthValue()) {
+						lowValue.add((Double) doc.get("lowValue"));
+						highValue.add((Double) doc.get("highValue"));
+
+						readyToIterate = true;
+//						System.out.println("Month: " + docDate.getMonthValue());
+
+					} else {
+						foundValue = false;
+					}
+					workDate = workDate.plusMonths(1);
+				} else if (cTiming.equals("y")) {
+					if (workDate.getYear() == docDate.getYear()) {
+						lowValue.add((Double) doc.get("lowValue"));
+						highValue.add((Double) doc.get("highValue"));
+
+						readyToIterate = true;
+//						System.out.println("Year: " + docDate.getYear());
+
+					} else {
+						foundValue = false;
+					}
+					workDate = workDate.plusYears(1);
+				} else {
+					System.out.println("(DataGraphBuilder) Error getting query type (daily, monthly, etc)");
+					System.out.println("(DataGraphBuilder) Giving up!");
+					break;
+				}
+
+				if (!foundValue) {// There is missing data
+					lowValue.add(null);
+					highValue.add(null);
+
+					readyToIterate = false;
+				}
+//				System.out.println("Count Day: " + workDate.getDayOfYear());
+//				System.out.println("Count Hour: " + workDate.getHour());
+//				System.out.println(lowValue.toString());
+			} while (iter.hasNext() || !readyToIterate);
+
+		} catch (
+
+		Exception e) {
 			System.out.println("Error while gathering data to display: ");
 			e.printStackTrace();
 		}
