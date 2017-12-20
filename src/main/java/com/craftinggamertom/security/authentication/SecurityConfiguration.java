@@ -51,8 +51,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(GET, "/user/**").authenticated() // user panels
 				.antMatchers(GET, "/manager/**").authenticated() // Manager pages
 				.antMatchers(GET, "/admin/**").authenticated() // Admin Pages
-				.antMatchers(GET, "/dev/**").authenticated() // - dev ops
 				.antMatchers(GET, "/dev/version").permitAll() // - app version
+				.antMatchers(GET, "/dev/**").authenticated() // - dev ops
 				.antMatchers(HttpMethod.DELETE, "/api/**").authenticated() // - api delete functions
 				.antMatchers(HttpMethod.POST, "/api/**").authenticated() // - api post functions
 				.antMatchers(HttpMethod.PUT, "/api/**").authenticated() // - api put functions
