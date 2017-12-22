@@ -1,24 +1,24 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
-package com.craftinggamertom.security.authentication;
+package com.craftinggamertom.database;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class SecurityConfigurationSingleton {
+public class MongoSecuritySingleton {
 
-	private static SecurityConfigurationSingleton instance = null; // Singleton
+	private static MongoSecuritySingleton instance = null; // Singleton
 
-	private String clientId;
-	private String clientSecret;
+	private String username;
+	private String password;
 
-	private static SecurityConfigurationSingleton getInstance() {
+	private static MongoSecuritySingleton getInstance() {
 		if (instance == null) {
-			instance = new SecurityConfigurationSingleton();
+			instance = new MongoSecuritySingleton();
 			instance.read();
 		}
 		return instance;
@@ -30,7 +30,7 @@ public class SecurityConfigurationSingleton {
 	private void read() {
 
 		// Config file name here
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("security.properties");
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("mongo-security.cfg");
 
 		try {
 			// Loads File then Loads the properties
@@ -38,10 +38,10 @@ public class SecurityConfigurationSingleton {
 			properties.load(stream);
 
 			// Sets the configurations - Add properties here
-			clientId = properties.getProperty("google.oauth2.clientId");
-			clientSecret = properties.getProperty("google.oauth2.clientSecret");
+			username = properties.getProperty("username");
+			password = properties.getProperty("password");
 
-			System.out.println("Mongo Security Configuration: Security Settings Read / Updated");
+			System.out.println("SecurityReader: Security Settings Read / Updated");
 		} catch (FileNotFoundException e) {
 			System.out.println("*** Could not find configuration file");
 			e.printStackTrace();
@@ -66,41 +66,42 @@ public class SecurityConfigurationSingleton {
 	 * Re-reads the configuration file (use sparingly - only for testing)
 	 */
 	public void reset() {
-		System.out.println("*** RELOADING SECURITY CONFIGURATION ***");
+		System.out.println("*** RELOADING MONGO SECURITY ***");
 		getInstance().read();
 		System.out.println("*** FINISHED RELOADING ***");
 	}
 
 	/**
-	 * Verifies the stored data by printing out the data in the console. Developer
+	 * Verifies the stored data by printing out the data in the console.
+	 * Developer
 	 * MUST update tags when config tags are changed.
 	 */
 	private void verify() {
 		System.out.println("** CONFIGURATION VISUAL VERIFICATION **\n*");
 
-		System.out.println("* clientId: " + getClientId());
-		System.out.println("* clientSecret: " + getClientSecret());
+		System.out.println("* username: " + getUsername());
+		System.out.println("* password: " + getPassword());
 
 		System.out.println("*\n** END CONFIGURATION VISUAL VERIFICATION **");
 	}
 
 	// Getters
 
-	public static String getClientId() {
-		return getInstance().getPrivateClientId();
+	public static String getUsername() {
+		return getInstance().getPrivateUsername();
 	}
 
-	public static String getClientSecret() {
-		return getInstance().getPrivateClientSecret();
+	public static String getPassword() {
+		return getInstance().getPrivatePassword();
 	}
 
 	// Private Getters
 
-	public String getPrivateClientId() {
-		return this.clientId;
+	public String getPrivateUsername() {
+		return this.username;
 	}
 
-	public String getPrivateClientSecret() {
-		return this.clientSecret;
+	public String getPrivatePassword() {
+		return this.password;
 	}
 }
