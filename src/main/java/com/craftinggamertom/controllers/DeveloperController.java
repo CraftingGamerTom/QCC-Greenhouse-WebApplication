@@ -4,10 +4,9 @@
 
 package com.craftinggamertom.controllers;
 
-import java.io.FileReader;
+import java.io.InputStream;
+import java.util.Scanner;
 
-import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,22 +16,20 @@ public class DeveloperController {
 
 	@RequestMapping(value = "/version")
 	public String versionPage() {
-		try {
-			MavenXpp3Reader reader = new MavenXpp3Reader();
-			Model model = reader.read(new FileReader("pom.xml"));
+		String fileName = "version.txt";
+		StringBuilder result = new StringBuilder("");
 
-			return model.getVersion();
-			// System.out.println(model.getId());
-			// System.out.println(model.getGroupId());
-			// System.out.println(model.getArtifactId());
-			// System.out.println(model.getVersion());
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream(fileName);
 
-		} catch (Exception e) {
-			System.out.println("Fatal Error whilst obtaining App Version. Printing Stacktrace.");
-			e.printStackTrace();
+		Scanner scanner = new Scanner(stream);
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			result.append(line).append("\n");
 		}
 
-		return "version not set";
+		scanner.close();
+
+		return result.toString();
 
 	}
 

@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.craftinggamertom</groupId>
-	<version>1.0.1</version>
+	<version>1.0.3</version>
 	<packaging>war</packaging>
 
 	<dependencies>
@@ -157,6 +157,22 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/version.txt</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/version.txt</exclude>
+				</excludes>
+			</resource>
+		</resources>
 	</build>
 	<artifactId>QCC-Greenhouse-WebApplication</artifactId>
 </project>
