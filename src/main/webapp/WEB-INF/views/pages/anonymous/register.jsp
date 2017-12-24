@@ -54,8 +54,8 @@
 						</a> <br /> <a class="btn btn-block btn-outline btn-primary" href="/">Take
 							me back Home</a>
 						<p class="m-t">
-							<small>By using our web application you agree to our <a
-								href="/terms">Terms</a>.
+							<small>By using this site you agree to our <a
+								href="/terms">Terms</A> and <a href="/policy">Privacy Policy</a>
 							</small>
 						</p>
 					</div>
@@ -65,20 +65,21 @@
 
 			</div>
 		</div>
+	</div>
 
-		<!-- Mainly scripts -->
-		<script src="<c:url value="/resources/js/jquery-3.1.1.min.js"/>"></script>
-		<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
-		<script
-			src="<c:url value="/resources/js/plugins/metisMenu/jquery.metisMenu.js"/>"></script>
-		<script
-			src="<c:url value="/resources/js/plugins/slimscroll/jquery.slimscroll.min.js"/>"></script>
+	<!-- Mainly scripts -->
+	<script src="<c:url value="/resources/js/jquery-3.1.1.min.js"/>"></script>
+	<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
+	<script
+		src="<c:url value="/resources/js/plugins/metisMenu/jquery.metisMenu.js"/>"></script>
+	<script
+		src="<c:url value="/resources/js/plugins/slimscroll/jquery.slimscroll.min.js"/>"></script>
 </body>
 
 <footer>
 
-			<!-- FOOTER -->
-			<%@ include file="../../content/common/footer.jspf"%>
-			<!-- END FOOTER -->
+	<!-- FOOTER -->
+	<%@ include file="../../content/common/footer.jspf"%>
+	<!-- END FOOTER -->
 
 </footer>
