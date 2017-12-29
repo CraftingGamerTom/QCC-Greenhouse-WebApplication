@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.constants;
 
@@ -28,6 +28,8 @@ public class JSPLocation {
 	// anonymous
 	public static final String organizationFeed = "pages/anonymous/feed";
 	public static final String register = "pages/anonymous/register";
+	public static final String terms = "pages/anonymous/terms";
+	public static final String policy = "pages/anonymous/policy";
 	// admin
 	public static final String manageSensorsFriendlyNames = "pages/admin/manage/sensors/friendly-names";
 	public static final String manageUsersEditUser = "pages/admin/manage/users/user-edit";

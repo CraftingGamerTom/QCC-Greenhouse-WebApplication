@@ -1,17 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<div class="row">
-	<div class="col-lg-12">
-		<div class="wrapper">
-			<div class="row">
-				<div class="footer">
-				    <div class="pull-right">
-				        Greenhouse Project Automation
-				    </div>
-				    <div>
-				        <strong>Full Stack Developer</strong> Thomas Rokicki &copy; <%=request.getAttribute("copyright-year")%>
-				    </div>
-				</div>
+	pageEncoding="ISO-8859-1"%>
+
+<div class="col-lg-12">
+	<div class="row">
+		<div class="footer">
+			<div class="pull-right">
+
+				<strong>Greenhouse Project Automation</strong><small> | </small><a
+					href="/terms">Terms</a> <small> | </small><a href="/policy">Privacy
+					Policy</a>
+
+			</div>
+			<div class="pull-left">
+				<strong>Full Stack Developer</strong> Thomas Rokicki &copy;
+				<%=request.getAttribute("copyright-year")%>
 			</div>
 		</div>
 	</div>
