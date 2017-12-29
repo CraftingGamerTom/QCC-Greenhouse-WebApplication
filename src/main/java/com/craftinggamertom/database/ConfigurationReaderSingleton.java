@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.database;
 
@@ -13,8 +13,7 @@ public class ConfigurationReaderSingleton {
 
 	private static ConfigurationReaderSingleton instance = null; // Singleton
 
-	private ConfigurationReaderSingleton() {
-	}
+	private ConfigurationReaderSingleton() {}
 
 	private String databaseIP;
 	private int databasePort;
@@ -30,6 +29,8 @@ public class ConfigurationReaderSingleton {
 	private String yearlyDataCollection;
 
 	private String appUserCollection;
+
+	private String plantTypesCollection;
 
 	private String domainName;
 
@@ -69,6 +70,8 @@ public class ConfigurationReaderSingleton {
 			yearlyDataCollection = properties.getProperty("yearlyDataCollection");
 
 			appUserCollection = properties.getProperty("appUserCollection");
+
+			plantTypesCollection = properties.getProperty("plantTypesCollection");
 
 			domainName = properties.getProperty("domainName");
 
@@ -123,6 +126,8 @@ public class ConfigurationReaderSingleton {
 		System.out.println("* yearlyDataCollection: " + getYearlyDataCollection());
 
 		System.out.println("* appUserCollection: " + getAppUserCollection());
+
+		System.out.println("* plantTypesCollection: " + getPlantTypesCollection());
 
 		System.out.println("* domainName: " + getDomainName());
 
@@ -179,6 +184,10 @@ public class ConfigurationReaderSingleton {
 		return getInstance().getPrivateAppUserCollection();
 	}
 
+	public static String getPlantTypesCollection() {
+		return getInstance().getPrivatePlantTypesCollection();
+	}
+
 	public static String getDomainName() {
 		return getInstance().getPrivateDomainName();
 	}
@@ -231,6 +240,10 @@ public class ConfigurationReaderSingleton {
 
 	private String getPrivateAppUserCollection() {
 		return this.appUserCollection;
+	}
+
+	private String getPrivatePlantTypesCollection() {
+		return this.plantTypesCollection;
 	}
 
 	private String getPrivateDomainName() {
