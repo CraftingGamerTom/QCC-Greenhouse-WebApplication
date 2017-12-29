@@ -11,7 +11,7 @@ public class PlantTypeAccessor extends Accessor{
 	
 	public PlantTypeAccessor() {
 		super();
-		this.collection = ConfigurationReaderSingleton.getPlantTypesCollection();
+		this.collection = ConfigurationReaderSingleton.getPlantTypeCollection();
 	}
 
 	public boolean storeInDatabase(PlantType plantType) {

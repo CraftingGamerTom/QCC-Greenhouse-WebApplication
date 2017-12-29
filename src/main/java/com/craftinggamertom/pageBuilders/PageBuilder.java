@@ -245,7 +245,7 @@ public class PageBuilder {
 		}
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 
 		Document searchResult = collection.find(sensorFilter).first();
 

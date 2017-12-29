@@ -146,7 +146,7 @@ public class RawDataBuilder extends PageBuilder {
 			Bson isNotDefaultFilter = Filters.eq("isDefault", false);
 
 			MongoCollection<Document> collection = null;
-			collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+			collection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 
 			FindIterable<Document> searchResult = collection.find(Filters.and(isVisibleFilter, isNotDefaultFilter));
 			FindIterable<Document> defaultResult = collection.find(isDefaultFilter);
@@ -189,7 +189,7 @@ public class RawDataBuilder extends PageBuilder {
 		MongoCollection<Document> rawDataCollection = null;
 		MongoCollection<Document> namesCollection = null;
 
-		namesCollection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		namesCollection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 		rawDataCollection = database.getCollection(ConfigurationReaderSingleton.getRawDataCollection());
 
 		// Date Fitlers

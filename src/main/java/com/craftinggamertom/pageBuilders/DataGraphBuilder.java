@@ -267,7 +267,7 @@ public class DataGraphBuilder extends PageBuilder {
 		Bson isVisibleFilter = Filters.eq("isVisible", true);
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 
 		FindIterable<Document> searchResult = collection.find(isVisibleFilter);
 		Iterator<Document> iter = searchResult.iterator();
