@@ -63,7 +63,7 @@ public class ManageFriendlyNamesBuilder extends PageBuilder {
 		ArrayList<String> allTypes = new ArrayList<String>();
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 
 		FindIterable<Document> searchResult = collection.find();
 
@@ -142,7 +142,7 @@ public class ManageFriendlyNamesBuilder extends PageBuilder {
 		ArrayList<SensorInfo> allSensors = new ArrayList<SensorInfo>();
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 
 		FindIterable<Document> searchResult;
 		if (!sensorType.equals("all")) {

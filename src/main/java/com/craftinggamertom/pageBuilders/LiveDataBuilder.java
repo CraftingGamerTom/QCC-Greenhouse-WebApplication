@@ -71,7 +71,7 @@ public class LiveDataBuilder extends PageBuilder {
 		ArrayList<String> allTypes = new ArrayList<String>();
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 
 		Bson isVisibleFilter = Filters.eq("isVisible", true);
 		FindIterable<Document> searchResult = collection.find(isVisibleFilter);
@@ -137,7 +137,7 @@ public class LiveDataBuilder extends PageBuilder {
 		MongoCollection<Document> liveDataCollection = null;
 		MongoCollection<Document> namesCollection = null;
 
-		namesCollection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		namesCollection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 		liveDataCollection = database.getCollection(ConfigurationReaderSingleton.getLiveDataCollection());
 
 		try {

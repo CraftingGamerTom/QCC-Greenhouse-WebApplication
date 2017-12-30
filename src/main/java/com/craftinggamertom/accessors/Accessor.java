@@ -7,6 +7,7 @@ package com.craftinggamertom.accessors;
 import org.bson.Document;
 
 import com.craftinggamertom.database.MongoDatabaseConnection;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 public class Accessor {
@@ -14,7 +15,7 @@ public class Accessor {
 	/**
 	 * The instance of the collection work will be done in
 	 */
-	protected String collection;
+	protected MongoCollection<Document> collection;
 	/**
 	 * The instance of the database that work will be done in
 	 */
@@ -30,37 +31,65 @@ public class Accessor {
 	 * @return true if successful, false if unsuccessful
 	 */
 	public boolean storeInDatabase(Document document) {
-		
+
 		try {
-			
-		}catch(Exception e) {
+			collection.insertOne(document);
+			return true;
+		} catch (Exception e) {
 			System.out.println("Error storing item in database. Printing Stacktrace.");
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
 
 	/**
 	 * Updates an entity in the database
 	 * 
+	 * @param the
+	 *            original document
+	 * @param the
+	 *            document to update by replacement
+	 * 
 	 * @return true if successful, false if unsuccessful
 	 */
-	public boolean updateEntity() {
+	public boolean updateEntity(Document oldDoc, Document newDoc) {
+
+		try {
+			collection.replaceOne(oldDoc, newDoc);
+			return true;
+		} catch (Exception e) {
+			System.out.println("Error storing item in database. Printing Stacktrace.");
+			e.printStackTrace();
+		}
+
 		return false;
 	}
 
 	/**
 	 * Deletes an entity from the database
+	 * This is dangerous to the data
+	 * 
+	 * @param the
+	 *            document to be deleted
 	 * 
 	 * @return true if successful, false if unsuccessful
 	 */
-	public boolean deleteEntity() {
+	public boolean deleteEntity(Document document) {
+
+		try {
+			collection.deleteOne(document);
+			return true;
+		} catch (Exception e) {
+			System.out.println("Error storing item in database. Printing Stacktrace.");
+			e.printStackTrace();
+		}
+
 		return false;
 	}
 
 	/**
-	 * Makes a conntection to the database
+	 * Makes a connection to the database
 	 */
 	private void makeConnectionToDatabase() {
 
