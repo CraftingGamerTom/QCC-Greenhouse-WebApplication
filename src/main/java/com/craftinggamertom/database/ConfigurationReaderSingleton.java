@@ -197,15 +197,15 @@ public class ConfigurationReaderSingleton {
 		return getInstance().getPrivatePlantTypeCollection();
 	}
 
-	public String getPlantCollection() {
+	public static String getPlantCollection() {
 		return getInstance().getPrivatePlantCollection();
 	}
 
-	public String getZoneCollection() {
+	public static String getZoneCollection() {
 		return getInstance().getPrivateZoneCollection();
 	}
 
-	public String getPestTypeCollection() {
+	public static String getPestTypeCollection() {
 		return getInstance().getPrivatePestTypeCollection();
 	}
 
