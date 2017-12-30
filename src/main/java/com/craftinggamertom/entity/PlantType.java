@@ -4,6 +4,8 @@
 
 package com.craftinggamertom.entity;
 
+import java.util.Map;
+
 import org.bson.Document;
 
 /**
@@ -79,20 +81,102 @@ public class PlantType extends Entity {
 		setRepels(doc.getString("repels"));
 		setAttracts(doc.getString("attracts"));
 
-		setSpace_needed_min("space_needed_min");
-		setSpace_needed_max("space_needed_max");
-		setTime_to_germinate_min("time_to_germinate_min");
-		setTime_to_germinate_max("time_to_germinate_max");
-		setTime_to_mature_min("time_to_mature_min");
-		setTime_to_mature_max("time_to_mature_max");
-		setTempature_min("tempature_min");
-		setTempature_max("tempature_max");
-		setTolerances_min("tolerances_min");
-		setTolerances_max("tolerances_max");
-		setWater_required_min("water_required_min");
-		setWater_required_max("water_required_max");
-		setLight_required_min("light_required_min");
-		setLight_required_max("light_required_max");
+		setSpace_needed_min(doc.getString("space_needed_min"));
+		setSpace_needed_max(doc.getString("space_needed_max"));
+		setTime_to_germinate_min(doc.getString("time_to_germinate_min"));
+		setTime_to_germinate_max(doc.getString("time_to_germinate_max"));
+		setTime_to_mature_min(doc.getString("time_to_mature_min"));
+		setTime_to_mature_max(doc.getString("time_to_mature_max"));
+		setTempature_min(doc.getString("tempature_min"));
+		setTempature_max(doc.getString("tempature_max"));
+		setTolerances_min(doc.getString("tolerances_min"));
+		setTolerances_max(doc.getString("tolerances_max"));
+		setWater_required_min(doc.getString("water_required_min"));
+		setWater_required_max(doc.getString("water_required_max"));
+		setLight_required_min(doc.getString("light_required_min"));
+		setLight_required_max(doc.getString("light_required_max"));
+
+	}
+
+	public PlantType(Map<String, String> attributes) {
+		super(null);
+
+		Document doc = new Document();
+
+		doc.append(attributes.get("id"), "NONE");
+		doc.append(attributes.get("name"), "NONE");
+		doc.append(attributes.get("family"), "NONE");
+		doc.append(attributes.get("scientific_name"), "NONE");
+		doc.append(attributes.get("origin"), "NONE");
+		doc.append(attributes.get("external_link"), "NONE");
+		doc.append(attributes.get("harvest_method"), "NONE");
+		doc.append(attributes.get("trimming_method"), "NONE");
+		doc.append(attributes.get("expected_height_min"), "0inches");
+		doc.append(attributes.get("expected_height_max"), "0inches");
+		doc.append(attributes.get("companion_bugs"), "[]");
+		doc.append(attributes.get("aversive_bugs"), "[]");
+		doc.append(attributes.get("companion_plants"), "[]");
+		doc.append(attributes.get("aversive_plants"), "[]");
+		doc.append(attributes.get("preferred_soil"), "NONE");
+		doc.append(attributes.get("leaf_color"), "NONE");
+		doc.append(attributes.get("picture"), "NONE");
+		doc.append(attributes.get("deficiencies"), "[]");
+		doc.append(attributes.get("nutrients"), "[]");
+		doc.append(attributes.get("repels"), "[]");
+		doc.append(attributes.get("attracts"), "[]");
+
+		doc.append(attributes.get("space_needed_min"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("space_needed_max"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("time_to_germinate_min"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("time_to_germinate_max"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("time_to_mature_min"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("time_to_mature_max"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("tempature_min"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("tempature_max"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("tolerances_min"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("tolerances_max"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("water_required_min"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("water_required_max"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("light_required_min"), "P1Y1M1DT1H1M1S");
+		doc.append(attributes.get("light_required_max"), "P1Y1M1DT1H1M1S");
+
+		document = doc; // Overwrite the document
+
+		setId(doc.getString("id"));
+		setName(doc.getString("name"));
+		setFamily(doc.getString("family"));
+		setScientific_name(doc.getString("scientific_name"));
+		setOrigin(doc.getString("origin"));
+		setExternal_link(doc.getString("external_link"));
+		setHarvest_method(doc.getString("harvest_method"));
+		setTrimming_method(doc.getString("trimming_method"));
+		setExpected_height(doc.getString("expected_height"));
+		setCompanion_bugs(doc.getString("companion_bugs"));
+		setAversive_bugs(doc.getString("aversive_bugs"));
+		setCompanion_plants(doc.getString("companion_plants"));
+		setAversive_plants(doc.getString("aversive_plants"));
+		setPreferred_soil(doc.getString("preferred_soil"));
+		setLeaf_color(doc.getString("leaf_color"));
+		setPicture(doc.getString("picture"));
+		setDeficiencies(doc.getString("deficiencies"));
+		setNutrients(doc.getString("nutrients"));
+		setRepels(doc.getString("repels"));
+		setAttracts(doc.getString("attracts"));
+
+		setSpace_needed_min(doc.getString("space_needed_min"));
+		setSpace_needed_max(doc.getString("space_needed_max"));
+		setTime_to_germinate_min(doc.getString("time_to_germinate_min"));
+		setTime_to_germinate_max(doc.getString("time_to_germinate_max"));
+		setTime_to_mature_min(doc.getString("time_to_mature_min"));
+		setTime_to_mature_max(doc.getString("time_to_mature_max"));
+		setTempature_min(doc.getString("tempature_min"));
+		setTempature_max(doc.getString("tempature_max"));
+		setTolerances_min(doc.getString("tolerances_min"));
+		setTolerances_max(doc.getString("tolerances_max"));
+		setWater_required_min(doc.getString("water_required_min"));
+		setWater_required_max(doc.getString("water_required_max"));
+		setLight_required_min(doc.getString("light_required_min"));
+		setLight_required_max(doc.getString("light_required_max"));
 
 	}
 
