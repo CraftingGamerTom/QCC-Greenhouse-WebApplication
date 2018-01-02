@@ -23,6 +23,15 @@ public class AppUserUpdater {
 		database = MongoDatabaseConnection.getInstance(); // Singleton
 	}
 
+	/**
+	 * Updates the AppUser info (For the Admin Updating page)
+	 * @param dbid
+	 * @param authLevel
+	 * @param email
+	 * @param phoneNum
+	 * @param nickname
+	 * @return true if successful
+	 */
 	public boolean updateWith(String dbid, String authLevel, String email, String phoneNum, String nickname) {
 
 		// To be returned
@@ -46,6 +55,59 @@ public class AppUserUpdater {
 
 				userCollection.findOneAndUpdate(query, updateAuthLevel);
 			}
+			if (!email.equals("default")) {
+
+				userCollection.findOneAndUpdate(query, updateEmail);
+			}
+			if (!phoneNum.equals("default")) {
+
+				// Format the phone number
+				phoneNum = phoneNum.replaceAll("\\D+", "");
+				phoneNum = String.valueOf(phoneNum).replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+
+				userCollection.findOneAndUpdate(query, updatePhone);
+			}
+			if (!nickname.equals("default")) {
+
+				userCollection.findOneAndUpdate(query, updateNickname);
+			}
+
+		} catch (Exception e) {
+			System.out.println("Error while updating user meta data: ");
+			e.printStackTrace();
+			successful = false;
+		}
+
+		return successful;
+
+	}
+	
+	/**
+	 * Updates the AppUser Info (For the user - from the edit profile page)
+	 * @param dbid
+	 * @param email
+	 * @param phoneNum
+	 * @param nickname
+	 * @return true if successful
+	 */
+	public boolean updateWith(String dbid, String email, String phoneNum, String nickname) {
+
+		// To be returned
+		boolean successful = true;
+
+		// Creates the object to search for that represents the user based on their _id
+		BasicDBObject query = new BasicDBObject();
+		query.put("_id", new ObjectId(dbid));
+
+		// Update-able filters
+		Bson updateEmail = Updates.set("email_address", email);
+		Bson updatePhone = Updates.set("cell_phone", phoneNum);
+		Bson updateNickname = Updates.set("nickname", nickname);
+
+		try {
+			MongoCollection<Document> userCollection = database
+					.getCollection(ConfigurationReaderSingleton.getAppUserCollection());
+
 			if (!email.equals("default")) {
 
 				userCollection.findOneAndUpdate(query, updateEmail);
