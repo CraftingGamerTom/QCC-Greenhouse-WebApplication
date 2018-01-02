@@ -8,6 +8,22 @@
 	rel="stylesheet">
 <link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet">
 
+<!-- Select 2 -->
+<link
+	href="<c:url value="/resources/css/plugins/select2/select2.min.css"/>"
+	rel="stylesheet">
+
+
+<!-- Sweet Alert -->
+<link
+	href="<c:url value="/resources/css/plugins/sweetalert/sweetalert.css"/>"
+	rel="stylesheet">
+
+
+<link href="<c:url value="/resources/css/animate.css"/>"
+	rel="stylesheet">
+<link href="<c:url value="/resources/css/style.css"/>" rel="stylesheet">
+
 
 </head>
 
@@ -32,7 +48,7 @@
 
 			<div class="wrapper wrapper-content">
 					<!-- USER-DATA CONTAINER -->
-					<%@ include file="../../content/user/profile-content.jspf"%>
+					<%@ include file="../../content/user/edit-profile.jspf"%>
 					<!-- END USER-DATA CONTAINER -->
 			</div>
 
@@ -50,14 +66,23 @@
 	<!-- Mainly scripts -->
 	<script src="<c:url value="/resources/js/jquery-3.1.1.min.js"/>"></script>
 	<script src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
-	<script
-		src="<c:url value="/resources/js/plugins/metisMenu/jquery.metisMenu.js"/>"></script>
-	<script
-		src="<c:url value="/resources/js/plugins/slimscroll/jquery.slimscroll.min.js"/>"></script>
 
 	<!-- Custom and plugin javascript -->
 	<script src="<c:url value="/resources/js/inspinia.js"/>"></script>
 	<script src="<c:url value="/resources/js/plugins/pace/pace.min.js"/>"></script>
+
+	<!-- Sweet alert -->
+	<script
+		src="<c:url value="/resources/js/plugins/sweetalert/sweetalert.min.js"/>"></script>
+
+	<!-- Custom and plugin javascript -->
+	<script
+		src="<c:url value="/resources/js/plugins/slimscroll/jquery.slimscroll.min.js"/>"></script>
+
+	<!-- Input Mask-->
+	<script
+		src="<c:url value="/resources/js/plugins/jasny/jasny-bootstrap.min.js"/>"></script>
+
 
 </body>
 

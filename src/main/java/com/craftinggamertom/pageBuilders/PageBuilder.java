@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.pageBuilders;
 
@@ -168,14 +168,13 @@ public class PageBuilder {
 			// + " <span class=\"m-r-sm text-muted welcome-message\">" + appUser.getName()
 			// + "</span>\r\n" + " </li>\r\n";
 
-			String username = "\r\n"
-					+ "             <ul class=\"nav navbar-nav navbar-right\">\r\n"
+			String username = "\r\n" + "             <ul class=\"nav navbar-nav navbar-right\">\r\n"
 					+ "                    <li class=\"dropdown\">\r\n"
 					+ "                        <a aria-expanded=\"false\" role=\"button\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">"
 					+ "<img alt=\"image\" class=\"img-sm\" style=\"width:18px;height:18px;\" src=\""
 					+ appUser.getPicture() + "\" />\r\n" + appUser.getName() + "<span class=\"caret\"></span></a>\r\n"
 					+ "            				<ul role=\"menu\" class=\"dropdown-menu\">\r\n"
-					+ "                           	<li><a href=\"/view/profile/user\">Profile</a></li>\r\n"
+					+ "                           	<li><a href=\"/user/profile\">Profile</a></li>\r\n"
 					// + " <li><a href=\"/user/organizations\">Organizations</a></li>\r\n"
 					// + " <li><a href=\"/user/settings">Settings</a></li>\r\n"
 					+ "                        		<li>\r\n"
@@ -183,9 +182,7 @@ public class PageBuilder {
 					+ "                            		<i class=\"fa fa-sign-out\"></i> Log out\r\n"
 					+ "                        			</a>\r\n" + "                    			</li>"
 					+ "                    			<logout/>" + "                 		</ul>\r\n"
-					+ "           			</li>\r\n"
-					+ "            	</ul>\r\n"
-					+ "\r\n";
+					+ "           			</li>\r\n" + "            	</ul>\r\n" + "\r\n";
 			String messages = ""; // for messages html if implemented later
 			String notifications = ""; // for notifications html if implemented later
 
@@ -305,6 +302,17 @@ public class PageBuilder {
 					+ "		</div>\r\n" + "	</div>\r\n" + "</div>";
 		}
 		return alert;
+	}
+
+	/**
+	 * Gets the UserAuthority. This should be called in the Controller Classes to
+	 * avoid duplicating the UserAuthority causing slowing down and duplicating the
+	 * last seen update.
+	 * 
+	 * @return UserAuthority the UserAuthority for the signed in user.
+	 */
+	public UserAuthority getUserAuthority() {
+		return userAuthority;
 	}
 
 }

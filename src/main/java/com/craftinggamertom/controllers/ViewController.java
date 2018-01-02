@@ -18,7 +18,6 @@ import com.craftinggamertom.constants.JSPLocation;
 import com.craftinggamertom.constants.URLLocation;
 import com.craftinggamertom.pageBuilders.DataGraphBuilder;
 import com.craftinggamertom.pageBuilders.LiveDataBuilder;
-import com.craftinggamertom.pageBuilders.PageBuilder;
 import com.craftinggamertom.pageBuilders.RawDataBuilder;
 
 @Controller
@@ -112,32 +111,6 @@ public class ViewController {
 		}
 
 		return new ModelAndView(JSPLocation.rawData);
-	}
-
-	/**
-	 * Handles the request to view a users profile
-	 * 
-	 * @param model
-	 *            for the variables
-	 * @return the page containing loaded data
-	 */
-	@RequestMapping(value = "profile/user")
-	public ModelAndView handleProfileRequest(@RequestParam(value = "dbid", defaultValue = "me") String databaseId,
-			Model model) {
-		PageBuilder pb = new PageBuilder();
-
-		try {
-			pb.buildPage(model);
-
-			// UserProfileBuilder response = new UserProfileBuilder();
-			// model = response.buildPage(databaseId, model);
-
-		} catch (Exception e) {
-			System.out.println("Exception: ");
-			e.printStackTrace();
-		}
-
-		return new ModelAndView(JSPLocation.userProfile);
 	}
 
 	/**
