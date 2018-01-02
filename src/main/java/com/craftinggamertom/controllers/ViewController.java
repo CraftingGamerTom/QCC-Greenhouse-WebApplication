@@ -18,11 +18,7 @@ import com.craftinggamertom.constants.JSPLocation;
 import com.craftinggamertom.constants.URLLocation;
 import com.craftinggamertom.pageBuilders.DataGraphBuilder;
 import com.craftinggamertom.pageBuilders.LiveDataBuilder;
-import com.craftinggamertom.pageBuilders.PageBuilder;
 import com.craftinggamertom.pageBuilders.RawDataBuilder;
-import com.craftinggamertom.pageBuilders.UserProfileBuilder;
-import com.craftinggamertom.security.authorization.PageAuthority;
-import com.craftinggamertom.security.authorization.UserAuthority;
 
 @Controller
 @RequestMapping("view")
