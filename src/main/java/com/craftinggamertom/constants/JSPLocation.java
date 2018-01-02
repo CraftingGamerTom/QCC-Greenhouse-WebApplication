@@ -23,6 +23,7 @@ public class JSPLocation {
 	public static final String observations = "pages/view/observations";
 	// user
 	public static final String userProfile = "pages/user/profile";
+	public static final String editUserProfile = "pages/user/edit-profile";
 	// manager
 	public static final String manageUsers = "pages/manager/manage/users";
 	// anonymous
@@ -33,4 +34,5 @@ public class JSPLocation {
 	// admin
 	public static final String manageSensorsFriendlyNames = "pages/admin/manage/sensors/friendly-names";
 	public static final String manageUsersEditUser = "pages/admin/manage/users/user-edit";
+
 }
