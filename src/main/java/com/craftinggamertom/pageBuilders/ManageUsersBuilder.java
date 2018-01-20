@@ -113,7 +113,7 @@ public class ManageUsersBuilder extends PageBuilder {
 				// Control Buttons
 				chart += "                                    <td class=\"text-right\">\r\n"
 						+ "                                        <div class=\"btn-group\">\r\n"
-						+ "                                            	    <button onclick=\"window.location.href='/view/profile/user?dbid="
+						+ "                                            	    <button onclick=\"window.location.href='/user/profile?dbid="
 						+ theUser.getDatabaseId() + "'\" class=\"btn-success btn btn-xs\">Profile</button>\r\n";
 				if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Adds admin actions
 					chart += "                                            	    <button onclick=\"window.location.href='/admin/manage/users/user?dbid="
