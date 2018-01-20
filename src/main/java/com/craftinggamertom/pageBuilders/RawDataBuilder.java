@@ -13,8 +13,8 @@ import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
-import com.craftinggamertom.database.SensorInfo;
 import com.craftinggamertom.database.SensorSet;
+import com.craftinggamertom.entity.Sensor;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
@@ -139,7 +139,7 @@ public class RawDataBuilder extends PageBuilder {
 	private String getSensorOptions() {
 		try {
 			String message = "";
-			ArrayList<SensorInfo> allVisibleSensors = new ArrayList<SensorInfo>();
+			ArrayList<Sensor> allVisibleSensors = new ArrayList<Sensor>();
 
 			Bson isVisibleFilter = Filters.eq("isVisible", true);
 			Bson isDefaultFilter = Filters.eq("isDefault", true);
@@ -153,12 +153,12 @@ public class RawDataBuilder extends PageBuilder {
 
 			Document defaultSensor = defaultResult.first();
 			if (defaultSensor != null) { // If the default is set
-				allVisibleSensors.add(new SensorInfo(defaultSensor));
+				allVisibleSensors.add(new Sensor(defaultSensor));
 			}
 
 			Iterator<Document> resultIter = searchResult.iterator();
 			while (resultIter.hasNext()) {
-				allVisibleSensors.add(new SensorInfo(resultIter.next()));
+				allVisibleSensors.add(new Sensor(resultIter.next()));
 			}
 			for (int i = 0; i < allVisibleSensors.size(); i++) {
 				message += "\n";

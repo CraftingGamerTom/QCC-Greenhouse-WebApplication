@@ -1,8 +1,8 @@
-package com.craftinggamertom.database;
+package com.craftinggamertom.entity;
 
 import org.bson.Document;
 
-public class SensorInfo {
+public class Sensor extends Entity{
 
 	private String sensorID;
 	private String type;
@@ -16,7 +16,8 @@ public class SensorInfo {
 	 * SensorInfo object with all blank fields (great for when there is not sensor
 	 * data in the database)
 	 */
-	public SensorInfo() {
+	public Sensor() {
+		super(null); //TODO Build document
 		this.sensorID = "Blank";
 		this.type = "Blank";
 		this.date = null;
@@ -25,8 +26,9 @@ public class SensorInfo {
 		this.isVisible = true;
 	}
 
-	public SensorInfo(String sensorID, String type, String date, String friendlyName, String description,
+	public Sensor(String sensorID, String type, String date, String friendlyName, String description,
 			boolean isVisible, boolean isDefault) {
+		super(null); // TODO Build document
 		this.sensorID = sensorID;
 		this.type = type;
 		this.date = date;
@@ -36,14 +38,17 @@ public class SensorInfo {
 		this.isVisible = isDefault;
 	}
 
-	public SensorInfo(Document searchResult) {
-		this.sensorID = searchResult.getString("sensorId");
-		this.type = searchResult.getString("type");
-		this.date = searchResult.getString("date");
-		this.friendlyName = searchResult.getString("friendlyName");
-		this.description = searchResult.getString("description");
-		this.isVisible = searchResult.getBoolean("isVisible");
-		this.isDefault = searchResult.getBoolean("isDefault");
+	public Sensor(Document doc) {
+		super(doc);
+		this.sensorID = doc.getString("sensorId");
+		this.type = doc.getString("type");
+		this.date = doc.getString("date");
+		this.friendlyName = doc.getString("friendlyName");
+		this.description = doc.getString("description");
+		this.isVisible = doc.getBoolean("isVisible");
+		this.isDefault = doc.getBoolean("isDefault");
+//		this.isDefault = doc.getBoolean("range_min");
+//		this.isDefault = doc.getBoolean("range_max");
 	}
 
 	public String getSensorId() {

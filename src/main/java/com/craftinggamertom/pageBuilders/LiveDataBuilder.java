@@ -8,8 +8,8 @@ import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
-import com.craftinggamertom.database.SensorInfo;
 import com.craftinggamertom.database.SensorSet;
+import com.craftinggamertom.entity.Sensor;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
@@ -67,7 +67,7 @@ public class LiveDataBuilder extends PageBuilder {
 	 */
 	private String getTypeOptions() {
 		String message = "";
-		ArrayList<SensorInfo> allSensors = new ArrayList<SensorInfo>();
+		ArrayList<Sensor> allSensors = new ArrayList<Sensor>();
 		ArrayList<String> allTypes = new ArrayList<String>();
 
 		MongoCollection<Document> collection = null;
@@ -78,7 +78,7 @@ public class LiveDataBuilder extends PageBuilder {
 
 		Iterator<Document> iter = searchResult.iterator();
 		while (iter.hasNext()) {
-			allSensors.add(new SensorInfo(iter.next()));
+			allSensors.add(new Sensor(iter.next()));
 		}
 
 		// Gets all the types into an arraylist

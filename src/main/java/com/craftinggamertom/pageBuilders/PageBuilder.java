@@ -16,7 +16,7 @@ import org.springframework.ui.Model;
 
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.MongoDatabaseConnection;
-import com.craftinggamertom.database.SensorInfo;
+import com.craftinggamertom.entity.Sensor;
 import com.craftinggamertom.security.authentication.AppUser;
 import com.craftinggamertom.security.authorization.PageAuthority;
 import com.craftinggamertom.security.authorization.UserAuthority;
@@ -125,7 +125,7 @@ public class PageBuilder {
 		}
 		// anonymous links (always get put in)
 		anonLinks = "\r\n" + "                    <li>\r\n"
-				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"/feed\">Feed</a>\r\n"
+				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"/dashboard\">Dashboard</a>\r\n"
 				+ "                    </li>" + "                    <li class=\"dropdown\">\r\n"
 				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Data<span class=\"caret\"></span></a>\r\n"
 				+ "                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n"
@@ -232,7 +232,7 @@ public class PageBuilder {
 	 * @param cSensor
 	 * @return SensorInfo object
 	 */
-	protected SensorInfo convertSensor(String cSensor) {
+	protected Sensor convertSensor(String cSensor) {
 
 		Bson sensorFilter = Filters.eq("isDefault", true);
 
@@ -246,13 +246,13 @@ public class PageBuilder {
 
 		Document searchResult = collection.find(sensorFilter).first();
 
-		SensorInfo sensor;
+		Sensor sensor;
 		try {
-			sensor = new SensorInfo(searchResult);
+			sensor = new Sensor(searchResult);
 
 		} catch (NullPointerException nullE) {
 			System.out.println("NullPointer(PageBuilder): Adding a dumby sensor with placemarkers and warning user");
-			sensor = new SensorInfo(); // Uses placemarker metadata
+			sensor = new Sensor(); // Uses placemarker metadata
 
 			// To warn user of no sensor data
 			String warning = "<div class=\"row wrapper page-heading\">\r\n" + "	<div class=\"col-lg-12\">\r\n"
