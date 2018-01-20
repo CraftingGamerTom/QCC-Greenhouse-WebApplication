@@ -25,7 +25,7 @@
 
 			<div class="wrapper wrapper-content">
 				<!-- FEED CONTAINER -->
-				<%@ include file="../../content/anonymous/feed-content.jspf"%>
+				<%@ include file="../../content/anonymous/organization-gallery-content.jspf"%>
 				<!-- END FEED CONTAINER -->
 			</div>
 

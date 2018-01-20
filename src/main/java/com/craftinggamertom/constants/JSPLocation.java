@@ -27,7 +27,9 @@ public class JSPLocation {
 	// manager
 	public static final String manageUsers = "pages/manager/manage/users";
 	// anonymous
-	public static final String organizationFeed = "pages/anonymous/feed";
+	public static final String organizationDashboard = "pages/anonymous/organization-dashboard";
+	public static final String organizationDashboardGallery = "pages/anonymous/organization-gallery";
+	public static final String organizationDashboardMembers = "pages/anonymous/organization-members";
 	public static final String register = "pages/anonymous/register";
 	public static final String terms = "pages/anonymous/terms";
 	public static final String policy = "pages/anonymous/policy";
