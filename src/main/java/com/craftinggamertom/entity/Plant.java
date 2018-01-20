@@ -84,7 +84,7 @@ public class Plant extends Entity {
 	public String getDatabaseId() {
 		return _id;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -124,7 +124,7 @@ public class Plant extends Entity {
 	private void setDatabaseId(String _id) {
 		this._id = _id;
 	}
-	
+
 	private void setId(String id) {
 		this.id = id;
 	}

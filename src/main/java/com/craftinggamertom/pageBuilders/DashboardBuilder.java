@@ -20,7 +20,7 @@ import com.craftinggamertom.security.authorization.PageAuthority;
 public class DashboardBuilder extends PageBuilder {
 
 	protected Organization org;
-	
+
 	public DashboardBuilder() {
 		super();
 	}
@@ -46,16 +46,16 @@ public class DashboardBuilder extends PageBuilder {
 		map.put("org-sensor-count", org.getSensor_count());
 		map.put("org-plant-count", org.getPlant_count());
 		map.put("org-date-created", org.getDate_created());
-		
+
 		// Organization Information
 		map.put("org-address", org.getAddress());
 		map.put("org-phone-number", org.getPhone_number());
 		map.put("org-website", org.getWebsite());
-		
+
 		return map;
 
 	}
-	
+
 	/**
 	 * Alert content is show at the top of the feed page
 	 * 

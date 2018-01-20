@@ -11,13 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.bson.Document;
-import org.bson.types.ObjectId;
-
-import com.craftinggamertom.database.ConfigurationReaderSingleton;
-import com.craftinggamertom.database.MongoDatabaseConnection;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 
 public class Organization extends Entity {
 
@@ -39,7 +32,7 @@ public class Organization extends Entity {
 	private String sensor_count;
 	private String member_count;
 	private String plant_count;
-	private List<String> gallery_photos; // TODO implement
+	private List<String> gallery_photos;
 
 	/**
 	 * Set the document based on the organization's unique url (id)

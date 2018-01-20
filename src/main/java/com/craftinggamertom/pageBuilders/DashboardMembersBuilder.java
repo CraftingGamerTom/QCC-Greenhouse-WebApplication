@@ -41,15 +41,6 @@ public class DashboardMembersBuilder extends DashboardBuilder {
 		return model;
 	}
 
-	private Map<String, String> getMemberAttributes() {
-		Map<String, String> map = new HashMap<String, String>();
-
-		map.put("member-list", getMemberListHTML());
-		map.put("unverified-member-list", getUnverifiedListHTML());
-
-		return map;
-	}
-
 	private void setUserList() {
 		// Will need to be updated to sort based on organization
 		userList = new ArrayList<AppUser>();
@@ -62,45 +53,6 @@ public class DashboardMembersBuilder extends DashboardBuilder {
 			userList.add(new AppUser(docIter.next()));
 		}
 
-	}
-
-	private String getMemberListHTML() {
-		String html = "";
-
-		if (userList.isEmpty()) {
-			html = "<p>Nothing to Show</p>";
-		} else {
-
-			// top of table html
-			html = "<table class=\"footable table table-stripped toggle-arrow-tiny\"\r\n"
-					+ "						data-page-size=\"15\">\r\n" + "						<thead>\r\n"
-					+ "							<tr>\r\n"
-					+ "								<th data-sort-ignore=\"true\"></th>\r\n"
-					+ "								<th data-sort-ignore=\"true\"></th>\r\n"
-					+ "								<th data-hide=\"phone\" data-sort-ignore=\"true\"></th>\r\n"
-					+ "							</tr>\r\n" + "						</thead>\r\n"
-					+ "						<tbody>\r\n";
-
-			for (int i = 0; i < userList.size(); i++) {
-				html += "                           </tr>\r\n"
-						+ "														<tr>\r\n"
-						+ "								<td><img alt=\"image\" class=\"img-sm\"\r\n"
-						+ "									style=\"width: 18px; height: 18px;\"\r\n"
-						+ "									src=\"" + userList.get(i).getPicture() + "\" />\r\n"
-						+ "								</td>\r\n" + "								<td><a\r\n"
-						+ "									href=\"/view/profile/user?dbid=5a3fd5989f78bb3348e8e60e\">"
-						+ userList.get(i).getName() + "</a></td>\r\n" + "								<td>"
-						+ userList.get(i).getAuthority_key() + "</td>\r\n" + "							</tr>";
-			}
-
-			// Bottom of table html
-			html += "						</tbody>\r\n" + "						<tfoot>\r\n"
-					+ "							<tr>\r\n" + "								<td colspan=\"6\">\r\n"
-					+ "									<ul class=\"pagination pull-right\"></ul>\r\n"
-					+ "								</td>\r\n" + "							</tr>\r\n"
-					+ "						</tfoot>\r\n" + "					</table>\r\n";
-		}
-		return html;
 	}
 
 	private Map<String, String> addMemberAttributes() {
@@ -149,9 +101,10 @@ public class DashboardMembersBuilder extends DashboardBuilder {
 							+ "									style=\"width: 18px; height: 18px;\"\r\n"
 							+ "									src=\"" + userList.get(i).getPicture() + "\" />\r\n"
 							+ "								</td>\r\n" + "								<td><a\r\n"
-							+ "									href=\"/user/profile?dbid=" + userList.get(i).getDatabaseId() + "\">"
-							+ userList.get(i).getName() + "</a></td>\r\n" + "								<td>"
-							+ userList.get(i).getAuthority_key() + "</td>\r\n" + "							</tr>";
+							+ "									href=\"/user/profile?dbid="
+							+ userList.get(i).getDatabaseId() + "\">" + userList.get(i).getName() + "</a></td>\r\n"
+							+ "								<td>" + userList.get(i).getAuthority_key() + "</td>\r\n"
+							+ "							</tr>";
 				}
 			}
 
@@ -179,44 +132,6 @@ public class DashboardMembersBuilder extends DashboardBuilder {
 		map.put("member-list", memberHTML);
 		map.put("unverified-member-list", unverifiedHTML);
 		return map;
-	}
-
-	private String getUnverifiedListHTML() {
-		String html = "";
-
-		if (userList.isEmpty()) {
-			html = "<p>Nothing to Show</p>";
-		} else {
-
-			// top of table html
-			html = "<table class=\"footable table table-stripped toggle-arrow-tiny\"\r\n"
-					+ "						data-page-size=\"15\">\r\n" + "						<thead>\r\n"
-					+ "							<tr>\r\n"
-					+ "								<th data-sort-ignore=\"true\"></th>\r\n"
-					+ "								<th data-sort-ignore=\"true\"></th>\r\n"
-					+ "							</tr>\r\n" + "						</thead>\r\n"
-					+ "						<tbody>\r\n";
-
-			for (int i = 0; i < userList.size(); i++) {
-				html += "                           </tr>\r\n"
-						+ "														<tr>\r\n"
-						+ "								<td><img alt=\"image\" class=\"img-sm\"\r\n"
-						+ "									style=\"width: 18px; height: 18px;\"\r\n"
-						+ "									src=\"" + userList.get(i).getPicture() + "\" />\r\n"
-						+ "								</td>\r\n" + "								<td><a\r\n"
-						+ "									href=\"/view/profile/user?dbid=5a3fd5989f78bb3348e8e60e\">"
-						+ userList.get(i).getName() + "</a></td>\r\n" + "							</tr>";
-			}
-
-			// Bottom of table html
-			html += "						</tbody>\r\n" + "						<tfoot>\r\n"
-					+ "							<tr>\r\n" + "								<td colspan=\"6\">\r\n"
-					+ "									<ul class=\"pagination pull-right\"></ul>\r\n"
-					+ "								</td>\r\n" + "							</tr>\r\n"
-					+ "						</tfoot>\r\n" + "					</table>\r\n";
-		}
-
-		return html;
 	}
 
 }

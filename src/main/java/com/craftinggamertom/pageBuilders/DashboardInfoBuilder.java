@@ -15,10 +15,8 @@ import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
-import com.craftinggamertom.database.SensorSet;
 import com.craftinggamertom.entity.Plant;
 import com.craftinggamertom.entity.Sensor;
-import com.craftinggamertom.security.authentication.AppUser;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
@@ -208,8 +206,9 @@ public class DashboardInfoBuilder extends DashboardBuilder {
 						+ "								<i class=\"fa " + widgetIcon + " fa-2x \"></i>\r\n"
 						+ "							</div>\r\n"
 						+ "							<div class=\"col-xs-6 text-left\">\r\n"
-						+ "								<h3><strong>" + sensorMap.get(sensorIds.get(i)).getFriendlyName()
-						+ "</strong></h3>\r\n" + "							</div>\r\n"
+						+ "								<h3><strong>"
+						+ sensorMap.get(sensorIds.get(i)).getFriendlyName() + "</strong></h3>\r\n"
+						+ "							</div>\r\n"
 						+ "							<div class=\"col-xs-4 text-right\">\r\n"
 						+ "								<h3>\r\n" + "									<strong>"
 						+ liveDataMap.get(sensorIds.get(i)) + "</strong>\r\n"
