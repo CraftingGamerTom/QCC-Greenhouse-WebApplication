@@ -50,9 +50,9 @@ public class RawDataBuilder extends PageBuilder {
 		this.sensorId = sensorId;
 		this.model = model;
 		this.cStart = parseDate(cStart);
-		this.cStart += "T00:00:00-04:00"; // add time to start of day (needed for DB query)
+		this.cStart += "T00:00:00-05:00"; // add time to start of day (needed for DB query)
 		this.cEnd = parseDate(cEnd);
-		this.cEnd += "T23:59:59-04:00"; // add time to end of day (needed for DB query)
+		this.cEnd += "T23:59:59-05:00"; // add time to end of day (needed for DB query)
 
 		this.displayedStartDate = parseDisplayedDate(cStart);
 		this.displayedEndDate = parseDisplayedDate(cEnd);
