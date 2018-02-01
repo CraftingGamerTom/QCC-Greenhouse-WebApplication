@@ -85,8 +85,7 @@ public class DashboardMembersBuilder extends DashboardBuilder {
 			for (int i = 0; i < userList.size(); i++) {
 				if (userList.get(i).getAuthority_key().equals("unverified")) {
 					hasUnverified = true;
-					unverifiedHTML += "                           </tr>\r\n"
-							+ "														<tr>\r\n"
+					unverifiedHTML += "														<tr>\r\n"
 							+ "								<td><img alt=\"image\" class=\"img-sm\"\r\n"
 							+ "									style=\"width: 18px; height: 18px;\"\r\n"
 							+ "									src=\"" + userList.get(i).getPicture() + "\" />\r\n"
