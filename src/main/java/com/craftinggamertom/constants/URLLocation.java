@@ -13,4 +13,7 @@ public class URLLocation {
 	
 	// view
 	public static String observations = "/observations";
+	
+	// api
+	public static final String API_OBSERVATION = "/api/observation";
 }
