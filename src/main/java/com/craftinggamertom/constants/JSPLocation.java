@@ -20,7 +20,8 @@ public class JSPLocation {
 	public static final String liveData = "pages/view/live-data";
 	public static final String rawData = "pages/view/raw-data";
 	public static final String sensorData = "pages/view/sensor-data";
-	public static final String observations = "pages/view/observations";
+	// entity
+	public static final String observations = "pages/entity/observations";
 	// user
 	public static final String userProfile = "pages/user/profile";
 	public static final String editUserProfile = "pages/user/edit-profile";

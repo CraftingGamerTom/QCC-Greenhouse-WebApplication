@@ -36,6 +36,7 @@ public class PageBuilder {
 	protected Model model;
 
 	protected UserAuthority userAuthority;
+	protected PageAuthority pageAuthority;
 
 	public PageBuilder() {
 
@@ -75,6 +76,15 @@ public class PageBuilder {
 		this.model.addAttribute("alert-content", getAlertContent()); // Alert Container just below the navigation bar
 
 		return this.model;
+	}
+	
+	/**
+	 * For use when a default page is needed after creating a specific PageBuilder Child
+	 * @param model
+	 * @return
+	 */
+	public Model buildDefaultPage(Model model) {
+		return buildPage(model);
 	}
 
 	/**
@@ -135,7 +145,7 @@ public class PageBuilder {
 				// " <li><a href=\"/view/compare-data\">Compare Data</a></li>\r\n" + // Removed
 				// until implemented
 				"                        </ul>\r\n" + "                    </li>" + "                    <li>\r\n"
-				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"view/observation-notes\">Observation Notes</a>\r\n"
+				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"/observations\">Observations</a>\r\n"
 				+ "                    </li>\r\n" + "\r\n";
 
 		theHTML = anonLinks + appUserLinks + managerLinks + adminLinks + devLinks; // Orders the HTML
