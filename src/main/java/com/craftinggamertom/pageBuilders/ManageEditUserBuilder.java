@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.pageBuilders;
 
@@ -8,16 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.bson.Document;
-import org.bson.types.ObjectId;
 import org.springframework.ui.Model;
 
-import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.security.authentication.AppUser;
 import com.craftinggamertom.security.authorization.Authority;
-import com.craftinggamertom.security.authorization.UserAuthority;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoCollection;
 
 public class ManageEditUserBuilder extends PageBuilder {
 
@@ -25,10 +19,10 @@ public class ManageEditUserBuilder extends PageBuilder {
 		super();
 	}
 
-	public Model buildPage(String databaseId, Model model) {
+	public Model buildPage(AppUser user, Model model) {
 		super.buildPage(model);
 
-		this.model.addAllAttributes(getUserMetaData(databaseId));
+		this.model.addAllAttributes(getUserMetaData(user));
 
 		return model;
 	}
@@ -40,26 +34,12 @@ public class ManageEditUserBuilder extends PageBuilder {
 	 * @param databaseId
 	 * @return
 	 */
-	private HashMap<String, String> getUserMetaData(String databaseId) {
+	private HashMap<String, String> getUserMetaData(AppUser user) {
 		HashMap<String, String> map = new HashMap<String, String>();
-		AppUser theUser;
+		AppUser theUser = user;
 
 		try {
-			if (databaseId.equals("me")) {
-				UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
-				theUser = userAuthority.getUser();
-			} else { // Gets the user by id
 
-				MongoCollection<Document> userCollection = null;
-				userCollection = database.getCollection(ConfigurationReaderSingleton.getAppUserCollection());
-
-				BasicDBObject query = new BasicDBObject();
-				query.put("_id", new ObjectId(databaseId));
-
-				Document databaseResult = userCollection.find(query).first();
-
-				theUser = new AppUser(databaseResult);
-			}
 			map.putAll(theUser.getAllInformation()); // Returns all the attributes
 			map.put("auth-options", getAuthLevelOptions());
 			return map;
@@ -91,8 +71,14 @@ public class ManageEditUserBuilder extends PageBuilder {
 				numberSortLevels.put(m.getValue(), m.getKey());
 			}
 		}
+		// Creates the drop down from the list above
 		for (Map.Entry<Integer, String> m : numberSortLevels.entrySet()) {
 			html += "<option value=\"" + m.getValue() + "\">" + m.getValue() + "</option>\r\n";
+			// Does not put the option in for the user to choose something higher than their
+			// own level
+			if (m.getKey().equals(userAuthority.getUser().getAuthority_key())) {
+				break;
+			}
 		}
 		return html;
 	}

@@ -6,6 +6,8 @@ package com.craftinggamertom.controllers;
 
 import java.net.URISyntaxException;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,13 +17,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.craftinggamertom.constants.JSPLocation;
 import com.craftinggamertom.constants.URLLocation;
+import com.craftinggamertom.database.ConfigurationReaderSingleton;
+import com.craftinggamertom.database.MongoDatabaseConnection;
 import com.craftinggamertom.pageBuilders.ManageEditUserBuilder;
 import com.craftinggamertom.pageBuilders.ManageFriendlyNamesBuilder;
 import com.craftinggamertom.pageBuilders.PageBuilder;
+import com.craftinggamertom.security.authentication.AppUser;
 import com.craftinggamertom.security.authorization.PageAuthority;
 import com.craftinggamertom.security.authorization.UserAuthority;
 import com.craftinggamertom.updater.AppUserUpdater;
 import com.craftinggamertom.updater.FriendlyNamesUpdater;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 @Controller
 @RequestMapping("admin")
@@ -174,8 +182,34 @@ public class AdminController {
 		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
 			try {
 				ManageEditUserBuilder response = new ManageEditUserBuilder();
-				model = response.buildPage(dbid, model);
+				AppUser theUser;
+				if (dbid.equals("me")) {
+					theUser = response.getUserAuthority().getUser();
+				} else { // Gets the user by id
 
+					MongoDatabase database = MongoDatabaseConnection.getInstance(); // Singleton
+
+					MongoCollection<Document> userCollection = null;
+					userCollection = database.getCollection(ConfigurationReaderSingleton.getAppUserCollection());
+
+					BasicDBObject query = new BasicDBObject();
+					query.put("_id", new ObjectId(dbid));
+
+					Document databaseResult = userCollection.find(query).first();
+
+					theUser = new AppUser(databaseResult);
+				}
+				// Check if user is trying to edit a user with higher authority
+				PageAuthority validateAuthority = new PageAuthority(theUser.getAuthority_key());
+				if (validateAuthority.grantAccessGTE(userAuthority)) {
+					model = response.buildPage(theUser, model);
+				} else { // if not authorized to edit user with higher authority
+
+					PageBuilder unauthorizedResponse = new PageBuilder();
+					unauthorizedResponse.buildPage(model);
+
+					return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
+				}
 			} catch (Exception e) {
 				System.out.println("Exception: ");
 				e.printStackTrace();
@@ -224,11 +258,20 @@ public class AdminController {
 				dbid = userAuthority.getUser().getDatabaseId();
 			}
 
-			AppUserUpdater updater = new AppUserUpdater();
-			updater.updateWith(dbid, authLevel, email, phoneNum, nickname);
+			// Validate that user is not setting credentials higher than their own
+			PageAuthority validateAuthority = new PageAuthority(authLevel);
+			if (validateAuthority.grantAccessGTE(userAuthority)) {
 
-			redirectUrl = "/admin/manage/users/user?dbid=" + dbid; // Sends user back to user view
-			return "redirect:" + redirectUrl;
+				AppUserUpdater updater = new AppUserUpdater();
+				updater.updateWith(dbid, authLevel, email, phoneNum, nickname);
+
+				redirectUrl = "/admin/manage/users/user?dbid=" + dbid; // Sends user back to user view
+				return "redirect:" + redirectUrl;
+			} else { // if user tried to set authLevel higher than their own
+
+				redirectUrl = URLLocation.unauthorized;
+				return "redirect:" + redirectUrl;
+			}
 		} else { // if not authorized to be on this page
 
 			redirectUrl = URLLocation.unauthorized;
