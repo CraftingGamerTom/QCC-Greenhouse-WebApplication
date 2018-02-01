@@ -77,9 +77,11 @@ public class PageBuilder {
 
 		return this.model;
 	}
-	
+
 	/**
-	 * For use when a default page is needed after creating a specific PageBuilder Child
+	 * For use when a default page is needed after creating a specific PageBuilder
+	 * Child
+	 * 
 	 * @param model
 	 * @return
 	 */
@@ -200,16 +202,12 @@ public class PageBuilder {
 
 		} else { // If the user is not signed in - do work
 
-			// String signIn = "<button class=\"btn btn-sm btn-white\" href=\"/login\">Log
-			// in</button>\r\n";
-			// String signUp = "<button class=\"btn btn-sm btn-primary\"
-			// href=\"/register\"><strong>Register</strong></button>\r\n";
 			String navStart = "             <ul class=\"nav navbar-top-links navbar-right\">\r\n";
-			String signIn = "                   <li><a href=\"/login\">Sign in</a></li>\r\n";
 			String signUp = "                   <li><a href=\"/register\">Register</a></li>\r\n";
+			String signIn = "                   <li><a href=\"/login\">Sign in</a></li>\r\n";
 			String navEnd = "            	</ul>\r\n";
 
-			theHTML = navStart + signIn + signUp + navEnd;
+			theHTML = navStart + signUp + "|" + signIn + navEnd;
 		}
 
 		map.put("nav-sign-in-section", theHTML);
