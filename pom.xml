@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.craftinggamertom</groupId>
-	<version>1.0.3</version>
+	<version>1.1.0</version>
 	<packaging>war</packaging>
 
 	<dependencies>
@@ -116,6 +116,14 @@
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-model</artifactId>
 			<version>3.3.9</version>
+		</dependency>
+
+		<!-- For converting markdown to html -->
+		<!-- https://mvnrepository.com/artifact/com.github.rjeschke/txtmark -->
+		<dependency>
+			<groupId>com.github.rjeschke</groupId>
+			<artifactId>txtmark</artifactId>
+			<version>0.13</version>
 		</dependency>
 
 	</dependencies>
