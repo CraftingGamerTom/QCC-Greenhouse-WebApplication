@@ -35,6 +35,8 @@ public class ConfigurationReaderSingleton {
 	private String zoneCollection;
 	private String pestTypeCollection;
 
+	private String observationCollection;
+
 	private String domainName;
 
 	private static ConfigurationReaderSingleton getInstance() {
@@ -78,6 +80,8 @@ public class ConfigurationReaderSingleton {
 			plantCollection = properties.getProperty("plantCollection");
 			zoneCollection = properties.getProperty("zoneCollection");
 			pestTypeCollection = properties.getProperty("pestTypeCollection");
+
+			observationCollection = properties.getProperty("observationCollection");
 
 			domainName = properties.getProperty("domainName");
 
@@ -137,6 +141,8 @@ public class ConfigurationReaderSingleton {
 		System.out.println("* plantCollection: " + getPlantCollection());
 		System.out.println("* zoneCollection: " + getZoneCollection());
 		System.out.println("* pestTypeCollection: " + getPestTypeCollection());
+
+		System.out.println("* observationCollection: " + getObservationCollection());
 
 		System.out.println("* domainName: " + getDomainName());
 
@@ -209,6 +215,10 @@ public class ConfigurationReaderSingleton {
 		return getInstance().getPrivatePestTypeCollection();
 	}
 
+	public static String getObservationCollection() {
+		return getInstance().getPrivateObservationCollection();
+	}
+
 	public static String getDomainName() {
 		return getInstance().getPrivateDomainName();
 	}
@@ -277,6 +287,10 @@ public class ConfigurationReaderSingleton {
 
 	private String getPrivatePestTypeCollection() {
 		return this.pestTypeCollection;
+	}
+
+	private String getPrivateObservationCollection() {
+		return this.observationCollection;
 	}
 
 	private String getPrivateDomainName() {

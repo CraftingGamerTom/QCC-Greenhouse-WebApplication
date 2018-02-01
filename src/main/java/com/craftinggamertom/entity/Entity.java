@@ -8,7 +8,7 @@ import org.bson.Document;
 
 public class Entity {
 
-	protected Document document;
+	protected static Document document;
 
 	public Entity(Document doc) {
 		document = doc;

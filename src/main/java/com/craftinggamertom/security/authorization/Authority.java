@@ -7,6 +7,8 @@ package com.craftinggamertom.security.authorization;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.craftinggamertom.constants.AuthorityLevels;
+
 /**
  * 
  * This object handles authority levels for authorization. This is implemented
@@ -25,12 +27,7 @@ public class Authority {
 	 * a Map
 	 */
 	public Authority() {
-		authLevels.put("anonymous", 1);
-		authLevels.put("unverified", 2);
-		authLevels.put("user", 3);
-		authLevels.put("manager", 4);
-		authLevels.put("admin", 5);
-		authLevels.put("developer", 6);
+		authLevels.putAll(AuthorityLevels.getAuthorityLevelsAsMap());
 	}
 
 	/**

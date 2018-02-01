@@ -1,0 +1,158 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+
+<div class="col-lg-4">
+	<h3>Search</h3>
+
+	<div class="ibox float-e-margins">
+		<p class="text-muted">Showing 12 Observations</p>
+		<hr>
+		<form id="dateRangeForm">
+			<div class="form-group" id="date_range_data">
+				<div class="row">
+					<div class="col-lg-8" style="margin-bottom: 10px">
+						<div class="input-daterange input-group" id="datepicker">
+							<input type="text" class="input-sm form-control" name="s-date"
+								value="<%=request.getAttribute("start-date-value")%>" /> <span
+								class="input-group-addon">to</span> <input type="text"
+								class="input-sm form-control" name="e-date"
+								value="<%=request.getAttribute("end-date-value")%>" />
+						</div>
+					</div>
+					<div class="col-lg-4" style="margin-bottom: 10px">
+						<button class="btn btn-block btn-primary pull-right" type="submit"
+							form="dateRangeForm" value="submit">Search</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="col-lg-8">
+	<div class="col-lg-8">
+		<div class="modal inmodal fade" id="viewObservation" tabindex="-1"
+			role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<span class="badge badge-danger pull-left" id="view-priority">High</span>
+						<h4 class="modal-title" id="view-title">This is a Title</h4>
+						<small class="font-bold" id="view-observe-date">Observed
+							Now</small> <br> <small class="font-bold" id="view-post-date">Posted
+							Now</small>
+					</div>
+					<div class="modal-body">
+						<div class="well" id="view-body"
+							style="background-color: #FFFFFF;">Body</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<h3>Observations</h3>
+			</div>
+			<div class="col-lg-6">
+				<%=request.getAttribute("post-observation-button")%>
+				<div class="modal inmodal fade" id="newObservation" tabindex="-1"
+					role="dialog" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">
+									<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+								</button>
+								<h4 class="modal-title">New Observation</h4>
+								<small class="font-bold">Strategy requires thought,
+									tactics require observation.</small>
+							</div>
+							<div class="modal inmodal fade" id="viewObservation"
+								tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-lg">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal">
+												<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+											</button>
+											<span class="badge badge-danger pull-left">10</span>
+											<h4 class="modal-title">This is a Title</h4>
+											<small class="font-bold">Observed Mar 23 '16 at 11:47
+												PM</small> <small class="font-bold">Posted Mar 24 '16 at
+												8:15 AM</small>
+										</div>
+										<div class="modal-body">
+
+											<div class="modal-footer">
+												<button type="button" class="btn btn-white"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<form class="form-horizontal" role="form" id="observation-form">
+								<div class="modal-body">
+									<div class="form-group">
+										<label class="font-normal"><strong>Title</strong></label> <input
+											id="title" name="title" type="text" placeholder="Title"
+											class="form-control">
+									</div>
+									<div class="form-group" id="calander-data">
+										<label class="font-normal"><strong>Date</strong></label>
+										<div class="input-group date">
+											<input name="date" id="date" type="text" class="form-control"
+												value=""> <span class="input-group-addon"> <i
+												class="fa fa-calendar"></i>
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="font-normal"><strong>Time</strong></label>
+										<div class="input-group clockpicker"
+											style="z-index: 999999 !important;" data-autoclose="true">
+											<input type="text" class="form-control" value="09:30"
+												id="time" name="time"> <span
+												class="input-group-addon"> <span
+												class="fa fa-clock-o"></span></span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="font-normal"><strong>Priority</strong></label> <select
+											class="form-control m-b" name="priority" id="priority">
+											<option class="bg-success" value="none">None</option>
+											<option class="bg-primary" value="low">Low</option>
+											<option class="bg-warning" value="medium">Medium</option>
+											<option class="bg-danger" value="high">High</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<textarea class="form-control m-b" name="body" id="body"
+											data-provide="markdown"
+											placeholder="Type your observation here.." rows="10"></textarea>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-white"
+										data-dismiss="modal">Cancel</button>
+									<button type="submit" class="btn btn-primary">Finish</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="row">
+			<%=request.getAttribute("observations")%>
+			<div class="col-lg-4"></div>
+		</div>
+	</div>
+</div>

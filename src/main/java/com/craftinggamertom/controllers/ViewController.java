@@ -10,12 +10,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.craftinggamertom.constants.JSPLocation;
-import com.craftinggamertom.constants.URLLocation;
 import com.craftinggamertom.pageBuilders.DataGraphBuilder;
 import com.craftinggamertom.pageBuilders.LiveDataBuilder;
 import com.craftinggamertom.pageBuilders.RawDataBuilder;
@@ -111,18 +109,6 @@ public class ViewController {
 		}
 
 		return new ModelAndView(JSPLocation.rawData);
-	}
-
-	/**
-	 * Handles request to view the observations There is the ability to POST
-	 * observations here too using the REST client
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "observations", method = RequestMethod.GET)
-	public String goToObservation() {
-
-		return URLLocation.observations;
 	}
 
 }

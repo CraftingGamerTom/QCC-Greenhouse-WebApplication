@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.security.authentication;
 
@@ -32,6 +32,7 @@ public class AppUser {
 	private String nickname; // Nickname for the user
 	private String email_address; // Users Email address
 	private String cell_phone; // Users cell phone number to text - in case of emergency
+	private String time_zone; // User's time zone
 
 	// The items below are meant to be implemented later
 	// When they get implemented the entire User collection in the database must be
@@ -75,6 +76,7 @@ public class AppUser {
 		setNickname(userMap.getOrDefault("nickname", "anon user"));
 		setEmail_address(userMap.getOrDefault("email_address", "anonymousUser_Email"));
 		setCell_phone(userMap.getOrDefault("cell_phone", "anon_phone"));
+		setTime_zone(userMap.getOrDefault("time_zone", "-05:00[America/New_York]"));
 	}
 
 	public AppUser(Document userDoc) {
@@ -95,6 +97,7 @@ public class AppUser {
 		setNickname(userDoc.getString("nickname"));
 		setEmail_address(userDoc.getString("email_address"));
 		setCell_phone(userDoc.getString("cell_phone"));
+		setTime_zone(userDoc.getString("time_zone"));
 	}
 
 	private void setDatabaseId(String database_id) {
@@ -137,6 +140,10 @@ public class AppUser {
 		this.cell_phone = cell_phone;
 	}
 
+	private void setTime_zone(String time_zone) {
+		this.time_zone = time_zone;
+	}
+
 	public String getDatabaseId() {
 		return database_id;
 	}
@@ -175,6 +182,15 @@ public class AppUser {
 
 	public String getCell_phone() {
 		return cell_phone;
+	}
+
+	/**
+	 * 
+	 * @return String including the offset and time zone. Example:
+	 *         "-05:00[America/New_York]"
+	 */
+	public String getTime_zone() {
+		return time_zone;
 	}
 
 	public String getName() {
