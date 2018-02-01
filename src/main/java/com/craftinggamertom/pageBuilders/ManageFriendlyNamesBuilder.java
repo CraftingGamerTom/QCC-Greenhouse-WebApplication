@@ -176,10 +176,10 @@ public class ManageFriendlyNamesBuilder extends PageBuilder {
 					+ description + "\"></td>\r\n"
 					+ "                                    <td><input name=\"friendly-name\" id=\"friendly-name\" type=\"text\" class=\"form-control\" value=\""
 					+ friendlyName + "\"></td>\r\n" + "                                    <td>\r\n"
-					+ "                                        <input type=\"checkbox\" id=\"is-visible\" name=\"is-visible\" value=\"1\""
+					+ "                                        <input class=\"i-checks\" type=\"checkbox\" id=\"is-visible\" name=\"is-visible\" value=\"1\""
 					+ getIsCheckedString(isVisible) + "/>\n" + "                                    </td>\r\n"
 					+ "                                    <td>\r\n"
-					+ "                                        <input type=\"checkbox\" id=\"is-default\" name=\"is-default\" value=\"1\""
+					+ "                                        <input class=\"i-checks\"type=\"checkbox\" id=\"is-default\" name=\"is-default\" value=\"1\""
 					+ getIsCheckedString(isDefault) + "/>\n" + "                                    </td>\r\n"
 					+ "                                    <td><input id=\"submit-button\" class=\"btn btn-xs btn-primary\" type=\"submit\" value=\"Save\"></td>\r\n"
 					+ "                                </tr>\r\n" + "	                            </form>";
