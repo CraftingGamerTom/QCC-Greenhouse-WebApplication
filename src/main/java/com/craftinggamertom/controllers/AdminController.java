@@ -108,7 +108,7 @@ public class AdminController {
 		// TODO Remove with organization implementation
 		String org_url = OrgUrl.QCC;
 
-		String redirectUrl = "";
+		String redirectUrl = "/admin/manage/sensors/friendly-names";
 
 		PageBuilder builder = new PageBuilder(org_url);
 
