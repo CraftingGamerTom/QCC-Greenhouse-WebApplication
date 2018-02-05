@@ -59,7 +59,7 @@ public class FriendlyNamesUpdater {
 
 		try {
 			// Iterates through the list of persistent collections
-			collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+			collection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 
 			// The if statement below stops a user from making removing default the default
 			if(makeBoolean(isDefaultSensor) == false) {

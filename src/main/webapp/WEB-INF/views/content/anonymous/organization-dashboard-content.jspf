@@ -1,0 +1,106 @@
+
+<%=request.getAttribute("alert-content")%>
+
+<div class="row">
+
+	<div class="col-lg-3">
+		<div class="widget-head-color-box lazur-bg p-lg text-center">
+			<div class="m-b-md">
+				<h2 class="font-bold no-margins"><%=request.getAttribute("org-name")%></h2>
+				<small><%=request.getAttribute("org-header")%></small>
+			</div>
+			<img
+				src="<%=request.getAttribute("org-profile-picture")%>"
+				class="img-circle circle-border m-b-md" style="width: 90%;"
+				alt="profile">
+			<div>
+				<span><%=request.getAttribute("org-member-count")%> Members</span> | <span><%=request.getAttribute("org-sensor-count")%> Sensors</span> | <span><%=request.getAttribute("org-plant-count")%> Plants</span>
+			</div>
+		</div>
+
+		<div class="widget style1 lazur-bg">
+			<div class="row">
+				<div class="col-xs-1">
+					<i class="fa fa-map-marker"></i>
+				</div>
+				<div class="col-xs-11">
+					<span><%=request.getAttribute("org-address")%></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-1">
+					<i class="fa fa-phone"></i>
+				</div>
+				<div class="col-xs-11">
+					<span><a href="tel:<%=request.getAttribute("org-phone-number")%>"><%=request.getAttribute("org-phone-number")%></a></span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-1">
+					<i class="fa fa-external-link"></i>
+				</div>
+				<div class="col-xs-11">
+					<span><a href="http://www.qcc.edu/"><%=request.getAttribute("org-website")%></a></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="ibox float-e-margins">
+				<div class="panel-body">
+					<div class="well white-bg">
+						<ul class="navbar nav">
+							<li class="active"><a href="/dashboard"><i
+									class="fa fa-dashboard"></i>Dashboard</a></li>
+							<li><a href="/dashboard/gallery"><i
+									class="fa fa-picture-o"></i>Gallery</a></li>
+							<li><a href="/dashboard/members"><i class="fa fa-users"></i>Members</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="col-lg-6">
+
+		<div class="ibox float-e-margins">
+			<div class="panel-body">
+				<div class="well text-center">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<p>
+								<strong>Plants</strong>
+							</p>
+						</div>
+					</div>
+					<%=request.getAttribute("plant-list")%>
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+
+	<div class="col-lg-3">
+
+		<div class="ibox float-e-margins">
+			<div class="panel-body">
+				<div class="well text-center">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<p>
+								<strong>Sensors</strong>
+							</p>
+						</div>
+					</div>
+					<%=request.getAttribute("sensors-list")%>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>

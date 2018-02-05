@@ -10,16 +10,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.craftinggamertom.constants.AuthorityLevels;
 import com.craftinggamertom.constants.JSPLocation;
-import com.craftinggamertom.constants.URLLocation;
+import com.craftinggamertom.constants.OrgUrl;
 import com.craftinggamertom.pageBuilders.DataGraphBuilder;
 import com.craftinggamertom.pageBuilders.LiveDataBuilder;
-import com.craftinggamertom.pageBuilders.PageBuilder;
 import com.craftinggamertom.pageBuilders.RawDataBuilder;
+import com.craftinggamertom.security.authorization.PageAuthority;
+import com.craftinggamertom.security.authorization.UserAuthority;
 
 @Controller
 @RequestMapping("view")
@@ -44,6 +45,9 @@ public class ViewController {
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "start-date", defaultValue = "default") String cDate,
 			Model model) {
 
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
+
 		/**
 		 * handle the default value so that the current day is what is shown
 		 */
@@ -56,8 +60,17 @@ public class ViewController {
 		model.addAttribute("c-date", "\"" + cDate + "\""); // Must use these quote insertions
 
 		try {
-			DataGraphBuilder response = new DataGraphBuilder();
-			model = response.buildPage(cSensor, cTiming, cDate, model);
+			DataGraphBuilder builder = new DataGraphBuilder(org_url);
+			UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
+			PageAuthority pageAuthority = builder.getPageAuthority();
+
+			if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ANONYMOUS)) {
+				model = builder.buildPage(cSensor, cTiming, cDate, model);
+			} else { // if not authorized to be on this page
+				builder.buildDefaultPage(model);
+
+				return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
+			}
 
 		} catch (Exception e) {
 			System.out.println("Exception: ");
@@ -78,9 +91,21 @@ public class ViewController {
 	public ModelAndView handleLiveDataRequest(
 			@RequestParam(value = "chosen-type", defaultValue = "default") String cType, Model model) {
 
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
+
 		try {
-			LiveDataBuilder response = new LiveDataBuilder();
-			model = response.buildPage(cType, model);
+			LiveDataBuilder builder = new LiveDataBuilder(org_url);
+			UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
+			PageAuthority pageAuthority = builder.getPageAuthority();
+
+			if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ANONYMOUS)) {
+				model = builder.buildPage(cType, model);
+			} else { // if not authorized to be on this page
+				builder.buildDefaultPage(model);
+
+				return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
+			}
 
 		} catch (Exception e) {
 			System.out.println("Exception: ");
@@ -102,9 +127,21 @@ public class ViewController {
 			@RequestParam(value = "start-date", defaultValue = "default") String cStart,
 			@RequestParam(value = "end-date", defaultValue = "default") String cEnd, Model model) {
 
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
+
 		try {
-			RawDataBuilder response = new RawDataBuilder();
-			model = response.buildPage(cSensor, cStart, cEnd, model);
+			RawDataBuilder builder = new RawDataBuilder(org_url);
+			UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
+			PageAuthority pageAuthority = builder.getPageAuthority();
+
+			if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ANONYMOUS)) {
+				model = builder.buildPage(cSensor, cStart, cEnd, model);
+			} else { // if not authorized to be on this page
+				builder.buildDefaultPage(model);
+
+				return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
+			}
 
 		} catch (Exception e) {
 			System.out.println("Exception: ");
@@ -112,44 +149,6 @@ public class ViewController {
 		}
 
 		return new ModelAndView(JSPLocation.rawData);
-	}
-
-	/**
-	 * Handles the request to view a users profile
-	 * 
-	 * @param model
-	 *            for the variables
-	 * @return the page containing loaded data
-	 */
-	@RequestMapping(value = "profile/user")
-	public ModelAndView handleProfileRequest(@RequestParam(value = "dbid", defaultValue = "me") String databaseId,
-			Model model) {
-		PageBuilder pb = new PageBuilder();
-
-		try {
-			pb.buildPage(model);
-
-			// UserProfileBuilder response = new UserProfileBuilder();
-			// model = response.buildPage(databaseId, model);
-
-		} catch (Exception e) {
-			System.out.println("Exception: ");
-			e.printStackTrace();
-		}
-
-		return new ModelAndView(JSPLocation.userProfile);
-	}
-
-	/**
-	 * Handles request to view the observations There is the ability to POST
-	 * observations here too using the REST client
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "observations", method = RequestMethod.GET)
-	public String goToObservation() {
-
-		return URLLocation.observations;
 	}
 
 }

@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.controllers.rest;
 
@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.craftinggamertom.constants.AuthorityLevels;
+import com.craftinggamertom.constants.OrgUrl;
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.MongoDatabaseConnection;
 import com.craftinggamertom.security.authorization.PageAuthority;
@@ -42,10 +44,13 @@ public class UserAPI {
 	@RequestMapping(value = "/{dbid}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteUser(@PathVariable String dbid) {
 
-		PageAuthority adminUserAuthority = new PageAuthority("admin");
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
+
+		PageAuthority pageAuthority = new PageAuthority(org_url);
 		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 
-		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) { // Only admin and higher allowed
 			try {
 
 				MongoDatabase database = MongoDatabaseConnection.getInstance(); // Singleton

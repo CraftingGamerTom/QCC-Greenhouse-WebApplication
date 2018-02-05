@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.database;
 
@@ -13,14 +13,13 @@ public class ConfigurationReaderSingleton {
 
 	private static ConfigurationReaderSingleton instance = null; // Singleton
 
-	private ConfigurationReaderSingleton() {
-	}
+	private ConfigurationReaderSingleton() {}
 
 	private String databaseIP;
 	private int databasePort;
 
 	private String databaseName;
-	private String sensorNamesCollection;
+	private String sensorNameCollection;
 	private String liveDataCollection;
 	private String rawDataCollection;
 	private String hourlyDataCollection;
@@ -30,6 +29,13 @@ public class ConfigurationReaderSingleton {
 	private String yearlyDataCollection;
 
 	private String appUserCollection;
+
+	private String plantTypeCollection;
+	private String plantCollection;
+	private String zoneCollection;
+	private String pestTypeCollection;
+
+	private String observationCollection;
 
 	private String domainName;
 
@@ -59,7 +65,7 @@ public class ConfigurationReaderSingleton {
 			databasePort = Integer.parseInt(properties.getProperty("databasePort"));
 
 			databaseName = properties.getProperty("databaseName");
-			sensorNamesCollection = properties.getProperty("sensorNamesCollection");
+			sensorNameCollection = properties.getProperty("sensorNameCollection");
 			liveDataCollection = properties.getProperty("liveDataCollection");
 			rawDataCollection = properties.getProperty("rawDataCollection");
 			hourlyDataCollection = properties.getProperty("hourlyDataCollection");
@@ -69,6 +75,13 @@ public class ConfigurationReaderSingleton {
 			yearlyDataCollection = properties.getProperty("yearlyDataCollection");
 
 			appUserCollection = properties.getProperty("appUserCollection");
+
+			plantTypeCollection = properties.getProperty("plantTypeCollection");
+			plantCollection = properties.getProperty("plantCollection");
+			zoneCollection = properties.getProperty("zoneCollection");
+			pestTypeCollection = properties.getProperty("pestTypeCollection");
+
+			observationCollection = properties.getProperty("observationCollection");
 
 			domainName = properties.getProperty("domainName");
 
@@ -113,7 +126,7 @@ public class ConfigurationReaderSingleton {
 		System.out.println("* databasePort: " + getDatabasePort());
 
 		System.out.println("* databaseName: " + getDatabaseName());
-		System.out.println("* sensorNamesCollection: " + getSensorNamesCollection());
+		System.out.println("* sensorNameCollection: " + getSensorNameCollection());
 		System.out.println("* liveDataCollection: " + getLiveDataCollection());
 		System.out.println("* rawDataCollection: " + getRawDataCollection());
 		System.out.println("* hourlyDataCollection: " + getHourlyDataCollection());
@@ -123,6 +136,13 @@ public class ConfigurationReaderSingleton {
 		System.out.println("* yearlyDataCollection: " + getYearlyDataCollection());
 
 		System.out.println("* appUserCollection: " + getAppUserCollection());
+
+		System.out.println("* plantTypeCollection: " + getPlantTypeCollection());
+		System.out.println("* plantCollection: " + getPlantCollection());
+		System.out.println("* zoneCollection: " + getZoneCollection());
+		System.out.println("* pestTypeCollection: " + getPestTypeCollection());
+
+		System.out.println("* observationCollection: " + getObservationCollection());
 
 		System.out.println("* domainName: " + getDomainName());
 
@@ -143,8 +163,8 @@ public class ConfigurationReaderSingleton {
 		return getInstance().getPrivateDatabaseName();
 	}
 
-	public static String getSensorNamesCollection() {
-		return getInstance().getPrivateSensorNamesCollection();
+	public static String getSensorNameCollection() {
+		return getInstance().getPrivateSensorNameCollection();
 	}
 
 	public static String getLiveDataCollection() {
@@ -179,6 +199,26 @@ public class ConfigurationReaderSingleton {
 		return getInstance().getPrivateAppUserCollection();
 	}
 
+	public static String getPlantTypeCollection() {
+		return getInstance().getPrivatePlantTypeCollection();
+	}
+
+	public static String getPlantCollection() {
+		return getInstance().getPrivatePlantCollection();
+	}
+
+	public static String getZoneCollection() {
+		return getInstance().getPrivateZoneCollection();
+	}
+
+	public static String getPestTypeCollection() {
+		return getInstance().getPrivatePestTypeCollection();
+	}
+
+	public static String getObservationCollection() {
+		return getInstance().getPrivateObservationCollection();
+	}
+
 	public static String getDomainName() {
 		return getInstance().getPrivateDomainName();
 	}
@@ -197,8 +237,8 @@ public class ConfigurationReaderSingleton {
 		return this.databaseName;
 	}
 
-	private String getPrivateSensorNamesCollection() {
-		return this.sensorNamesCollection;
+	private String getPrivateSensorNameCollection() {
+		return this.sensorNameCollection;
 	}
 
 	private String getPrivateLiveDataCollection() {
@@ -233,7 +273,28 @@ public class ConfigurationReaderSingleton {
 		return this.appUserCollection;
 	}
 
+	private String getPrivatePlantTypeCollection() {
+		return this.plantTypeCollection;
+	}
+
+	private String getPrivatePlantCollection() {
+		return this.plantCollection;
+	}
+
+	private String getPrivateZoneCollection() {
+		return this.zoneCollection;
+	}
+
+	private String getPrivatePestTypeCollection() {
+		return this.pestTypeCollection;
+	}
+
+	private String getPrivateObservationCollection() {
+		return this.observationCollection;
+	}
+
 	private String getPrivateDomainName() {
 		return this.domainName;
 	}
+
 }

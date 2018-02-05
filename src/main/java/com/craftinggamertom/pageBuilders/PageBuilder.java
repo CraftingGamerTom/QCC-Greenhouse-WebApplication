@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.pageBuilders;
 
@@ -14,9 +14,10 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
+import com.craftinggamertom.constants.AuthorityLevels;
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.MongoDatabaseConnection;
-import com.craftinggamertom.database.SensorInfo;
+import com.craftinggamertom.entity.Sensor;
 import com.craftinggamertom.security.authentication.AppUser;
 import com.craftinggamertom.security.authorization.PageAuthority;
 import com.craftinggamertom.security.authorization.UserAuthority;
@@ -36,8 +37,13 @@ public class PageBuilder {
 	protected Model model;
 
 	protected UserAuthority userAuthority;
+	protected PageAuthority pageAuthority;
 
-	public PageBuilder() {
+	protected String organization_url;
+
+	public PageBuilder(String organization_url) {
+
+		this.organization_url = organization_url;
 
 		// Collects and sets the current Time
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -45,6 +51,7 @@ public class PageBuilder {
 		currentTime = dtf.format(now); // 2016/11/16 12:08:43
 
 		userAuthority = new UserAuthority(); // Gets the user to check against
+		pageAuthority = new PageAuthority(organization_url);
 
 		try {
 			database = MongoDatabaseConnection.getInstance(); // Singleton
@@ -78,6 +85,17 @@ public class PageBuilder {
 	}
 
 	/**
+	 * For use when a default page is needed after creating a specific PageBuilder
+	 * Child
+	 * 
+	 * @param model
+	 * @return
+	 */
+	public Model buildDefaultPage(Model model) {
+		return buildPage(model);
+	}
+
+	/**
 	 * Authorizes the user and only adds what they can see to the page
 	 */
 	private Map<String, String> getNavigationLinks() {
@@ -92,15 +110,10 @@ public class PageBuilder {
 		String adminLinks = "";
 		String devLinks = "";
 
-		PageAuthority appUserAuthority = new PageAuthority("user");
-		PageAuthority managerAuthority = new PageAuthority("manager");
-		PageAuthority adminAuthority = new PageAuthority("admin");
-		PageAuthority developerAuthority = new PageAuthority("developer");
-
-		if (developerAuthority.grantAccessGTE(userAuthority)) {
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.DEVELOPER)) {
 			devLinks = "";
 		}
-		if (adminAuthority.grantAccessGTE(userAuthority)) {
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) {
 			adminLinks = "\r\n" + "                    <li class=\"dropdown\">\r\n"
 					+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Admin<span class=\"caret\"></span></a>\r\n"
 					+ "                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n"
@@ -111,7 +124,7 @@ public class PageBuilder {
 					+ "                        </ul>\r\n" + "                    </li>" + "\r\n";
 
 		}
-		if (managerAuthority.grantAccessGTE(userAuthority)) {
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.MANAGER)) {
 			managerLinks = "\r\n" + "                    <li class=\"dropdown\">\r\n"
 					+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Manager<span class=\"caret\"></span></a>\r\n"
 					+ "                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n"
@@ -119,13 +132,13 @@ public class PageBuilder {
 					+ "                        </ul>\r\n" + "                    </li>" + "\r\n";
 
 		}
-		if (appUserAuthority.grantAccessGTE(userAuthority)) {
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.USER)) {
 			appUserLinks = "";
 
 		}
 		// anonymous links (always get put in)
 		anonLinks = "\r\n" + "                    <li>\r\n"
-				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"/feed\">Feed</a>\r\n"
+				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"/dashboard\">Dashboard</a>\r\n"
 				+ "                    </li>" + "                    <li class=\"dropdown\">\r\n"
 				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Data<span class=\"caret\"></span></a>\r\n"
 				+ "                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n"
@@ -135,7 +148,7 @@ public class PageBuilder {
 				// " <li><a href=\"/view/compare-data\">Compare Data</a></li>\r\n" + // Removed
 				// until implemented
 				"                        </ul>\r\n" + "                    </li>" + "                    <li>\r\n"
-				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"view/observation-notes\">Observation Notes</a>\r\n"
+				+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"/observations\">Observations</a>\r\n"
 				+ "                    </li>\r\n" + "\r\n";
 
 		theHTML = anonLinks + appUserLinks + managerLinks + adminLinks + devLinks; // Orders the HTML
@@ -159,23 +172,22 @@ public class PageBuilder {
 		// layout for signed in user or anonymousUser
 		String theHTML = "";
 
-		PageAuthority pageAuthority = new PageAuthority("unverified"); // Sets the credentials needed
 		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
 
-		if (pageAuthority.grantAccessGTE(userAuthority)) { // If the user is >= "unverified" credentials do work
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.UNVERIFIED)) { // If the user is >= "unverified"
+																						// credentials do work
 
 			// String username = " <li>\r\n"
 			// + " <span class=\"m-r-sm text-muted welcome-message\">" + appUser.getName()
 			// + "</span>\r\n" + " </li>\r\n";
 
-			String username = "\r\n"
-					+ "             <ul class=\"nav navbar-nav navbar-right\">\r\n"
+			String username = "\r\n" + "             <ul class=\"nav navbar-nav navbar-right\">\r\n"
 					+ "                    <li class=\"dropdown\">\r\n"
 					+ "                        <a aria-expanded=\"false\" role=\"button\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">"
 					+ "<img alt=\"image\" class=\"img-sm\" style=\"width:18px;height:18px;\" src=\""
 					+ appUser.getPicture() + "\" />\r\n" + appUser.getName() + "<span class=\"caret\"></span></a>\r\n"
 					+ "            				<ul role=\"menu\" class=\"dropdown-menu\">\r\n"
-					+ "                           	<li><a href=\"/view/profile/user\">Profile</a></li>\r\n"
+					+ "                           	<li><a href=\"/user/profile\">Profile</a></li>\r\n"
 					// + " <li><a href=\"/user/organizations\">Organizations</a></li>\r\n"
 					// + " <li><a href=\"/user/settings">Settings</a></li>\r\n"
 					+ "                        		<li>\r\n"
@@ -183,9 +195,7 @@ public class PageBuilder {
 					+ "                            		<i class=\"fa fa-sign-out\"></i> Log out\r\n"
 					+ "                        			</a>\r\n" + "                    			</li>"
 					+ "                    			<logout/>" + "                 		</ul>\r\n"
-					+ "           			</li>\r\n"
-					+ "            	</ul>\r\n"
-					+ "\r\n";
+					+ "           			</li>\r\n" + "            	</ul>\r\n" + "\r\n";
 			String messages = ""; // for messages html if implemented later
 			String notifications = ""; // for notifications html if implemented later
 
@@ -193,16 +203,12 @@ public class PageBuilder {
 
 		} else { // If the user is not signed in - do work
 
-			// String signIn = "<button class=\"btn btn-sm btn-white\" href=\"/login\">Log
-			// in</button>\r\n";
-			// String signUp = "<button class=\"btn btn-sm btn-primary\"
-			// href=\"/register\"><strong>Register</strong></button>\r\n";
 			String navStart = "             <ul class=\"nav navbar-top-links navbar-right\">\r\n";
-			String signIn = "                   <li><a href=\"/login\">Sign in</a></li>\r\n";
 			String signUp = "                   <li><a href=\"/register\">Register</a></li>\r\n";
+			String signIn = "                   <li><a href=\"/login\">Sign in</a></li>\r\n";
 			String navEnd = "            	</ul>\r\n";
 
-			theHTML = navStart + signIn + signUp + navEnd;
+			theHTML = navStart + signUp + "|" + signIn + navEnd;
 		}
 
 		map.put("nav-sign-in-section", theHTML);
@@ -235,7 +241,7 @@ public class PageBuilder {
 	 * @param cSensor
 	 * @return SensorInfo object
 	 */
-	protected SensorInfo convertSensor(String cSensor) {
+	protected Sensor convertSensor(String cSensor) {
 
 		Bson sensorFilter = Filters.eq("isDefault", true);
 
@@ -245,17 +251,17 @@ public class PageBuilder {
 		}
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 
 		Document searchResult = collection.find(sensorFilter).first();
 
-		SensorInfo sensor;
+		Sensor sensor;
 		try {
-			sensor = new SensorInfo(searchResult);
+			sensor = new Sensor(searchResult);
 
 		} catch (NullPointerException nullE) {
 			System.out.println("NullPointer(PageBuilder): Adding a dumby sensor with placemarkers and warning user");
-			sensor = new SensorInfo(); // Uses placemarker metadata
+			sensor = new Sensor(); // Uses placemarker metadata
 
 			// To warn user of no sensor data
 			String warning = "<div class=\"row wrapper page-heading\">\r\n" + "	<div class=\"col-lg-12\">\r\n"
@@ -305,6 +311,26 @@ public class PageBuilder {
 					+ "		</div>\r\n" + "	</div>\r\n" + "</div>";
 		}
 		return alert;
+	}
+
+	/**
+	 * Gets the UserAuthority. This should be called in the Controller Classes to
+	 * avoid duplicating the UserAuthority causing slowing down and duplicating the
+	 * last seen update.
+	 * 
+	 * @return UserAuthority the UserAuthority for the signed in user.
+	 */
+	public UserAuthority getUserAuthority() {
+		return userAuthority;
+	}
+
+	/**
+	 * Gets the PageAuthority which defines the use of a page
+	 * 
+	 * @return PageAuthority for the page
+	 */
+	public PageAuthority getPageAuthority() {
+		return pageAuthority;
 	}
 
 }

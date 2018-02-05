@@ -9,7 +9,7 @@ import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
-import com.craftinggamertom.database.SensorInfo;
+import com.craftinggamertom.entity.Sensor;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
@@ -47,8 +47,8 @@ public class DataGraphBuilder extends PageBuilder {
 
 	private String cTiming;
 
-	public DataGraphBuilder() {
-		super();
+	public DataGraphBuilder(String organization_url) {
+		super(organization_url);
 
 	}
 
@@ -66,7 +66,7 @@ public class DataGraphBuilder extends PageBuilder {
 
 		super.buildPage(model); // Adds the standard model attributes
 
-		SensorInfo sensor = convertSensor(cSensor); // Gathers info on a sensor based on Id
+		Sensor sensor = convertSensor(cSensor); // Gathers info on a sensor based on Id
 
 		// Due to the use of a ZonedDateTime object we must convert this manually before
 		// parsing
@@ -262,17 +262,17 @@ public class DataGraphBuilder extends PageBuilder {
 	 */
 	private String getSensorOptions() {
 		String message = "";
-		ArrayList<SensorInfo> allVisibleSensors = new ArrayList<SensorInfo>();
+		ArrayList<Sensor> allVisibleSensors = new ArrayList<Sensor>();
 
 		Bson isVisibleFilter = Filters.eq("isVisible", true);
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 
 		FindIterable<Document> searchResult = collection.find(isVisibleFilter);
 		Iterator<Document> iter = searchResult.iterator();
 		while (iter.hasNext()) {
-			allVisibleSensors.add(new SensorInfo(iter.next()));
+			allVisibleSensors.add(new Sensor(iter.next()));
 		}
 		for (int i = 0; i < allVisibleSensors.size(); i++) {
 			message += "\n";

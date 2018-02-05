@@ -107,7 +107,6 @@ public class UserAuthority extends Authority {
 		} catch (MongoTimeoutException mte) { // Could not connect to database
 			System.out.println("(UserAuthority) MongoTimeoutException. Is the database running?");
 
-			// Hashmap filled with null for the App User to handle no database
 			HashMap<String, String> userMap = new HashMap<String, String>(); // empty HashMap for AppUser constructor to
 																				// handle with default values
 
@@ -220,6 +219,7 @@ public class UserAuthority extends Authority {
 		infoMap.put("nickname", userInfo.getName());
 		infoMap.put("email_address", "Enter Your Email");
 		infoMap.put("cell_phone", "(000) 000-0000");
+		infoMap.put("time_zone", "-05:00[America/New_York]");
 
 		AppUser newUser = new AppUser(userInfo, infoMap);
 

@@ -59,25 +59,6 @@
 	<script src="<c:url value="/resources/js/inspinia.js"/>"></script>
 	<script src="<c:url value="/resources/js/plugins/pace/pace.min.js"/>"></script>
 
-	<!-- Sparkline -->
-	<script
-		src="<c:url value="/resources/js/plugins/sparkline/jquery.sparkline.min.js"/>"></script>
-
-	<script>
-		$(document).ready(function() {
-
-			$("#sparkline1").sparkline([ 34, 43, 43, 35, 44, 32, 44, 48 ], {
-				type : 'line',
-				width : '100%',
-				height : '50',
-				lineColor : '#1ab394',
-				fillColor : "transparent"
-			});
-
-		});
-	</script>
-
-
 </body>
 
 <footer>

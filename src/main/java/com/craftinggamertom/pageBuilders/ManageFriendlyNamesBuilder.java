@@ -8,7 +8,7 @@ import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
-import com.craftinggamertom.database.SensorInfo;
+import com.craftinggamertom.entity.Sensor;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
@@ -18,8 +18,8 @@ public class ManageFriendlyNamesBuilder extends PageBuilder {
 	private String sensorType;
 
 	/** Default Constructor} */
-	public ManageFriendlyNamesBuilder() {
-		super();
+	public ManageFriendlyNamesBuilder(String organization_url) {
+		super(organization_url);
 	}
 
 	/**
@@ -59,17 +59,17 @@ public class ManageFriendlyNamesBuilder extends PageBuilder {
 	 */
 	private String getTypeOptions() {
 		String message = "";
-		ArrayList<SensorInfo> allSensors = new ArrayList<SensorInfo>();
+		ArrayList<Sensor> allSensors = new ArrayList<Sensor>();
 		ArrayList<String> allTypes = new ArrayList<String>();
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 
 		FindIterable<Document> searchResult = collection.find();
 
 		Iterator<Document> iter = searchResult.iterator();
 		while (iter.hasNext()) {
-			allSensors.add(new SensorInfo(iter.next()));
+			allSensors.add(new Sensor(iter.next()));
 		}
 
 		allTypes.add("all"); // adds all option for default value
@@ -139,10 +139,10 @@ public class ManageFriendlyNamesBuilder extends PageBuilder {
 	 */
 	private String getSensorOptions() {
 		String message = "";
-		ArrayList<SensorInfo> allSensors = new ArrayList<SensorInfo>();
+		ArrayList<Sensor> allSensors = new ArrayList<Sensor>();
 
 		MongoCollection<Document> collection = null;
-		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNamesCollection());
+		collection = database.getCollection(ConfigurationReaderSingleton.getSensorNameCollection());
 
 		FindIterable<Document> searchResult;
 		if (!sensorType.equals("all")) {
@@ -153,7 +153,7 @@ public class ManageFriendlyNamesBuilder extends PageBuilder {
 		}
 		Iterator<Document> iter = searchResult.iterator();
 		while (iter.hasNext()) {
-			allSensors.add(new SensorInfo(iter.next()));
+			allSensors.add(new Sensor(iter.next()));
 		}
 		for (int i = 0; i < allSensors.size(); i++) {
 

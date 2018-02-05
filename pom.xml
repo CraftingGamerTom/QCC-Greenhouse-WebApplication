@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.craftinggamertom</groupId>
-	<version>1.0.0</version>
+	<version>1.1.2</version>
 	<packaging>war</packaging>
 
 	<dependencies>
@@ -118,6 +118,14 @@
 			<version>3.3.9</version>
 		</dependency>
 
+		<!-- For converting markdown to html -->
+		<!-- https://mvnrepository.com/artifact/com.github.rjeschke/txtmark -->
+		<dependency>
+			<groupId>com.github.rjeschke</groupId>
+			<artifactId>txtmark</artifactId>
+			<version>0.13</version>
+		</dependency>
+
 	</dependencies>
 
 	<repositories>
@@ -157,6 +165,22 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/version.txt</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/version.txt</exclude>
+				</excludes>
+			</resource>
+		</resources>
 	</build>
 	<artifactId>QCC-Greenhouse-WebApplication</artifactId>
 </project>

@@ -116,7 +116,7 @@
 							$
 									.ajax(
 											{
-												url : "http://localhost/api/user/"
+												url : "/api/user/"
 														+ id,
 												type : "DELETE"
 											})
