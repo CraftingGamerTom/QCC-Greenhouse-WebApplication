@@ -15,7 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.craftinggamertom.constants.AuthorityLevels;
 import com.craftinggamertom.constants.JSPLocation;
+import com.craftinggamertom.constants.OrgUrl;
+import com.craftinggamertom.constants.URLLocation;
 import com.craftinggamertom.pageBuilders.PageBuilder;
 import com.craftinggamertom.security.authorization.PageAuthority;
 import com.craftinggamertom.security.authorization.UserAuthority;
@@ -33,21 +36,21 @@ public class AuthenticationController {
 	@RequestMapping("/register")
 	public ModelAndView goToRegister(Model model) {
 
-		PageAuthority anonUserAuthority = new PageAuthority("anonymous");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
 
-		if (anonUserAuthority.grantAccessLTE(userAuthority)) { // Only admin and higher allowed
+		PageBuilder builder = new PageBuilder(org_url);
 
-			PageBuilder builder = new PageBuilder();
+		PageAuthority anonUserAuthority = builder.getPageAuthority();
+		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
+
+		if (anonUserAuthority.grantAccessLTE(userAuthority, AuthorityLevels.ANONYMOUS)) {
+
 			builder.buildPage(model);
 
 			return new ModelAndView(JSPLocation.register);
-		} else { // if not authorized to be on this page
-
-			PageBuilder response = new PageBuilder();
-			response.buildPage(model);
-
-			return new ModelAndView(JSPLocation.userProfile); // unauthorized page
+		} else { // if signed in
+			return new ModelAndView("forward:" + URLLocation.USER_PROFILE);
 		}
 
 	}
@@ -60,7 +63,7 @@ public class AuthenticationController {
 	@RequestMapping("/login")
 	public String goToLogin() {
 
-		return "redirect:/user/home";
+		return "redirect:/user/profile";
 	}
 
 	/**
@@ -82,8 +85,11 @@ public class AuthenticationController {
 	@RequestMapping("/unauthorized")
 	public ModelAndView unauthorized(Model model) {
 
-		PageBuilder response = new PageBuilder();
-		response.buildPage(model);
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
+
+		PageBuilder builder = new PageBuilder(org_url);
+		builder.buildPage(model);
 
 		return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
 	}

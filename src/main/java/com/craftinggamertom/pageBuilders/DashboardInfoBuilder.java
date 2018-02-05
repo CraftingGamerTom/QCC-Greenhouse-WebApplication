@@ -35,14 +35,14 @@ public class DashboardInfoBuilder extends DashboardBuilder {
 	Map<String, Plant> plantMap;
 	List<String> plantIds;
 
-	public DashboardInfoBuilder() {
-		super();
+	public DashboardInfoBuilder(String organization_url) {
+		super(organization_url);
 	}
 
 	@Override
-	public Model buildPage(Model model, String organization_url) {
+	public Model buildPage(Model model) {
 
-		super.buildPage(model, organization_url);
+		super.buildPage(model);
 
 		setSensorMap();
 		setPlantMap();

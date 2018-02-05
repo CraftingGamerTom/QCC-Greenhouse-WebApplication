@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.craftinggamertom.constants.AuthorityLevels;
+import com.craftinggamertom.constants.OrgUrl;
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.MongoDatabaseConnection;
 import com.craftinggamertom.entity.Observation;
@@ -51,15 +52,16 @@ public class EntityAPI {
 	@RequestMapping(value = "/observation", method = RequestMethod.POST)
 	public ResponseEntity<String> newObservation(
 			/* @PathVariable("organization-url") String organization_url, */ @RequestBody String requestBody) {
-		// TODO REMOVE
-		String organization_url = "qcc";
+
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
 
 		final ObjectMapper mapper = new ObjectMapper();
 
-		PageAuthority pageAuthority = new PageAuthority(AuthorityLevels.USER);
+		PageAuthority pageAuthority = new PageAuthority(org_url);
 		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 
-		if (pageAuthority.grantAccessGTE(userAuthority)) {
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.USER)) {
 			try {
 
 				// Convert Contents of the pay load to node objects
@@ -94,7 +96,7 @@ public class EntityAPI {
 
 				// Create Map of Observation attributes
 				Map<String, String> data = new HashMap<String, String>();
-				data.put("organization_url", organization_url);
+				data.put("organization_url", org_url);
 				data.put("posted_by_id", posted_by_id);
 				data.put("posted_by", posted_by);
 				data.put("observation_date", observation_date);
@@ -131,10 +133,13 @@ public class EntityAPI {
 	public ResponseEntity<String> deleteUser(@PathVariable("organization-url") String organization_url,
 			@PathVariable("observation-id") String observation_id) {
 
-		PageAuthority pageAuthority = new PageAuthority(AuthorityLevels.ADMIN);
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
+
+		PageAuthority pageAuthority = new PageAuthority(org_url);
 		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
 
-		if (pageAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) { // Only admin and higher allowed
 			try {
 
 				MongoDatabase database = MongoDatabaseConnection.getInstance(); // Singleton

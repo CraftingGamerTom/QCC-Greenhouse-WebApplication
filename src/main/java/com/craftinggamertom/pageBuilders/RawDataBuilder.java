@@ -35,8 +35,8 @@ public class RawDataBuilder extends PageBuilder {
 	private String displayedEndDate;
 	private int numItems;
 
-	public RawDataBuilder() {
-		super();
+	public RawDataBuilder(String organization_url) {
+		super(organization_url);
 	}
 
 	/**
@@ -50,9 +50,9 @@ public class RawDataBuilder extends PageBuilder {
 		this.sensorId = sensorId;
 		this.model = model;
 		this.cStart = parseDate(cStart);
-		this.cStart += "T00:00:00-04:00"; // add time to start of day (needed for DB query)
+		this.cStart += "T00:00:00-05:00"; // add time to start of day (needed for DB query)
 		this.cEnd = parseDate(cEnd);
-		this.cEnd += "T23:59:59-04:00"; // add time to end of day (needed for DB query)
+		this.cEnd += "T23:59:59-05:00"; // add time to end of day (needed for DB query)
 
 		this.displayedStartDate = parseDisplayedDate(cStart);
 		this.displayedEndDate = parseDisplayedDate(cEnd);
@@ -70,6 +70,7 @@ public class RawDataBuilder extends PageBuilder {
 	 */
 	private Model addPageAttributes() {
 		model.addAttribute("sensor-options", getSensorOptions());
+		// Calls method to set warning if there are no sensors
 		model.addAttribute("raw-data", getSensorChart());
 		model.addAttribute("friendly-name", sensorName);
 		model.addAttribute("shown-sensor", sensorId); // Must be last because the type is set in the methods called
@@ -203,6 +204,7 @@ public class RawDataBuilder extends PageBuilder {
 			Bson sensorFilter = Filters.eq("sensorId", sensorId);
 			searchResult = namesCollection.find(sensorFilter);
 			valuesResult = rawDataCollection.find(Filters.and(sensorFilter, dateFilter));
+			getSensorDataWarning(true);
 
 		} else { // If the sensor was not specified it will get the default and all with the same
 					// type
@@ -217,23 +219,11 @@ public class RawDataBuilder extends PageBuilder {
 
 				searchResult = namesCollection.find(sensorFilter);
 				valuesResult = rawDataCollection.find(Filters.and(sensorFilter, dateFilter));
+				getSensorDataWarning(true);
 			} catch (NullPointerException nullE) {
-				System.out.println("NullPointer(RawDataBuilder): warning user to add sensor data");
-
-				// To warn user of no sensor data
-				String warning = "<div class=\"row wrapper page-heading\">\r\n" + "	<div class=\"col-lg-12\">\r\n"
-						+ "		<div class=\"alert alert-warning\">\r\n"
-						+ "			<p class=\"alert-link text-center\">Hey!</p>\r\n"
-						+ "			<p class=\"text-center\">You don't seem to have any data to show. You should add some.</p>\r\n"
-						+ "			<p class=\"text-center\">Perhaps there is no default sensor set. An admin can fix that.</p>\r\n"
-						+ "		</div>\r\n" + "	</div>\r\n" + "</div>";
-				model.addAttribute("no-sensor-data-found-warning", warning);
+				getSensorDataWarning(false);
 				return "";
 			}
-
-			model.addAttribute("no-sensor-data-found-warning", ""); // only called if data was found in database - to
-																	// make sure the value is not null
-
 		}
 
 		// Set the friendly name for display
@@ -275,6 +265,25 @@ public class RawDataBuilder extends PageBuilder {
 		this.numItems = allSensors.size();
 		return message;
 
+	}
+
+	private void getSensorDataWarning(boolean hasSensors) {
+		String warning;
+		if (hasSensors) {
+			warning = "";
+		} else {
+			System.out.println("NullPointer(RawDataBuilder): warning user to add sensor data");
+
+			// To warn user of no sensor data
+			warning = "<div class=\"row wrapper page-heading\">\r\n" + "	<div class=\"col-lg-12\">\r\n"
+					+ "		<div class=\"alert alert-warning\">\r\n"
+					+ "			<p class=\"alert-link text-center\">Hey!</p>\r\n"
+					+ "			<p class=\"text-center\">You don't seem to have any data to show. You should add some.</p>\r\n"
+					+ "			<p class=\"text-center\">Perhaps there is no default sensor set. An admin can fix that.</p>\r\n"
+					+ "		</div>\r\n" + "	</div>\r\n" + "</div>";
+		}
+
+		model.addAttribute("no-sensor-data-found-warning", warning);
 	}
 
 }

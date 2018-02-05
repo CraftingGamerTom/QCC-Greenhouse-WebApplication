@@ -15,14 +15,14 @@ import org.springframework.ui.Model;
  */
 public class DashboardGalleryBuilder extends DashboardBuilder {
 
-	public DashboardGalleryBuilder() {
-		super();
+	public DashboardGalleryBuilder(String organization_url) {
+		super(organization_url);
 	}
 
 	@Override
-	public Model buildPage(Model model, String organization_url) {
+	public Model buildPage(Model model) {
 
-		super.buildPage(model, organization_url);
+		super.buildPage(model);
 
 		model.addAttribute("carousel", getCarouselHTML());
 
@@ -39,23 +39,23 @@ public class DashboardGalleryBuilder extends DashboardBuilder {
 		boolean authorized = true; // To implement security for private organizations later
 		if (authorized) {
 			List<String> photos = org.getGallery_photos();
-			
+
 			if (photos.isEmpty()) {
 				html = "<p>Nothing to Show</p>\r\n";
 			} else {
-				
+
 				html += "<div class=\"carousel slide\" id=\"carousel2\">\r\n";
 				String indicatorsHTML = "<ol class=\"carousel-indicators\">\r\n";
 				String imagesHTML = "<div class=\"carousel-inner\">\r\n";
 
 				// Add first - sets the active picture
 				indicatorsHTML += "<li data-slide-to=\"" + "0" + "\" data-target=\"#carousel2\" class=\"active\"></li>";
-				imagesHTML += "<div class=\"item active\">\r\n" + "									<img alt=\"feed" + "0"
-						+ "\" class=\"img-responsive\"\r\n" + "										src=\""
+				imagesHTML += "<div class=\"item active\">\r\n" + "									<img alt=\"feed"
+						+ "0" + "\" class=\"img-responsive\"\r\n" + "										src=\""
 						+ photos.get(0) + "\">\r\n"
 						+ "									<div class=\"carousel-caption\"></div>\r\n"
 						+ "								</div>";
-				
+
 				// Add the rest
 				for (int i = 1; i < photos.size(); i++) {
 					indicatorsHTML += "<li data-slide-to=\"" + i + "\" data-target=\"#carousel2\" class=\"\"></li>";

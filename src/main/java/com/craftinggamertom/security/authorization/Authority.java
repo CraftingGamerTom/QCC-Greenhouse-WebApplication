@@ -1,6 +1,6 @@
 /**
-* Copyright (c) 2017 Thomas Rokicki
-*/
+ * Copyright (c) 2017 Thomas Rokicki
+ */
 
 package com.craftinggamertom.security.authorization;
 
@@ -21,6 +21,7 @@ public class Authority {
 
 	private Map<String, Integer> authLevels = new TreeMap<String, Integer>();
 	private int authorityLevel;
+	private String organization_url;
 
 	/**
 	 * Constructs the TreeMap of authorityLevels. Puts all the authority levels into
@@ -50,6 +51,20 @@ public class Authority {
 	}
 
 	/**
+	 * Sets the authority level for it to be compared
+	 * 
+	 * @param keyword
+	 */
+	protected void setOrganizationUrl(String organization_url) {
+		try {
+			this.organization_url = organization_url;
+		} catch (NullPointerException nullE) {
+			System.out.println("(Authority) NullPointerException: No url was given. Is the database running?");
+			setOrganizationUrl(""); // calls self to set the organzation url
+		}
+	}
+
+	/**
 	 * Gets the authority level. This is private because the authority levels are
 	 * meant to be scalable so the number represented in this object should never be
 	 * directly referenced for authorization.
@@ -58,6 +73,14 @@ public class Authority {
 	 */
 	protected int getAuthorityLevel() {
 		return authorityLevel;
+	}
+
+	/**
+	 * 
+	 * @return a string containing the organization's url
+	 */
+	protected String getOrganizationUrl() {
+		return organization_url;
 	}
 
 	/**

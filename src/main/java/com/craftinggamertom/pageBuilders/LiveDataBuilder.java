@@ -25,8 +25,8 @@ public class LiveDataBuilder extends PageBuilder {
 	private String chosenType;
 	private String type = "BLANK";
 
-	public LiveDataBuilder() {
-		super();
+	public LiveDataBuilder(String organization_url) {
+		super(organization_url);
 	}
 
 	/**

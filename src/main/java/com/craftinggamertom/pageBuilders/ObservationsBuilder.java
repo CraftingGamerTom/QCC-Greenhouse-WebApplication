@@ -31,15 +31,11 @@ import com.mongodb.client.model.Filters;
 
 public class ObservationsBuilder extends PageBuilder {
 
-	private String organization_url;
-
 	private ZonedDateTime startDate;
 	private ZonedDateTime endDate;
 
-	public ObservationsBuilder() {
-		super();
-
-		pageAuthority = new PageAuthority(AuthorityLevels.ANONYMOUS);
+	public ObservationsBuilder(String organization_url) {
+		super(organization_url);
 	}
 
 	public Model buildPage(Model model, String startDateString, String endDateString) {
@@ -79,24 +75,10 @@ public class ObservationsBuilder extends PageBuilder {
 		return model;
 	}
 
-	/**
-	 * Check if the user can be on this page
-	 * 
-	 * @param organization_url
-	 * @return true if the user is authorized
-	 */
-	public boolean grantAccess(String organization_url) {
-		this.organization_url = organization_url;
-		// if user is in the organization and their authority level is high enough -
-		// true
-		return true;
-	}
-
 	private String getNewObservationButton() {
 		String html = "";
 
-		PageAuthority pageAuthority = new PageAuthority(AuthorityLevels.USER);
-		if (pageAuthority.grantAccessGTE(userAuthority)) {
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.USER)) {
 			html = "<button class=\"btn btn-block btn-primary pull-right\"\r\n"
 					+ "					data-toggle=\"modal\" data-target=\"#newObservation\">Post New\r\n"
 					+ "					Observation</button>\r\n";
@@ -220,4 +202,5 @@ public class ObservationsBuilder extends PageBuilder {
 		}
 		return html;
 	}
+
 }

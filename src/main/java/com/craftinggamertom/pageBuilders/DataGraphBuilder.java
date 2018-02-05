@@ -47,8 +47,8 @@ public class DataGraphBuilder extends PageBuilder {
 
 	private String cTiming;
 
-	public DataGraphBuilder() {
-		super();
+	public DataGraphBuilder(String organization_url) {
+		super(organization_url);
 
 	}
 

@@ -14,6 +14,11 @@
 	href="<c:url value="/resources/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css"/>"
 	rel="stylesheet">
 
+<!-- FooTable -->
+<link
+	href="<c:url value="/resources/css/plugins/footable/footable.core.css"/>"
+	rel="stylesheet">
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 </head>
@@ -39,9 +44,10 @@
 			<!-- END HORIZONTAL NAVIGATION -->
 
 			<div class="wrapper wrapper-content">
-					<!-- ADMIN-MANAGE-SENSORS-FRIENDLY-NAMES CONTAINER -->
-					<%@ include file="../../../../content/admin/manage/admin-manage-sensors.jspf"%>
-					<!-- END ADMIN-MANAGE-SENSORS-FRIENDLY-NAMES CONTAINER -->
+				<!-- ADMIN-MANAGE-SENSORS-FRIENDLY-NAMES CONTAINER -->
+				<%@ include
+					file="../../../../content/admin/manage/admin-manage-sensors.jspf"%>
+				<!-- END ADMIN-MANAGE-SENSORS-FRIENDLY-NAMES CONTAINER -->
 			</div>
 
 		</div>
@@ -52,14 +58,6 @@
 	<!-- TASKS NAVIGATION CONTAINER -->
 	<%@ include file="../../../../content/common/tasks.jspf"%>
 	<!-- END TASKS NAVIGATION CONTAINER -->
-
-	<script type="text/javascript">
-		window.onload = function() {
-
-			document.getElementById('sensorForm').value = "rp1-01";
-
-		}
-	</script>
 
 	<!-- Mainly scripts -->
 	<script
@@ -75,6 +73,10 @@
 	<script
 		src="<c:url value="../../../../resources/js/plugins/iCheck/icheck.min.js"/>"></script>
 
+	<!-- FooTable -->
+	<script
+		src="<c:url value="/resources/js/plugins/footable/footable.all.min.js"/>"></script>
+
 	<script>
 		$(document).ready(function() {
 			$('.i-checks').iCheck({
@@ -83,15 +85,19 @@
 			});
 		});
 	</script>
+	<!-- Page-Level Scripts -->
+	<script>
+		$(document).ready(function() {
+
+			$('.footable').footable();
+
+		});
+	</script>
 
 
 </body>
 
-<footer>
-
-			<!-- FOOTER -->
-			<%@ include file="../../../../content/common/footer.jspf"%>
-			<!-- END FOOTER -->
-
-</footer>
+<footer> <!-- FOOTER --> <%@ include
+	file="../../../../content/common/footer.jspf"%>
+<!-- END FOOTER --> </footer>
 </html>

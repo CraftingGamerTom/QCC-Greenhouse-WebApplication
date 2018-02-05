@@ -1,51 +1,52 @@
 
-<div class="col-md-4">
+<div class="row">
+	<div class="col-md-4">
 
-	<div class="ibox float-e-margins">
+		<div class="ibox float-e-margins">
 
-		<div class="ibox-content text-center">
-			<img
-				src="<%=request.getAttribute("picture")%>"
-				class="img-thumbnail m-b-md" style="width: 75%;" alt="profile">
+			<div class="ibox-content text-center">
+				<img src="<%=request.getAttribute("picture")%>"
+					class="img-thumbnail m-b-md" style="width: 75%;" alt="profile">
 
-			<div class="text-center">
-				<h4>
-					<strong><%=request.getAttribute("name")%></strong>
-				</h4>
-				<%=request.getAttribute("edit-profile-btn")%>
+				<div class="text-center">
+					<h4>
+						<strong><%=request.getAttribute("name")%></strong>
+					</h4>
+					<%=request.getAttribute("edit-profile-btn")%>
+				</div>
+			</div>
+			<div class="ibox-content">
+
+				<strong>Nickname</strong>
+				<p><%=request.getAttribute("nickname")%></p>
+
+				<strong>Join Date</strong>
+				<p><%=request.getAttribute("join_date")%></p>
+
+				<strong>Last Seen</strong>
+				<p><%=request.getAttribute("last_seen")%></p>
+
+				<strong>Number of Observations</strong>
+				<p><%=request.getAttribute("num_of_observations")%></p>
+
+				<strong>Number of Updates</strong>
+				<p><%=request.getAttribute("num_of_updates")%></p>
+
 			</div>
 		</div>
-		<div class="ibox-content">
-
-			<strong>Nickname</strong>
-			<p><%=request.getAttribute("nickname")%></p>
-
-			<strong>Join Date</strong>
-			<p><%=request.getAttribute("join_date")%></p>
-
-			<strong>Last Seen</strong>
-			<p><%=request.getAttribute("last_seen")%></p>
-
-			<strong>Number of Observations</strong>
-			<p><%=request.getAttribute("num_of_observations")%></p>
-
-			<strong>Number of Updates</strong>
-			<p><%=request.getAttribute("num_of_updates")%></p>
-
-		</div>
 	</div>
-</div>
 
-<div class="col-md-8">
+	<div class="col-md-8">
 
-	<div class="ibox float-e-margins">
-		<div class="ibox-title">
-			<h5>Organizations</h5>
-		</div>
-		<div class="ibox-content text-center">
-			<div class="well">
-				<!-- ADD ORGANIZATION PHOTOS -->
-				<h3>Nothing to Show</h3>
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>Organizations</h5>
+			</div>
+			<div class="ibox-content text-center">
+				<div class="well">
+					<!-- ADD ORGANIZATION PHOTOS -->
+					<h3>Nothing to Show</h3>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -27,13 +27,13 @@ public class DashboardMembersBuilder extends DashboardBuilder {
 
 	private List<AppUser> userList;
 
-	public DashboardMembersBuilder() {
-		super();
+	public DashboardMembersBuilder(String organization_url) {
+		super(organization_url);
 	}
 
-	public Model buildPage(Model model, String organization_url) {
+	public Model buildPage(Model model) {
 
-		super.buildPage(model, organization_url);
+		super.buildPage(model);
 
 		setUserList();
 		model.addAllAttributes(addMemberAttributes());
