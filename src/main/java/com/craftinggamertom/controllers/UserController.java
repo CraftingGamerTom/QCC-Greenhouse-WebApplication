@@ -25,28 +25,6 @@ import com.craftinggamertom.updater.AppUserUpdater;
 public class UserController {
 
 	/**
-	 * Landing page for signed in user accounts
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "home", method = RequestMethod.GET)
-	public String goToUserHome() {
-
-		PageAuthority userUserAuthority = new PageAuthority("admin");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
-
-		if (userUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
-			/**
-			 * Dashboard?
-			 */
-			return "redirect:/feed"; // Temp until Organization Feed page is implemented
-		} else { // if not authorized to be on this page
-
-			return "redirect:" + URLLocation.unauthorized;
-		}
-	}
-
-	/**
 	 * Handles the request to view a users profile
 	 * 
 	 * @param model
