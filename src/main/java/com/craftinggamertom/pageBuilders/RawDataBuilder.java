@@ -35,8 +35,8 @@ public class RawDataBuilder extends PageBuilder {
 	private String displayedEndDate;
 	private int numItems;
 
-	public RawDataBuilder() {
-		super();
+	public RawDataBuilder(String organization_url) {
+		super(organization_url);
 	}
 
 	/**

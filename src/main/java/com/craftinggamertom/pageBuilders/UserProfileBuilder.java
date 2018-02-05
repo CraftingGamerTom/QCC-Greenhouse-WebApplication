@@ -11,6 +11,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.ui.Model;
 
+import com.craftinggamertom.constants.AuthorityLevels;
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.security.authentication.AppUser;
 import com.craftinggamertom.security.authorization.PageAuthority;
@@ -21,8 +22,8 @@ public class UserProfileBuilder extends PageBuilder {
 
 	private String userDatabaseId;
 
-	public UserProfileBuilder() {
-		super();
+	public UserProfileBuilder(String organization_url) {
+		super(organization_url);
 	}
 
 	public Model buildPage(String userDatabaseId, Model theModel) {
@@ -43,10 +44,9 @@ public class UserProfileBuilder extends PageBuilder {
 	private Map<String, String> addConfigOptions() {
 		HashMap<String, String> map = new HashMap<String, String>();
 
-		PageAuthority adminAuthority = new PageAuthority("admin");
-
 		// if the current user is the user, and admin, or higher than an admin
-		if (userAuthority.getUser().getDatabaseId() == userDatabaseId || adminAuthority.grantAccessGTE(userAuthority)) {
+		if (userAuthority.getUser().getDatabaseId() == userDatabaseId
+				|| pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) {
 			map.put("edit-profile-btn", "				<div class=\"user-button\">\r\n"
 					+ "					<div class=\"row text-center\">\r\n"
 					+ "                                            	    <button onclick=\"window.location.href='/user/profile/edit?dbid="

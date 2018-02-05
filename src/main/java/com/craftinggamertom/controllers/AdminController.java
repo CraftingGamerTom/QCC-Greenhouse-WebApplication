@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.craftinggamertom.constants.AuthorityLevels;
 import com.craftinggamertom.constants.JSPLocation;
+import com.craftinggamertom.constants.OrgUrl;
 import com.craftinggamertom.constants.URLLocation;
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.MongoDatabaseConnection;
@@ -51,13 +53,16 @@ public class AdminController {
 	public ModelAndView handleManageFriendlyNamesRequest(
 			@RequestParam(value = "chosen-type", defaultValue = "all") String sensorType, Model model) {
 
-		// make a ManageFriendlyNamesBuilder object and build page
-		ManageFriendlyNamesBuilder builder = new ManageFriendlyNamesBuilder();
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
 
-		PageAuthority adminUserAuthority = new PageAuthority("admin");
+		// make a ManageFriendlyNamesBuilder object and build page
+		ManageFriendlyNamesBuilder builder = new ManageFriendlyNamesBuilder(org_url);
+
+		PageAuthority pageAuthority = builder.getPageAuthority();
 		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
 
-		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) { // Only admin and higher allowed
 
 			try {
 				model = builder.buildPage(sensorType, model); // IF NO DATABASE PRESENT THERE WILL BE ERRORS
@@ -74,8 +79,7 @@ public class AdminController {
 
 		{ // if not authorized to be on this page
 
-			PageBuilder response = new PageBuilder();
-			response.buildPage(model);
+			builder.buildDefaultPage(model);
 
 			return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
 		}
@@ -101,12 +105,17 @@ public class AdminController {
 			@RequestParam(value = "is-visible", defaultValue = "0") String isVisible,
 			@RequestParam(value = "is-default", defaultValue = "0") String isDefaultSensor) {
 
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
+
 		String redirectUrl = "";
 
-		PageAuthority adminUserAuthority = new PageAuthority("admin");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		PageBuilder builder = new PageBuilder(org_url);
 
-		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+		PageAuthority pageAuthority = builder.getPageAuthority();
+		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
+
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) { // Only admin and higher allowed
 
 			FriendlyNamesUpdater nameUpdater = new FriendlyNamesUpdater();
 			nameUpdater.updateWith(sensorID, sensorDescription, friendlyName, isVisible, isDefaultSensor);
@@ -137,12 +146,15 @@ public class AdminController {
 	@RequestMapping(value = "manage/modules/meeting")
 	public ModelAndView handleManageMeetingModuleRequest(Model model) {
 
-		PageBuilder builder = new PageBuilder();
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
 
-		PageAuthority adminUserAuthority = new PageAuthority("admin");
+		PageBuilder builder = new PageBuilder(org_url);
+
+		PageAuthority adminUserAuthority = builder.getPageAuthority();
 		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
 
-		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+		if (adminUserAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) { // Only admin and higher allowed
 
 			try {
 				// make a ManageMeetingModuleBuilder object and build page
@@ -160,8 +172,7 @@ public class AdminController {
 
 		{ // if not authorized to be on this page
 
-			PageBuilder response = new PageBuilder();
-			response.buildPage(model);
+			builder.buildDefaultPage(model);
 
 			return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
 		}
@@ -179,17 +190,20 @@ public class AdminController {
 	public ModelAndView handleEditUserRequest(@RequestParam(value = "dbid", defaultValue = "me") String dbid,
 			Model model) {
 
-		ManageEditUserBuilder builder = new ManageEditUserBuilder();
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
 
-		PageAuthority adminUserAuthority = new PageAuthority("admin");
+		ManageEditUserBuilder builder = new ManageEditUserBuilder(org_url);
+
+		PageAuthority pageAuthority = builder.getPageAuthority();
 		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
 
-		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) { // Only admin and higher allowed
 			try {
 
 				AppUser theUser;
 				if (dbid.equals("me")) {
-					theUser = builder.getUserAuthority().getUser();
+					theUser = userAuthority.getUser();
 				} else { // Gets the user by id
 
 					MongoDatabase database = MongoDatabaseConnection.getInstance(); // Singleton
@@ -205,14 +219,11 @@ public class AdminController {
 					theUser = new AppUser(databaseResult);
 				}
 				// Check if user is trying to edit a user with higher authority
-				PageAuthority validateAuthority = new PageAuthority(theUser.getAuthority_key());
-				if (validateAuthority.grantAccessGTE(userAuthority)) {
+				if (pageAuthority.grantAccessGTE(userAuthority, theUser.getAuthority_key())) {
 					model = builder.buildPage(theUser, model);
 				} else { // if not authorized to edit user with higher authority
 
-					PageBuilder unauthorizedResponse = new PageBuilder();
-					unauthorizedResponse.buildPage(model);
-
+					builder.buildDefaultPage(model);
 					return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
 				}
 			} catch (Exception e) {
@@ -222,8 +233,7 @@ public class AdminController {
 			return new ModelAndView(JSPLocation.manageUsersEditUser);
 		} else { // if not authorized to be on this page
 
-			PageBuilder response = new PageBuilder();
-			response.buildPage(model);
+			builder.buildDefaultPage(model);
 
 			return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
 		}
@@ -252,20 +262,24 @@ public class AdminController {
 			@RequestParam(value = "phoneNum", defaultValue = "default") String phoneNum,
 			@RequestParam(value = "nickname", defaultValue = "default") String nickname) {
 
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
+
 		String redirectUrl = ""; // initialize
 
-		PageAuthority adminUserAuthority = new PageAuthority("admin");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		PageBuilder builder = new PageBuilder(org_url);
 
-		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
+		PageAuthority pageAuthority = builder.getPageAuthority();
+		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
+
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) { // Only admin and higher allowed
 			// Makes sure the _id is valid
 			if (dbid.equals("me")) {
 				dbid = userAuthority.getUser().getDatabaseId();
 			}
 
 			// Validate that user is not setting credentials higher than their own
-			PageAuthority validateAuthority = new PageAuthority(authLevel);
-			if (validateAuthority.grantAccessGTE(userAuthority)) {
+			if (pageAuthority.grantAccessGTE(userAuthority, authLevel)) {
 
 				AppUserUpdater updater = new AppUserUpdater();
 				updater.updateWith(dbid, authLevel, email, phoneNum, nickname);

@@ -18,8 +18,8 @@ public class ManageFriendlyNamesBuilder extends PageBuilder {
 	private String sensorType;
 
 	/** Default Constructor} */
-	public ManageFriendlyNamesBuilder() {
-		super();
+	public ManageFriendlyNamesBuilder(String organization_url) {
+		super(organization_url);
 	}
 
 	/**

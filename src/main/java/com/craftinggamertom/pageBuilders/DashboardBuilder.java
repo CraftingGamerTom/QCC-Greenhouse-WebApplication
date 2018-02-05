@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.ui.Model;
 
+import com.craftinggamertom.constants.AuthorityLevels;
 import com.craftinggamertom.entity.Organization;
 import com.craftinggamertom.security.authorization.PageAuthority;
 
@@ -21,15 +22,15 @@ public class DashboardBuilder extends PageBuilder {
 
 	protected Organization org;
 
-	public DashboardBuilder() {
-		super();
+	public DashboardBuilder(String organization_url) {
+		super(organization_url);
 	}
 
-	public Model buildPage(Model model, String orgURL) {
+	public Model buildPage(Model model) {
 
 		super.buildPage(model);
 
-		setOrganization(new Organization(orgURL)); // Get the Organization
+		setOrganization(new Organization(organization_url)); // Get the Organization
 		model.addAllAttributes(getDashboardAttributes());
 
 		return model;
@@ -65,9 +66,8 @@ public class DashboardBuilder extends PageBuilder {
 	protected String getAlertContent() {
 
 		String content = super.getAlertContent(); // Gets the super to add onto its alerts
-		PageAuthority unverifiedUserAuthority = new PageAuthority("unverified");
 
-		if (unverifiedUserAuthority.grantAccessEqual(userAuthority)) {
+		if (pageAuthority.grantAccessEqual(userAuthority, AuthorityLevels.UNVERIFIED)) {
 			content += "\r\n" + "	<div class=\"col-lg-12\">\r\n"
 					+ "		<div class=\"alert alert-warning alert-dismissable\">\r\n"
 					+ "			<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\"\r\n"

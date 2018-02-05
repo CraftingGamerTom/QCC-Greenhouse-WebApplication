@@ -15,8 +15,8 @@ import com.craftinggamertom.security.authorization.Authority;
 
 public class ManageEditUserBuilder extends PageBuilder {
 
-	public ManageEditUserBuilder() {
-		super();
+	public ManageEditUserBuilder(String organization_url) {
+		super(organization_url);
 	}
 
 	public Model buildPage(AppUser user, Model model) {

@@ -90,7 +90,7 @@ public class Organization extends Entity {
 		// End build gallery list
 
 		set_database_id("none");
-		setId("qcc-greenhouse");
+		setId("qcc");
 		setName("Quinsigamond Community College");
 		setProfilePicture("http://drive.google.com/uc?export=view&id=1bm5lR5RTWnZHa-GuvHD0K23tnQaTiCsG");
 		setPlan_type("school");

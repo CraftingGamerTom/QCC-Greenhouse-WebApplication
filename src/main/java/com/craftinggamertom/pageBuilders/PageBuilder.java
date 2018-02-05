@@ -14,6 +14,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.ui.Model;
 
+import com.craftinggamertom.constants.AuthorityLevels;
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.database.MongoDatabaseConnection;
 import com.craftinggamertom.entity.Sensor;
@@ -38,7 +39,11 @@ public class PageBuilder {
 	protected UserAuthority userAuthority;
 	protected PageAuthority pageAuthority;
 
-	public PageBuilder() {
+	protected String organization_url;
+
+	public PageBuilder(String organization_url) {
+
+		this.organization_url = organization_url;
 
 		// Collects and sets the current Time
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -46,6 +51,7 @@ public class PageBuilder {
 		currentTime = dtf.format(now); // 2016/11/16 12:08:43
 
 		userAuthority = new UserAuthority(); // Gets the user to check against
+		pageAuthority = new PageAuthority(organization_url);
 
 		try {
 			database = MongoDatabaseConnection.getInstance(); // Singleton
@@ -104,15 +110,10 @@ public class PageBuilder {
 		String adminLinks = "";
 		String devLinks = "";
 
-		PageAuthority appUserAuthority = new PageAuthority("user");
-		PageAuthority managerAuthority = new PageAuthority("manager");
-		PageAuthority adminAuthority = new PageAuthority("admin");
-		PageAuthority developerAuthority = new PageAuthority("developer");
-
-		if (developerAuthority.grantAccessGTE(userAuthority)) {
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.DEVELOPER)) {
 			devLinks = "";
 		}
-		if (adminAuthority.grantAccessGTE(userAuthority)) {
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) {
 			adminLinks = "\r\n" + "                    <li class=\"dropdown\">\r\n"
 					+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Admin<span class=\"caret\"></span></a>\r\n"
 					+ "                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n"
@@ -123,7 +124,7 @@ public class PageBuilder {
 					+ "                        </ul>\r\n" + "                    </li>" + "\r\n";
 
 		}
-		if (managerAuthority.grantAccessGTE(userAuthority)) {
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.MANAGER)) {
 			managerLinks = "\r\n" + "                    <li class=\"dropdown\">\r\n"
 					+ "                        <a aria-expanded=\"false\" role=\"button\" href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Manager<span class=\"caret\"></span></a>\r\n"
 					+ "                        <ul role=\"menu\" class=\"dropdown-menu\">\r\n"
@@ -131,7 +132,7 @@ public class PageBuilder {
 					+ "                        </ul>\r\n" + "                    </li>" + "\r\n";
 
 		}
-		if (appUserAuthority.grantAccessGTE(userAuthority)) {
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.USER)) {
 			appUserLinks = "";
 
 		}
@@ -171,10 +172,10 @@ public class PageBuilder {
 		// layout for signed in user or anonymousUser
 		String theHTML = "";
 
-		PageAuthority pageAuthority = new PageAuthority("unverified"); // Sets the credentials needed
 		AppUser appUser = userAuthority.getUser(); // Gets the user for referencing
 
-		if (pageAuthority.grantAccessGTE(userAuthority)) { // If the user is >= "unverified" credentials do work
+		if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.UNVERIFIED)) { // If the user is >= "unverified"
+																						// credentials do work
 
 			// String username = " <li>\r\n"
 			// + " <span class=\"m-r-sm text-muted welcome-message\">" + appUser.getName()
@@ -321,6 +322,15 @@ public class PageBuilder {
 	 */
 	public UserAuthority getUserAuthority() {
 		return userAuthority;
+	}
+
+	/**
+	 * Gets the PageAuthority which defines the use of a page
+	 * 
+	 * @return PageAuthority for the page
+	 */
+	public PageAuthority getPageAuthority() {
+		return pageAuthority;
 	}
 
 }

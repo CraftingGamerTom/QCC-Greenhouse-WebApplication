@@ -21,8 +21,8 @@ public class EditUserProfileBuilder extends PageBuilder {
 
 	private String userDatabaseId;
 
-	public EditUserProfileBuilder() {
-		super();
+	public EditUserProfileBuilder(String organization_url) {
+		super(organization_url);
 	}
 
 	public Model buildPage(String userDatabaseId, Model theModel) {

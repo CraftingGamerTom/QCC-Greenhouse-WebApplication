@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.craftinggamertom.constants.AuthorityLevels;
 import com.craftinggamertom.constants.JSPLocation;
+import com.craftinggamertom.constants.OrgUrl;
 import com.craftinggamertom.constants.URLLocation;
 import com.craftinggamertom.pageBuilders.EditUserProfileBuilder;
 import com.craftinggamertom.pageBuilders.PageBuilder;
@@ -34,9 +36,13 @@ public class UserController {
 	@RequestMapping(value = "profile")
 	public ModelAndView handleProfileRequest(@RequestParam(value = "dbid", defaultValue = "me") String userDatabaseId,
 			Model model) {
-		UserProfileBuilder builder = new UserProfileBuilder();
 
-		PageAuthority userUnverifiedAuthority = new PageAuthority("unverified");
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
+
+		UserProfileBuilder builder = new UserProfileBuilder(org_url);
+
+		PageAuthority userUnverifiedAuthority = builder.getPageAuthority();
 		UserAuthority userAuthority = builder.getUserAuthority();
 
 		// If the user is accessing their own profile
@@ -44,7 +50,7 @@ public class UserController {
 			userDatabaseId = userAuthority.getUser().getDatabaseId();
 		}
 		// If signed in
-		if (userUnverifiedAuthority.grantAccessGTE(userAuthority)) {
+		if (userUnverifiedAuthority.grantAccessGTE(userAuthority, AuthorityLevels.UNVERIFIED)) {
 			try {
 				model = builder.buildPage(userDatabaseId, model);
 			} catch (Exception e) {
@@ -70,10 +76,14 @@ public class UserController {
 	@RequestMapping(value = "profile/edit", method = RequestMethod.GET)
 	public ModelAndView goToEditUserProfile(@RequestParam(value = "dbid", defaultValue = "me") String databaseId,
 			Model model) {
-		EditUserProfileBuilder builder = new EditUserProfileBuilder();
+
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
+
+		EditUserProfileBuilder builder = new EditUserProfileBuilder(org_url);
 
 		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
-		PageAuthority userUserAuthority = new PageAuthority("admin");
+		PageAuthority userUserAuthority = builder.getPageAuthority();
 
 		// Sets the dbid to the user who made the call
 		if (databaseId.equals("me")) {
@@ -81,7 +91,8 @@ public class UserController {
 		}
 
 		// Admin or the the user can access
-		if (userUserAuthority.grantAccessGTE(userAuthority) || userAuthority.getUser().getDatabaseId() == databaseId) {
+		if (userUserAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)
+				|| userAuthority.getUser().getDatabaseId() == databaseId) {
 			try {
 				model = builder.buildPage(databaseId, model);
 			} catch (Exception e) {
@@ -92,8 +103,7 @@ public class UserController {
 
 		} else { // if not authorized to be on this page
 
-			PageBuilder response = new PageBuilder();
-			response.buildPage(model);
+			builder.buildDefaultPage(model);
 
 			return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
 		}
@@ -116,13 +126,19 @@ public class UserController {
 			@RequestParam(value = "phoneNum", defaultValue = "default") String phoneNum,
 			@RequestParam(value = "nickname", defaultValue = "default") String nickname) {
 
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
+
 		String redirectUrl = ""; // initialize
 
-		PageAuthority adminUserAuthority = new PageAuthority("admin");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		PageBuilder builder = new PageBuilder(org_url);
+
+		PageAuthority adminUserAuthority = builder.getPageAuthority();
+		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
 
 		// Admin or the user
-		if (adminUserAuthority.grantAccessGTE(userAuthority) || userAuthority.getUser().getDatabaseId().equals(dbid)) {
+		if (adminUserAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)
+				|| userAuthority.getUser().getDatabaseId().equals(dbid)) {
 			// Makes sure the _id is valid
 			if (dbid.equals("me")) {
 				dbid = userAuthority.getUser().getDatabaseId();

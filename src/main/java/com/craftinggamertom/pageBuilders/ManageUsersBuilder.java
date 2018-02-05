@@ -10,6 +10,7 @@ import java.util.Iterator;
 import org.bson.Document;
 import org.springframework.ui.Model;
 
+import com.craftinggamertom.constants.AuthorityLevels;
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.security.authentication.AppUser;
 import com.craftinggamertom.security.authorization.PageAuthority;
@@ -22,8 +23,8 @@ import com.mongodb.client.MongoCollection;
  */
 public class ManageUsersBuilder extends PageBuilder {
 
-	public ManageUsersBuilder() {
-		super();
+	public ManageUsersBuilder(String organization_url) {
+		super(organization_url);
 	}
 
 	/**
@@ -41,8 +42,6 @@ public class ManageUsersBuilder extends PageBuilder {
 	}
 
 	private String getChartContent() {
-
-		PageAuthority adminUserAuthority = new PageAuthority("admin");
 
 		String chart = "";
 
@@ -69,7 +68,7 @@ public class ManageUsersBuilder extends PageBuilder {
 					+ "                                    <th data-hide=\"all\">Google Id#</th>\r\n"
 					+ "                                    <th data-hide=\"all\">Photo</th>\r\n";
 
-			if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Adds column for admin actions
+			if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) { // Adds column for admin actions
 				chart += "                                    <th class=\"text-right\" data-sort-ignore=\"true\">Action</th>\r\n"
 						+ "\r\n" + "                                </tr>\r\n";
 			}
@@ -115,7 +114,7 @@ public class ManageUsersBuilder extends PageBuilder {
 						+ "                                        <div class=\"btn-group\">\r\n"
 						+ "                                            	    <button onclick=\"window.location.href='/user/profile?dbid="
 						+ theUser.getDatabaseId() + "'\" class=\"btn-success btn btn-xs\">Profile</button>\r\n";
-				if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Adds admin actions
+				if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) { // Adds admin actions
 					chart += "                                            	    <button onclick=\"window.location.href='/admin/manage/users/user?dbid="
 							+ theUser.getDatabaseId() + "'\" class=\"btn-warning btn btn-xs\">Edit</button>\r\n"
 							+ "                                                 <button class=\"btn-danger btn btn-xs\" onclick=\"delete_onclick('"

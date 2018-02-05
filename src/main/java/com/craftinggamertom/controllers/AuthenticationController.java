@@ -15,7 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.craftinggamertom.constants.AuthorityLevels;
 import com.craftinggamertom.constants.JSPLocation;
+import com.craftinggamertom.constants.OrgUrl;
+import com.craftinggamertom.constants.URLLocation;
 import com.craftinggamertom.pageBuilders.PageBuilder;
 import com.craftinggamertom.security.authorization.PageAuthority;
 import com.craftinggamertom.security.authorization.UserAuthority;
@@ -33,21 +36,21 @@ public class AuthenticationController {
 	@RequestMapping("/register")
 	public ModelAndView goToRegister(Model model) {
 
-		PageBuilder builder = new PageBuilder();
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
 
-		PageAuthority anonUserAuthority = new PageAuthority("anonymous");
+		PageBuilder builder = new PageBuilder(org_url);
+
+		PageAuthority anonUserAuthority = builder.getPageAuthority();
 		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
 
-		if (anonUserAuthority.grantAccessLTE(userAuthority)) {
+		if (anonUserAuthority.grantAccessLTE(userAuthority, AuthorityLevels.ANONYMOUS)) {
 
 			builder.buildPage(model);
 
 			return new ModelAndView(JSPLocation.register);
 		} else { // if signed in
-
-			builder.buildPage(model);
-
-			return new ModelAndView(JSPLocation.userProfile);
+			return new ModelAndView("forward:" + URLLocation.USER_PROFILE);
 		}
 
 	}
@@ -82,8 +85,11 @@ public class AuthenticationController {
 	@RequestMapping("/unauthorized")
 	public ModelAndView unauthorized(Model model) {
 
-		PageBuilder response = new PageBuilder();
-		response.buildPage(model);
+		// TODO Remove with organization implementation
+		String org_url = OrgUrl.QCC;
+
+		PageBuilder builder = new PageBuilder(org_url);
+		builder.buildPage(model);
 
 		return new ModelAndView(JSPLocation.unauthorized); // unauthorized page
 	}
