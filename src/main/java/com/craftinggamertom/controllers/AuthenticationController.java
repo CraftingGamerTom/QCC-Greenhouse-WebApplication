@@ -33,21 +33,21 @@ public class AuthenticationController {
 	@RequestMapping("/register")
 	public ModelAndView goToRegister(Model model) {
 
+		PageBuilder builder = new PageBuilder();
+
 		PageAuthority anonUserAuthority = new PageAuthority("anonymous");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
 
-		if (anonUserAuthority.grantAccessLTE(userAuthority)) { // Only admin and higher allowed
+		if (anonUserAuthority.grantAccessLTE(userAuthority)) {
 
-			PageBuilder builder = new PageBuilder();
 			builder.buildPage(model);
 
 			return new ModelAndView(JSPLocation.register);
-		} else { // if not authorized to be on this page
+		} else { // if signed in
 
-			PageBuilder response = new PageBuilder();
-			response.buildPage(model);
+			builder.buildPage(model);
 
-			return new ModelAndView(JSPLocation.userProfile); // unauthorized page
+			return new ModelAndView(JSPLocation.userProfile);
 		}
 
 	}
@@ -60,7 +60,7 @@ public class AuthenticationController {
 	@RequestMapping("/login")
 	public String goToLogin() {
 
-		return "redirect:/user/home";
+		return "redirect:/user/profile";
 	}
 
 	/**

@@ -51,15 +51,16 @@ public class AdminController {
 	public ModelAndView handleManageFriendlyNamesRequest(
 			@RequestParam(value = "chosen-type", defaultValue = "all") String sensorType, Model model) {
 
+		// make a ManageFriendlyNamesBuilder object and build page
+		ManageFriendlyNamesBuilder builder = new ManageFriendlyNamesBuilder();
+
 		PageAuthority adminUserAuthority = new PageAuthority("admin");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
 
 		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
 
 			try {
-				// make a ManageFriendlyNamesBuilder object and build page
-				ManageFriendlyNamesBuilder response = new ManageFriendlyNamesBuilder();
-				model = response.buildPage(sensorType, model); // IF NO DATABASE PRESENT THERE WILL BE ERRORS
+				model = builder.buildPage(sensorType, model); // IF NO DATABASE PRESENT THERE WILL BE ERRORS
 
 				// EXAMPLE: DataGraphBuilder response = new DataGraphBuilder();
 				// EXAMPLE: model = response.buildPage(cSensor, cTiming, cDate, model);
@@ -136,8 +137,10 @@ public class AdminController {
 	@RequestMapping(value = "manage/modules/meeting")
 	public ModelAndView handleManageMeetingModuleRequest(Model model) {
 
+		PageBuilder builder = new PageBuilder();
+
 		PageAuthority adminUserAuthority = new PageAuthority("admin");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
 
 		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
 
@@ -152,7 +155,7 @@ public class AdminController {
 				e.printStackTrace();
 			}
 
-			return new ModelAndView("admin/test");
+			return new ModelAndView(JSPLocation.errorPage);
 		} else
 
 		{ // if not authorized to be on this page
@@ -176,15 +179,17 @@ public class AdminController {
 	public ModelAndView handleEditUserRequest(@RequestParam(value = "dbid", defaultValue = "me") String dbid,
 			Model model) {
 
+		ManageEditUserBuilder builder = new ManageEditUserBuilder();
+
 		PageAuthority adminUserAuthority = new PageAuthority("admin");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
 
 		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
 			try {
-				ManageEditUserBuilder response = new ManageEditUserBuilder();
+
 				AppUser theUser;
 				if (dbid.equals("me")) {
-					theUser = response.getUserAuthority().getUser();
+					theUser = builder.getUserAuthority().getUser();
 				} else { // Gets the user by id
 
 					MongoDatabase database = MongoDatabaseConnection.getInstance(); // Singleton
@@ -202,7 +207,7 @@ public class AdminController {
 				// Check if user is trying to edit a user with higher authority
 				PageAuthority validateAuthority = new PageAuthority(theUser.getAuthority_key());
 				if (validateAuthority.grantAccessGTE(userAuthority)) {
-					model = response.buildPage(theUser, model);
+					model = builder.buildPage(theUser, model);
 				} else { // if not authorized to edit user with higher authority
 
 					PageBuilder unauthorizedResponse = new PageBuilder();

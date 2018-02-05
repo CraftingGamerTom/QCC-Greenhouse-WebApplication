@@ -17,6 +17,7 @@ import com.craftinggamertom.constants.JSPLocation;
 import com.craftinggamertom.pageBuilders.DataGraphBuilder;
 import com.craftinggamertom.pageBuilders.LiveDataBuilder;
 import com.craftinggamertom.pageBuilders.RawDataBuilder;
+import com.craftinggamertom.security.authorization.UserAuthority;
 
 @Controller
 @RequestMapping("view")
@@ -53,8 +54,9 @@ public class ViewController {
 		model.addAttribute("c-date", "\"" + cDate + "\""); // Must use these quote insertions
 
 		try {
-			DataGraphBuilder response = new DataGraphBuilder();
-			model = response.buildPage(cSensor, cTiming, cDate, model);
+			DataGraphBuilder builder = new DataGraphBuilder();
+			UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
+			model = builder.buildPage(cSensor, cTiming, cDate, model);
 
 		} catch (Exception e) {
 			System.out.println("Exception: ");
@@ -76,8 +78,9 @@ public class ViewController {
 			@RequestParam(value = "chosen-type", defaultValue = "default") String cType, Model model) {
 
 		try {
-			LiveDataBuilder response = new LiveDataBuilder();
-			model = response.buildPage(cType, model);
+			LiveDataBuilder builder = new LiveDataBuilder();
+			UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
+			model = builder.buildPage(cType, model);
 
 		} catch (Exception e) {
 			System.out.println("Exception: ");
@@ -100,8 +103,9 @@ public class ViewController {
 			@RequestParam(value = "end-date", defaultValue = "default") String cEnd, Model model) {
 
 		try {
-			RawDataBuilder response = new RawDataBuilder();
-			model = response.buildPage(cSensor, cStart, cEnd, model);
+			RawDataBuilder builder = new RawDataBuilder();
+			UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
+			model = builder.buildPage(cSensor, cStart, cEnd, model);
 
 		} catch (Exception e) {
 			System.out.println("Exception: ");

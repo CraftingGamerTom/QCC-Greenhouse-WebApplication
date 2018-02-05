@@ -33,13 +33,15 @@ public class ManagerController {
 	public ModelAndView handleManageUsersRequest(@RequestParam(value = "dbid", defaultValue = "me") String databaseId,
 			Model model) {
 
+		ManageUsersBuilder builder = new ManageUsersBuilder();
+
 		PageAuthority adminUserAuthority = new PageAuthority("manager");
-		UserAuthority userAuthority = new UserAuthority(); // Gets the user to check against
+		UserAuthority userAuthority = builder.getUserAuthority(); // Gets the user to check against
 
 		if (adminUserAuthority.grantAccessGTE(userAuthority)) { // Only admin and higher allowed
 			try {
-				ManageUsersBuilder response = new ManageUsersBuilder();
-				model = response.buildPage(model);
+
+				model = builder.buildPage(model);
 
 			} catch (Exception e) {
 				System.out.println("Exception: ");
