@@ -92,7 +92,7 @@ public class UserController {
 
 		// Admin or the the user can access
 		if (userUserAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)
-				|| userAuthority.getUser().getDatabaseId() == databaseId) {
+				|| userAuthority.getUser().getDatabaseId().equals(databaseId)) {
 			try {
 				model = builder.buildPage(databaseId, model);
 			} catch (Exception e) {
