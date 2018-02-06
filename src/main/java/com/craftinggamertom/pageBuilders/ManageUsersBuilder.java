@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import com.craftinggamertom.constants.AuthorityLevels;
 import com.craftinggamertom.database.ConfigurationReaderSingleton;
 import com.craftinggamertom.security.authentication.AppUser;
-import com.craftinggamertom.security.authorization.PageAuthority;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 
@@ -60,6 +59,7 @@ public class ManageUsersBuilder extends PageBuilder {
 					+ "                                    <th data-hide=\"phone,tablet\">Authority</th>\r\n"
 					+ "                                    <th data-hide=\"phone,tablet\">Join Date</th>\r\n"
 					+ "                                    <th data-hide=\"phone,tablet\">Last Seen</th>\r\n"
+					+ "                                    <th data-hide=\"all\">Nickname</th>\r\n"
 					+ "                                    <th data-hide=\"all\"># of Observations</th>\r\n"
 					+ "                                    <th data-hide=\"all\"># of Updates</th>\r\n"
 					+ "                                    <th data-hide=\"all\">Cell Phone</th>\r\n"
@@ -68,7 +68,7 @@ public class ManageUsersBuilder extends PageBuilder {
 					+ "                                    <th data-hide=\"all\">Google Id#</th>\r\n"
 					+ "                                    <th data-hide=\"all\">Photo</th>\r\n";
 
-			if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) { // Adds column for admin actions
+			if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.MANAGER)) { // Adds action buttons
 				chart += "                                    <th class=\"text-right\" data-sort-ignore=\"true\">Action</th>\r\n"
 						+ "\r\n" + "                                </tr>\r\n";
 			}
@@ -94,6 +94,8 @@ public class ManageUsersBuilder extends PageBuilder {
 						+ "                                    <td>\r\n" + "                                        "
 						+ theUser.getLast_seen() + "                                    </td>\r\n"
 						+ "                                    <td>\r\n" + "                                        "
+						+ theUser.getNickname() + "                                    </td>\r\n"
+						+ "                                    <td>\r\n" + "                                        "
 						+ theUser.getNum_of_observations() + "                                    </td>\r\n"
 						+ "                                    <td>\r\n" + "                                        "
 						+ theUser.getNum_of_updates() + "                                    </td>\r\n"
@@ -113,11 +115,11 @@ public class ManageUsersBuilder extends PageBuilder {
 				chart += "                                    <td class=\"text-right\">\r\n"
 						+ "                                        <div class=\"btn-group\">\r\n"
 						+ "                                            	    <button onclick=\"window.location.href='/user/profile?dbid="
-						+ theUser.getDatabaseId() + "'\" class=\"btn-success btn btn-xs\">Profile</button>\r\n";
+						+ theUser.getDatabaseId() + "'\" class=\"btn-success btn btn-xs\">Profile</button>\r\n"
+						+ "                                            	    <button onclick=\"window.location.href='/manager/manage/users/user?dbid="
+						+ theUser.getDatabaseId() + "'\" class=\"btn-warning btn btn-xs\">Edit</button>\r\n";
 				if (pageAuthority.grantAccessGTE(userAuthority, AuthorityLevels.ADMIN)) { // Adds admin actions
-					chart += "                                            	    <button onclick=\"window.location.href='/admin/manage/users/user?dbid="
-							+ theUser.getDatabaseId() + "'\" class=\"btn-warning btn btn-xs\">Edit</button>\r\n"
-							+ "                                                 <button class=\"btn-danger btn btn-xs\" onclick=\"delete_onclick('"
+					chart += "                                                 <button class=\"btn-danger btn btn-xs\" onclick=\"delete_onclick('"
 							+ theUser.getDatabaseId() + "')\">Delete</button>\r\n";
 				}
 				// Finishes Control Buttons
