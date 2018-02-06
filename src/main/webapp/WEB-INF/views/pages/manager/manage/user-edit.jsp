@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!-- Head starts in header.jspf -->
-<%@ include file="../../../../content/common/header.jspf"%>
+<%@ include file="../../../content/common/header.jspf"%>
 
 <link href="<c:url value="/resources/css/animate.css"/>"
 	rel="stylesheet">
@@ -43,12 +43,12 @@
 			<!-- END VERTICAL NAVIGATION -->
 
 			<!-- HORIZONTAL NAVIGATION -->
-			<%@ include file="../../../../content/common/nav-horizontal.jspf"%>
+			<%@ include file="../../../content/common/nav-horizontal.jspf"%>
 			<!-- END HORIZONTAL NAVIGATION -->
 
 			<div class="wrapper wrapper-content">
 					<!-- USER-DATA CONTAINER -->
-					<%@ include file="../../../../content/manager/manage/user-metadata.jspf"%>
+					<%@ include file="../../../content/manager/manage/user-metadata.jspf"%>
 					<!-- END USER-DATA CONTAINER -->
 			</div>
 
@@ -58,7 +58,7 @@
 	</div>
 
 	<!-- TASKS NAVIGATION CONTAINER -->
-	<%@ include file="../../../../content/common/tasks.jspf"%>
+	<%@ include file="../../../content/common/tasks.jspf"%>
 	<!-- END TASKS NAVIGATION CONTAINER -->
 
 
@@ -100,7 +100,7 @@
 <footer>
 
 			<!-- FOOTER -->
-			<%@ include file="../../../../content/common/footer.jspf"%>
+			<%@ include file="../../../content/common/footer.jspf"%>
 			<!-- END FOOTER -->
 
 </footer>
