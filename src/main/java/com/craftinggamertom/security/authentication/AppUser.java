@@ -258,6 +258,7 @@ public class AppUser {
 		infoMap.put("nickname", getNickname());
 		infoMap.put("email_address", getEmail_address());
 		infoMap.put("cell_phone", getCell_phone());
+		infoMap.put("time_zone", getTime_zone());
 
 		return infoMap;
 	}
@@ -291,6 +292,7 @@ public class AppUser {
 		infoMap.put("nickname", getNickname());
 		infoMap.put("email_address", getEmail_address());
 		infoMap.put("cell_phone", getCell_phone());
+		infoMap.put("time_zone", getTime_zone());
 
 		return infoMap;
 	}
